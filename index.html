@@ -219,6 +219,19 @@
     .trust a { color: inherit; }
     @media (max-width: 960px) { .plans { grid-template-columns: 1fr; max-width: 480px; } }
 
+    /* Teamgrößen-Stufen (nur Apps mit pricing.teams) */
+    .teams { margin-top: 28px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 26px 28px; }
+    .teams h3 { font-size: 19px; font-weight: 650; }
+    .teams .lead { margin-top: 8px; font-size: 15px; }
+    .tiers { width: 100%; margin-top: 18px; border-collapse: collapse; font-size: 15px; }
+    .tiers th { text-align: left; font-size: 12.5px; font-weight: 600; color: var(--muted); padding: 0 10px 8px 0; }
+    .tiers td { padding: 12px 10px 12px 0; border-top: 1px solid var(--border); vertical-align: top; }
+    .tiers td:first-child { font-weight: 650; }
+    .tiers .num { text-align: right; white-space: nowrap; }
+    .tiers tr.hl td { color: var(--accent-text); }
+    .teams .fine { margin-top: 14px; }
+    @media (max-width: 560px) { .teams { padding: 20px 16px; } .tiers { font-size: 14px; } .tiers .hide-s { display: none; } }
+
     /* FAQ */
     .faq { display: grid; grid-template-columns: .8fr 1.2fr; gap: 56px; align-items: start; }
     .faq details { border-bottom: 1px solid var(--border); }
@@ -394,8 +407,8 @@
             <span class="badge">Empfohlen</span>
             <h3>InstallateurDex Pro</h3>
             <p class="price">29,99 € <small>/ Monat</small></p>
-            <p class="per">auch als Jahresabo — 2 Monate gratis</p>
-            <ul><li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>300 Diktat-Minuten im Monat</li><li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>Unbegrenzt Anlagen und Einsätze</li><li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>Protokolle mit Logo, Farbe und 3 Layouts</li><li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>Wartungs-Erinnerung an deine Kunden per Mail</li><li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>Team: je weiterem Monteur 4,99 € im Monat und +150 Diktat-Minuten</li></ul>
+            <p class="per">oder 299 € im Jahr</p>
+            <ul><li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>300 Diktat-Minuten im Monat</li><li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>Unbegrenzt Anlagen und Einsätze</li><li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>Protokolle mit Logo, Farbe und 3 Layouts</li><li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>Wartungs-Erinnerung an deine Kunden per Mail</li><li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>Team: je weiterem Monteur höchstens 4,99 € im Monat und +150 Diktat-Minuten</li></ul>
           </div>
           <div class="plan suite rv">
             <h3>Dexware Suite</h3>
@@ -410,6 +423,15 @@
           </div>
         </div>
         
+        <div class="teams rv">
+          <h3>Für Betriebe mit Team</h3>
+          <p class="lead">Ein Abo für den Betrieb. Deine Monteure treten mit einem Team-Code bei und arbeiten ohne eigenes Abo — jeder bringt 150 Diktat-Minuten mit.</p>
+          <table class="tiers">
+            <thead><tr><th>Stufe</th><th class="hide-s">Für wen</th><th class="num">Monat</th><th class="num">Jahr</th></tr></thead>
+            <tbody><tr><td>Pro<br><small style="font-weight:400;color:var(--muted)">1 Monteur · 300 Diktat-Minuten</small></td><td class="hide-s">Ein-Mann-Betrieb</td><td class="num">29,99 €</td><td class="num">299 €</td></tr><tr class="hl"><td>Team 3<br><small style="font-weight:400;color:var(--muted)">bis 3 Monteure · 600 Minuten</small></td><td class="hide-s">Kleiner Installationsbetrieb</td><td class="num">39,95 €</td><td class="num">399 €</td></tr><tr><td>Team 5<br><small style="font-weight:400;color:var(--muted)">bis 5 Monteure · 900 Minuten</small></td><td class="hide-s">Heizungs- und Klimabetrieb</td><td class="num">49,95 €</td><td class="num">499 €</td></tr><tr><td>Team 10<br><small style="font-weight:400;color:var(--muted)">bis 10 Monteure · 1.650 Minuten</small></td><td class="hide-s">Betrieb mit mehreren Partien</td><td class="num">74,90 €</td><td class="num">749 €</td></tr><tr><td>Größer<br><small style="font-weight:400;color:var(--muted)">mehr als 10 Monteure</small></td><td class="hide-s">auf Anfrage</td><td class="num">Angebot</td><td class="num">auf Rechnung</td></tr></tbody>
+          </table>
+          <p class="fine">Wechsel zwischen den Stufen jederzeit in der App, die Restlaufzeit wird verrechnet. Größere Betriebe: <a href="mailto:support@dexware.app">support@dexware.app</a>.</p>
+        </div>
         <p class="fine">Abschluss direkt in der App über Google Play · jederzeit kündbar · Preise inkl. MwSt.</p>
         <ul class="trust rv"><li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg><span>Kein Tracking, keine Werbung</span></li><li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" /><path d="m9 12 2 2 4-4" /></svg><span>Jahresabo 7 Tage gratis testen</span></li><li><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg><span>Persönlicher Support: <a href="mailto:support@dexware.app">support@dexware.app</a></span></li></ul>
       </div>
