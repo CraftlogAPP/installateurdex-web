@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="robots" content="noindex, nofollow" />
+<meta name="referrer" content="no-referrer" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://*.supabase.co; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" />
+<meta name="theme-color" content="#14181D" />
+<title>Mein Zuhause · InstallateurDex</title>
+<meta name="description" content="Ihre Hausakte: alle Anlagen, Wartungen, Protokolle und Termine Ihres Fachbetriebs an einem Ort." />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" type="image/png" href="/assets/installateurdex-icon.png" />
+<link rel="apple-touch-icon" href="/assets/installateurdex-icon.png" />
+<style>
+  :root { --copper:#B5651D; --copper-l:#E39A54; --ice:#1F8BC9; --bg:#F4F1ED; --card:#fff; --card2:#FAF8F5; --text:#1B1F24; --muted:#646B74; --border:#E6E1DA;
+          --green:#15803D; --green-s:#DCFCE7; --amber:#C2410C; --amber-s:#FFEDD5; --red:#DC2626; --red-s:#FEE2E2; --brand:var(--copper); --shadow:0 10px 30px rgba(20,24,29,.08); }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0E1115; --card:#171C22; --card2:#1C222A; --text:#F2EFEA; --muted:#A3A9B1; --border:#29303A;
+          --green:#4ADE80; --green-s:#10301D; --amber:#FB923C; --amber-s:#3A1E0B; --red:#F87171; --red-s:#3A1518; --shadow:0 10px 30px rgba(0,0,0,.35); } }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin:0; font-family: -apple-system, 'Segoe UI', Roboto, Inter, sans-serif; background: var(--bg); color: var(--text); line-height: 1.45; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: max(14px, env(safe-area-inset-top)) 16px 48px; }
+  a { color: var(--brand); }
+  button { font: inherit; }
+  /* Kopf */
+  .top { display:flex; align-items:center; justify-content:space-between; gap:12px; padding: 6px 0 14px; }
+  .logo { display:flex; align-items:center; gap:10px; font-weight:900; font-size:17px; letter-spacing:-.2px; }
+  .logo img { width:34px; height:34px; border-radius:9px; }
+  .logo b { color: var(--copper); }
+  .me { font-size:12px; color: var(--muted); text-align:right; }
+  .me button { background:none; border:0; color: var(--muted); text-decoration: underline; cursor:pointer; padding:0; font-size:12px; }
+  /* Held */
+  .hero { position:relative; overflow:hidden; border-radius: 24px; padding: 22px 20px; color:#fff; margin-bottom: 16px;
+          background: radial-gradient(120% 140% at 0% 0%, #2B1A0C 0%, #14181D 55%, #0B2433 100%); box-shadow: var(--shadow); }
+  .hero::after { content:''; position:absolute; inset:-40% -20% auto auto; width: 280px; height: 280px; border-radius: 50%;
+                 background: radial-gradient(closest-side, rgba(227,154,84,.35), transparent); animation: glow 7s ease-in-out infinite alternate; }
+  @keyframes glow { to { transform: translate(-40px, 30px) scale(1.15); } }
+  .hero h1 { margin: 0 0 4px; font-size: clamp(22px, 5.5vw, 30px); letter-spacing: -.5px; position: relative; z-index: 1; }
+  .hero p { margin: 0; opacity: .85; position: relative; z-index: 1; }
+  /* 3 Kacheln immer in einer Reihe — auch auf 320-px-Handys (vorher brach die dritte um) */
+  .stats { display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap:8px; margin-top: 16px; position: relative; z-index: 1; max-width: 420px; }
+  .stat { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); border-radius: 14px; padding: 10px 10px; min-width: 0; backdrop-filter: blur(6px); }
+  .stat span { display:block; line-height: 1.25; overflow-wrap: anywhere; }
+  .stat b { display:block; font-size: 22px; font-variant-numeric: tabular-nums; }
+  .stat span { font-size: 12px; opacity: .8; }
+  /* Karten */
+  .card { background: var(--card); border:1px solid var(--border); border-radius: 20px; padding: 18px; margin-bottom: 14px; box-shadow: var(--shadow); }
+  .site-h { display:flex; justify-content:space-between; align-items:flex-start; gap: 12px; }
+  .site-h h2 { margin: 0; font-size: 19px; letter-spacing: -.2px; }
+  .site-h .addr { color: var(--muted); font-size: 14px; margin-top: 2px; }
+  .firm { display:flex; flex-wrap: wrap; align-items:center; gap: 10px; margin-top: 14px; padding: 12px; border-radius: 14px; background: var(--card2); border: 1px solid var(--border); }
+  .firm .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--brand); flex: none; box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 20%, transparent); }
+  .firm .nm { font-weight: 800; flex: 1 1 150px; min-width: 0; } /* schmal: Knöpfe rutschen gemeinsam in die 2. Zeile statt den Namen zu quetschen */
+  .firm .acts { display:flex; gap: 8px; flex: none; margin-left: auto; }
+  .firm .nm small { display:block; font-weight: 500; color: var(--muted); font-size: 12px; }
+  .iconbtn { display:inline-flex; align-items:center; justify-content:center; min-width: 44px; height: 44px; padding: 0 12px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--card); color: var(--text); text-decoration:none; font-weight: 700; font-size: 14px; }
+  h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); margin: 20px 0 10px; }
+  /* Anlagen */
+  .assets { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .asset { border:1px solid var(--border); border-radius: 16px; padding: 14px; background: var(--card2); display:flex; flex-direction: column; gap: 10px; }
+  .asset-h { display:flex; gap: 12px; align-items:center; }
+  .ring { position: relative; width: 58px; height: 58px; flex: none; }
+  .ring svg { width: 58px; height: 58px; transform: rotate(-90deg); }
+  .ring .bgc { stroke: var(--border); }
+  .ring .fg { stroke-linecap: round; stroke-dasharray: var(--c); stroke-dashoffset: var(--to); animation: ringIn 1.2s cubic-bezier(.2,.8,.2,1) .25s both; }
+  @keyframes ringIn { from { stroke-dashoffset: var(--c); } }
+  .ring .em { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size: 24px; }
+  .asset-h .t { min-width: 0; }
+  .asset-h .t b { display:block; font-size: 16px; }
+  .asset-h .t span { color: var(--muted); font-size: 13px; }
+  .chips { display:flex; flex-wrap: wrap; gap: 6px; }
+  .chip { font-size: 12px; font-weight: 800; padding: 5px 9px; border-radius: 99px; background: var(--border); color: var(--text); }
+  .chip.ok { background: var(--green-s); color: var(--green); } .chip.soon { background: var(--amber-s); color: var(--amber); } .chip.due { background: var(--red-s); color: var(--red); }
+  .actions { display:flex; gap: 8px; flex-wrap: wrap; margin-top: auto; }
+  .btn { display:inline-flex; align-items:center; justify-content:center; gap: 6px; min-height: 44px; border-radius: 12px; padding: 0 14px; font-weight: 800; font-size: 14px; cursor: pointer; border: 0; text-decoration: none; }
+  .btn.primary { background: var(--brand); color: #fff; } .btn.ghost { background: transparent; color: var(--brand); border: 1.5px solid var(--brand); }
+  .btn.block { width: 100%; min-height: 52px; font-size: 16px; border-radius: 14px; }
+  .btn:disabled { opacity: .55; cursor: default; }
+  /* Hinweise */
+  .defect { display:flex; gap: 10px; align-items:flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .defect:last-child { border-bottom: 0; }
+  .sev { width: 10px; height: 10px; border-radius: 50%; margin-top: 6px; flex: none; }
+  .sev.red { background: var(--red); } .sev.amber { background: var(--amber); } .sev.green { background: var(--green); }
+  /* Verlauf */
+  .tl { position: relative; padding-left: 22px; }
+  .tl::before { content:''; position:absolute; left: 7px; top: 6px; bottom: 6px; width: 2px; background: var(--border); border-radius: 2px; }
+  .ev { position: relative; padding: 2px 0 14px; }
+  .ev::before { content:''; position:absolute; left: -20px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--card); border: 3px solid var(--brand); }
+  .ev details summary { list-style: none; cursor: pointer; display:flex; justify-content:space-between; gap: 10px; align-items: baseline; }
+  .ev details summary::-webkit-details-marker { display:none; }
+  .ev .when { color: var(--muted); font-size: 13px; white-space: nowrap; }
+  .ev .what { font-weight: 800; }
+  .ev .what small { display:block; font-weight: 500; color: var(--muted); font-size: 13px; }
+  .ev .body { margin-top: 10px; padding: 12px; border-radius: 12px; background: var(--card2); border: 1px solid var(--border); font-size: 14px; }
+  .ev .body p { margin: 0 0 8px; white-space: pre-wrap; }
+  .kv { display:grid; grid-template-columns: 1fr auto; gap: 4px 14px; margin: 6px 0 10px; }
+  .kv span:nth-child(even) { font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+  .reco { border-left: 4px solid var(--amber); background: var(--amber-s); padding: 8px 10px; border-radius: 8px; margin: 8px 0; white-space: pre-wrap; }
+  .hash { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12px; color: var(--muted); }
+  /* Anfragen */
+  .req { display:flex; justify-content:space-between; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .req:last-child { border-bottom: 0; }
+  /* Schalter */
+  .switch { display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 12px; border-radius: 14px; background: var(--card2); border: 1px solid var(--border); margin-top: 14px; }
+  .switch input { appearance: none; width: 52px; height: 30px; border-radius: 99px; background: var(--border); position: relative; flex: none; cursor: pointer; transition: background .2s; }
+  .switch input::after { content:''; position:absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3); transition: transform .2s; }
+  .switch input:checked { background: var(--green); } .switch input:checked::after { transform: translateX(22px); }
+  /* Anmeldung */
+  .login { max-width: 440px; margin: 6vh auto 0; }
+  .login .card { padding: 24px; }
+  label { display:block; font-size: 14px; font-weight: 700; margin: 14px 0 6px; }
+  input[type=email], input[type=tel], input[type=text], textarea, select { display:block; width:100%; font: inherit; font-size: 16px; color: var(--text); background: var(--bg); border: 1.5px solid var(--border); border-radius: 12px; padding: 13px; }
+  input:focus, textarea:focus, select:focus { outline: 2px solid var(--brand); outline-offset: 1px; border-color: transparent; }
+  .otp { display:flex; gap: 8px; justify-content: space-between; }
+  .otp input { width: 100%; text-align: center; font-size: 24px; font-weight: 800; padding: 12px 0; }
+  .err { color: var(--red); font-weight: 700; font-size: 14px; min-height: 1.2em; margin-top: 10px; }
+  .muted { color: var(--muted); font-size: 14px; }
+  .center { text-align:center; padding: 50px 10px; color: var(--muted); }
+  .empty { text-align: center; padding: 30px 12px; }
+  .empty .big { font-size: 44px; }
+  /* Blatt (Anfrage) */
+  .sheet-bg { position: fixed; inset: 0; background: rgba(0,0,0,.45); display:flex; align-items:flex-end; justify-content:center; z-index: 10; animation: fade .2s ease; }
+  .sheet { background: var(--card); width: 100%; max-width: 560px; border-radius: 22px 22px 0 0; padding: 18px 18px max(18px, env(safe-area-inset-bottom)); max-height: 92vh; overflow: auto; animation: up .28s cubic-bezier(.2,.8,.2,1); }
+  .sheet h2 { margin: 4px 0 2px; }
+  .seg { display:flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .seg button { flex: 1; min-height: 44px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--bg); font-weight: 800; cursor: pointer; color: var(--text); }
+  .seg button[aria-pressed=true] { border-color: var(--brand); background: color-mix(in srgb, var(--brand) 14%, var(--card)); color: var(--brand); }
+  .toast { position: fixed; left: 50%; bottom: max(20px, env(safe-area-inset-bottom)); transform: translateX(-50%); background: #14181D; color: #fff; padding: 12px 16px; border-radius: 14px; font-weight: 700; box-shadow: var(--shadow); z-index: 20; animation: up .25s ease; max-width: calc(100% - 32px); }
+  .foot { text-align:center; font-size: 12px; color: var(--muted); margin-top: 24px; line-height: 1.6; }
+  .foot a { color: var(--muted); }
+  /* Bewegung */
+  .in { opacity: 0; animation: fadeUp .5s cubic-bezier(.2,.8,.2,1) forwards; animation-delay: calc(var(--i, 0) * 60ms); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  @keyframes fade { from { opacity: 0; } }
+  @keyframes up { from { transform: translateY(24px); opacity: 0; } }
+  .skel { height: 14px; border-radius: 7px; background: var(--border); margin: 10px 0; animation: p 1.2s ease-in-out infinite; }
+  @keyframes p { 50% { opacity: .45; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0ms !important; transition-duration: .01ms !important; } .in { opacity: 1; } }
+  /* Drucken: nur das gewählte Protokoll */
+  @media print {
+    body { background: #fff; color: #000; }
+    body.printing .wrap > *:not(#print) { display: none !important; }
+    #print { display: block !important; }
+    #print .card { box-shadow: none; border: 1px solid #ccc; }
+  }
+  #print { display: none; }
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+  <div class="card"><div class="skel" style="width:55%"></div><div class="skel"></div><div class="skel" style="width:75%"></div></div>
+</div>
+<div id="print"></div>
+<script src="labels.js"></script>
+<script>
+'use strict';
+const SUPABASE_URL = '';       // https://<ref>.supabase.co   (node scripts/einrichten.js trägt es ein)
+const SUPABASE_ANON = '';      // anon key
+const L = window.IDX_LABELS || { kinds: {}, jobs: {}, checks: {}, measures: {} };
+const DEMO_MODE = new URLSearchParams(location.search).has('demo');
+const KEY = DEMO_MODE ? 'idx.zuhause.demo' : 'idx.zuhause.session'; // Demo-Sitzung nie als echte verwenden
+const app = document.getElementById('app');
+
+// ---------------------------------------------------------------------------- Hilfen
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmt = (d) => d ? new Date(String(d).length === 10 ? d + 'T12:00:00' : d).toLocaleDateString('de-AT', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—';
+const fmtT = (d) => d ? new Date(d).toLocaleString('de-AT', { weekday: 'short', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
+const daysTo = (iso) => {
+  if (!iso) return null;
+  const [y, m, d] = String(iso).slice(0, 10).split('-').map(Number);
+  const n = new Date();
+  return Math.round((new Date(y, m - 1, d) - new Date(n.getFullYear(), n.getMonth(), n.getDate())) / 864e5);
+};
+const kindOf = (k) => L.kinds[k] || L.kinds.other || { label: 'Anlage', emoji: '🔧' };
+const jobOf = (t) => L.jobs[t] || { label: 'Einsatz', emoji: '📝' };
+const checkLabel = (id) => id.startsWith('c:') ? id.slice(2) : (L.checks[id] || id);
+const measureOf = (id) => {
+  if (id.startsWith('m:')) { const [label, unit] = id.slice(2).split('|'); return { label, unit: unit || '' }; }
+  return L.measures[id] || { label: id, unit: '' };
+};
+const tel = (s) => String(s || '').replace(/[^+0-9]/g, '');
+const safeUrl = (u) => /^https?:\/\/[^\s"'<>]+$/i.test(String(u || '')) ? String(u) : '';
+const brandOk = (c) => /^#[0-9a-f]{6}$/i.test(String(c || ''));
+const store = {
+  get() { try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch { return null; } },
+  set(v) { try { v ? localStorage.setItem(KEY, JSON.stringify(v)) : localStorage.removeItem(KEY); } catch { /* privates Fenster */ } },
+};
+function toast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = msg;
+  document.body.appendChild(t); setTimeout(() => t.remove(), 3200);
+}
+
+// ---------------------------------------------------------------------------- Anmeldung (Supabase Auth, Code per Mail)
+async function auth(path, body, token) {
+  const r = await fetch(`${SUPABASE_URL}/auth/v1/${path}`, {
+    method: 'POST',
+    headers: { apikey: SUPABASE_ANON, 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+    body: JSON.stringify(body || {}),
+  });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw Object.assign(new Error(j.msg || j.error_description || j.message || 'Fehler'), { status: r.status });
+  return j;
+}
+function keep(s) {
+  store.set({ access_token: s.access_token, refresh_token: s.refresh_token, expires_at: Date.now() + (Number(s.expires_in) || 3600) * 1000, email: s.user && s.user.email });
+}
+async function token() {
+  const s = store.get();
+  if (!s) return null;
+  if (Date.now() < s.expires_at - 60_000) return s.access_token;
+  try { keep(await auth('token?grant_type=refresh_token', { refresh_token: s.refresh_token })); return store.get().access_token; }
+  catch { store.set(null); return null; }
+}
+async function rpc(name, body) {
+  if (DEMO_MODE) return demoRpc(name, body);
+  const t = await token();
+  if (!t) throw Object.assign(new Error('Bitte erneut anmelden.'), { status: 401 });
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${name}`, {
+    method: 'POST',
+    headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${t}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body || {}),
+  });
+  const j = await r.json().catch(() => null);
+  if (!r.ok) throw Object.assign(new Error((j && j.message) || 'Fehler'), { status: r.status });
+  return j;
+}
+
+function loginView(step, email, msg) {
+  app.innerHTML = `
+  <div class="top"><div class="logo"><img src="/assets/installateurdex-icon.png" alt="" width="34" height="34" />Mein&nbsp;<b>Zuhause</b></div></div>
+  <div class="login in">
+    <div class="hero" style="margin-bottom:14px">
+      <h1>Ihre Hausakte.</h1>
+      <p>Alle Anlagen, Wartungen, Protokolle und Termine Ihres Fachbetriebs — an einem Ort, ohne Passwort.</p>
+    </div>
+    <div class="card">
+      ${step === 'email' ? `
+        <form id="f1" novalidate>
+          <label for="em">Ihre E-Mail-Adresse</label>
+          <input id="em" type="email" inputmode="email" autocomplete="email" required value="${esc(email || '')}" placeholder="name@beispiel.at" />
+          <p class="muted" style="margin:10px 0 0">Verwenden Sie die Adresse, die Sie Ihrem Fachbetrieb gegeben haben. Wir senden Ihnen einen 6-stelligen Code.</p>
+          <div class="err" id="err">${esc(msg || '')}</div>
+          <button class="btn primary block" id="b1" type="submit">Code senden</button>
+        </form>` : `
+        <form id="f2" novalidate>
+          <p style="margin:0">Wir haben einen Code an <b>${esc(email)}</b> gesendet.</p>
+          <label>Code aus der E-Mail</label>
+          <div class="otp">${[0,1,2,3,4,5].map((i) => `<input inputmode="numeric" autocomplete="${i === 0 ? 'one-time-code' : 'off'}" maxlength="6" aria-label="Ziffer ${i + 1}" data-i="${i}" />`).join('')}</div>
+          <div class="err" id="err">${esc(msg || '')}</div>
+          <button class="btn primary block" id="b2" type="submit">Anmelden</button>
+          <p class="muted" style="text-align:center;margin:14px 0 0"><button type="button" class="btn ghost" id="back" style="min-height:40px">Andere Adresse</button></p>
+        </form>`}
+    </div>
+    <p class="foot">Ihr Fachbetrieb gibt das Portal für Ihre Adresse frei. <a href="/datenschutz.html#kunden">Datenschutz</a> · <a href="/impressum.html">Impressum</a></p>
+  </div>`;
+  if (step === 'email') {
+    const f = document.getElementById('f1');
+    f.onsubmit = async (e) => {
+      e.preventDefault();
+      const v = document.getElementById('em').value.trim().toLowerCase();
+      const err = document.getElementById('err');
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) { err.textContent = 'Bitte eine gültige E-Mail-Adresse eingeben.'; return; }
+      const b = document.getElementById('b1'); b.disabled = true; b.textContent = 'Wird gesendet …';
+      try {
+        if (!DEMO_MODE) await auth('otp', { email: v, create_user: true });
+        loginView('code', v);
+      } catch (x) {
+        b.disabled = false; b.textContent = 'Code senden';
+        err.textContent = x.status === 429 ? 'Zu viele Versuche — bitte in einer Minute erneut.' : 'Der Code konnte nicht gesendet werden. Bitte später erneut versuchen.';
+      }
+    };
+  } else {
+    const boxes = [...document.querySelectorAll('.otp input')];
+    boxes[0].focus();
+    boxes.forEach((b, i) => {
+      b.addEventListener('input', () => {
+        const d = b.value.replace(/\D/g, '');
+        if (d.length > 1) { d.split('').slice(0, 6).forEach((c, k) => { if (boxes[k]) boxes[k].value = c; }); boxes[Math.min(5, d.length - 1)].focus(); }
+        else { b.value = d; if (d && boxes[i + 1]) boxes[i + 1].focus(); }
+        if (boxes.every((x) => x.value)) document.getElementById('f2').requestSubmit();
+      });
+      b.addEventListener('keydown', (e) => { if (e.key === 'Backspace' && !b.value && boxes[i - 1]) boxes[i - 1].focus(); });
+    });
+    document.getElementById('back').onclick = () => loginView('email', email);
+    document.getElementById('f2').onsubmit = async (e) => {
+      e.preventDefault();
+      const code = boxes.map((x) => x.value).join('');
+      const err = document.getElementById('err');
+      if (!/^\d{6}$/.test(code)) { err.textContent = 'Bitte den 6-stelligen Code eingeben.'; return; }
+      const b = document.getElementById('b2'); b.disabled = true; b.textContent = 'Wird geprüft …';
+      try {
+        if (DEMO_MODE) store.set({ access_token: 'demo', refresh_token: 'demo', expires_at: Date.now() + 864e5, email });
+        else keep(await auth('verify', { type: 'email', email, token: code }));
+        await load();
+      } catch {
+        b.disabled = false; b.textContent = 'Anmelden';
+        err.textContent = 'Der Code stimmt nicht oder ist abgelaufen.';
+        boxes.forEach((x) => (x.value = '')); boxes[0].focus();
+      }
+    };
+  }
+}
+
+async function logout() {
+  const s = store.get();
+  store.set(null);
+  if (s && !DEMO_MODE) auth('logout', {}, s.access_token).catch(() => {});
+  loginView('email', s && s.email);
+}
+
+// ---------------------------------------------------------------------------- Übersicht
+let DATA = null;
+async function load() {
+  app.innerHTML = '<div class="card"><div class="skel" style="width:55%"></div><div class="skel"></div><div class="skel" style="width:75%"></div></div>';
+  try {
+    DATA = await rpc('zuhause_overview', {});
+    render();
+  } catch (x) {
+    if (x.status === 401 || x.status === 403 || /verified|JWT/i.test(x.message)) { store.set(null); loginView('email', null, 'Bitte melden Sie sich erneut an.'); return; }
+    app.innerHTML = `<div class="center">Die Daten konnten nicht geladen werden.<br><br><button class="btn ghost" id="retry">Erneut versuchen</button></div>`;
+    document.getElementById('retry').onclick = load;
+  }
+}
+
+function dueState(iso) {
+  const d = daysTo(iso);
+  if (d === null) return { cls: '', text: 'Noch keine Wartung erfasst', d };
+  if (d <= 0) return { cls: 'due', text: `Wartung fällig seit ${fmt(iso)}`, d };
+  if (d <= 30) return { cls: 'soon', text: `Wartung in ${d} ${d === 1 ? 'Tag' : 'Tagen'}`, d };
+  return { cls: 'ok', text: `Gewartet · nächste bis ${fmt(iso)}`, d };
+}
+function ring(st, emoji) {
+  const C = 2 * Math.PI * 24;
+  const frac = st.d === null ? 0 : Math.max(0.04, Math.min(1, st.d / 365));
+  const color = st.cls === 'due' ? 'var(--red)' : st.cls === 'soon' ? 'var(--amber)' : st.cls === 'ok' ? 'var(--green)' : 'var(--border)';
+  return `<div class="ring" aria-hidden="true"><svg viewBox="0 0 58 58"><circle class="bgc" cx="29" cy="29" r="24" fill="none" stroke-width="5"/>
+    <circle class="fg" cx="29" cy="29" r="24" fill="none" stroke-width="5" style="stroke:${color};--c:${C.toFixed(1)};--to:${(C * (1 - frac)).toFixed(1)}"/></svg>
+    <span class="em">${esc(emoji)}</span></div>`;
+}
+
+function render() {
+  const sites = (DATA && DATA.sites) || [];
+  const email = (DATA && DATA.email) || (store.get() || {}).email || '';
+  const all = sites.flatMap((s) => s.assets);
+  const due = all.filter((a) => { const d = daysTo(a.next_due); return d !== null && d <= 30; }).length;
+  const openReq = sites.flatMap((s) => s.requests).filter((r) => r.status === 'new' || r.status === 'scheduled').length;
+  const pendingN = ((DATA && DATA.pending) || []).length;
+  let i = 0;
+  const brand = sites.find((s) => brandOk(s.org && s.org.brand_color));
+  if (brand) document.documentElement.style.setProperty('--brand', brand.org.brand_color);
+  app.innerHTML = `
+  <div class="top"><div class="logo"><img src="/assets/installateurdex-icon.png" alt="" width="34" height="34" />Mein&nbsp;<b>Zuhause</b></div>
+    <div class="me">${esc(email)}<br><button id="lo">Abmelden</button></div></div>
+  <section class="hero in" style="--i:${i++}">
+    <h1>${greeting(sites)}</h1>
+    <p>${sites.length ? `${sites.length === 1 ? 'Ihr Objekt' : `Ihre ${sites.length} Objekte`} — alles zu Ihren Anlagen, gepflegt von Ihrem Fachbetrieb.` : pendingN ? 'Bitte bestätigen Sie unten Ihren Fachbetrieb.' : 'Für Ihre Adresse ist noch nichts freigegeben.'}</p>
+    ${sites.length ? `<div class="stats">
+      <div class="stat"><b>${all.length}</b><span>${all.length === 1 ? 'Anlage' : 'Anlagen'}</span></div>
+      <div class="stat"><b>${due}</b><span>bald fällig</span></div>
+      <div class="stat"><b>${openReq}</b><span>offene Anfragen</span></div></div>` : ''}
+  </section>
+  ${pendingCards(i++)}
+  ${sites.length ? sites.map((s) => siteCard(s, i++)).join('') : pendingN ? '' : `
+    <div class="card empty in" style="--i:${i++}"><div class="big">🏠</div>
+      <h2>Noch keine Anlagen sichtbar</h2>
+      <p class="muted">Ihr Fachbetrieb schaltet das Portal in seiner App für Ihre E-Mail-Adresse frei. Fragen Sie dort nach — oder prüfen Sie, ob Sie mit der richtigen Adresse angemeldet sind.</p></div>`}
+  <p class="foot">Mein Zuhause · <a href="/datenschutz.html#kunden">Datenschutz</a> · <a href="/impressum.html">Impressum</a><br>Tipp: Über das Browser-Menü „Zum Startbildschirm hinzufügen“ — dann ist Ihre Hausakte immer griffbereit.</p>`;
+  document.getElementById('lo').onclick = logout;
+  bind();
+}
+
+// Neuer Betrieb möchte Objekte zeigen → erst annehmen (sonst könnte ein Fremder Inhalte einblenden)
+function pendingCards(i) {
+  const p = (DATA && DATA.pending) || [];
+  return p.map((x) => `<section class="card in" style="--i:${i};border-color:var(--brand)">
+    <h2 style="margin:0 0 6px;font-size:17px">🔔 ${esc(x.org_name || 'Ein Betrieb')} möchte Ihnen ${x.sites === 1 ? 'ein Objekt' : `${Number(x.sites) || 0} Objekte`} zeigen</h2>
+    <p class="muted" style="margin:0 0 12px">Nehmen Sie an, wenn dieser Fachbetrieb Ihre Anlagen betreut. Kennen Sie ihn nicht, lehnen Sie bitte ab — dann sehen Sie von ihm nichts.</p>
+    <div class="actions"><button class="btn primary" data-acc="${esc(x.org_id)}" data-v="1">Annehmen</button><button class="btn ghost" data-acc="${esc(x.org_id)}" data-v="0">Ablehnen</button></div>
+  </section>`).join('');
+}
+
+function greeting(sites) {
+  const names = [...new Set(sites.map((s) => (s.customer || '').trim()).filter(Boolean))];
+  const h = new Date().getHours();
+  const hi = h < 11 ? 'Guten Morgen' : h < 18 ? 'Guten Tag' : 'Guten Abend';
+  return names.length === 1 ? `${hi}, ${esc(names[0])}` : hi;
+}
+
+function siteCard(s, i) {
+  const o = s.org || {};
+  const byId = Object.fromEntries(s.assets.map((a) => [a.id, a]));
+  const web = safeUrl(o.website);
+  return `<section class="card in" style="--i:${i}" data-site="${esc(s.id)}">
+    <div class="site-h"><div><h2>${esc(s.name)}</h2><div class="addr">${esc(s.address || '')}</div></div></div>
+    <div class="firm"><span class="dot" style="${brandOk(o.brand_color) ? `background:${o.brand_color}` : ''}"></span>
+      <div class="nm">${esc(o.name || 'Ihr Fachbetrieb')}<small>betreut Ihre Anlagen</small></div>
+      <div class="acts">${o.phone ? `<a class="iconbtn" href="tel:${esc(tel(o.phone))}" aria-label="Anrufen">📞</a>` : ''}
+      ${o.email ? `<a class="iconbtn" href="mailto:${esc(o.email)}" aria-label="E-Mail">✉️</a>` : ''}
+      ${web ? `<a class="iconbtn" href="${esc(web)}" target="_blank" rel="noopener noreferrer" aria-label="Webseite">🌐</a>` : ''}</div>
+    </div>
+    ${o.reminder_mail ? `<label class="switch"><span><b>Erinnerung per E-Mail</b><br><span class="muted">vor der nächsten Wartung bzw. Dichtheitskontrolle</span></span>
+      <input type="checkbox" data-rem="${esc(s.id)}" ${s.reminders ? 'checked' : ''} aria-label="Erinnerung per E-Mail" /></label>` : ''}
+    <h3>Anlagen</h3>
+    <div class="assets">${s.assets.map(assetCard).join('') || '<p class="muted">Keine Anlagen.</p>'}</div>
+    ${s.defects.length ? `<h3>Offene Hinweise</h3>${s.defects.map((d) => `<div class="defect"><span class="sev ${esc(d.severity)}"></span>
+      <div><b>${esc(d.title)}</b>${byId[d.item_id] ? ` <span class="muted">· ${esc(byId[d.item_id].name)}</span>` : ''}${d.description ? `<div class="muted">${esc(d.description)}</div>` : ''}
+      ${d.item_blocked ? '<div class="muted" style="color:var(--red)">Anlage außer Betrieb genommen</div>' : ''}</div></div>`).join('')}` : ''}
+    ${s.requests.length ? `<h3>Ihre Anfragen</h3>${s.requests.map((r) => `<div class="req"><span>${esc(REQ_KIND[r.kind] || 'Anfrage')}${byId[r.asset_id] ? ` · ${esc(byId[r.asset_id].name)}` : ''}<br><span class="muted">${fmt(r.created_at)}</span></span>
+      <span class="chip ${r.status === 'done' ? 'ok' : r.status === 'scheduled' ? 'soon' : ''}">${esc(r.scheduled_at ? `Termin ${fmtT(r.scheduled_at)}` : REQ_STATUS[r.status] || r.status)}</span></div>`).join('')}` : ''}
+    ${s.jobs.length ? `<h3>Verlauf</h3><div class="tl">${s.jobs.slice(0, 12).map((j) => jobItem(j, byId)).join('')}</div>` : ''}
+  </section>`;
+}
+
+const REQ_KIND = { maintenance: '🔧 Wartung', fault: '🚨 Störung', quote: '💶 Angebot' };
+const REQ_STATUS = { new: 'Eingegangen', scheduled: 'Termin geplant', done: 'Erledigt', dismissed: 'Abgeschlossen' };
+
+function assetCard(a) {
+  const k = kindOf(a.kind);
+  const st = dueState(a.next_due);
+  const lk = a.leak_check && a.leak_check.months ? a.leak_check : null;
+  const lkd = lk ? daysTo(lk.next) : null;
+  const wd = a.warranty_until ? daysTo(a.warranty_until) : null;
+  const chips = [
+    `<span class="chip ${st.cls}">${esc(st.text)}</span>`,
+    lk ? `<span class="chip ${lkd !== null && lkd <= 0 ? 'due' : lkd !== null && lkd <= 30 ? 'soon' : ''}">❄️ Dichtheit ${lk.followup ? 'Nachkontrolle ' : ''}bis ${fmt(lk.next)}</span>` : '',
+    wd !== null && wd >= 0 ? `<span class="chip">🛡️ Garantie bis ${fmt(a.warranty_until)}</span>` : '',
+    a.contract ? '<span class="chip ok">🤝 Wartungsvertrag</span>' : '',
+  ].join('');
+  const pass = /^[0-9a-f]{32}$/.test(a.pass || '') ? a.pass : '';
+  return `<article class="asset">
+    <div class="asset-h">${ring(st, k.emoji)}<div class="t"><b>${esc(a.name)}</b><span>${esc(k.label)}${a.manufacturer || a.model ? ` · ${esc([a.manufacturer, a.model].filter(Boolean).join(' '))}` : ''}</span></div></div>
+    <div class="chips">${chips}</div>
+    <div class="actions">
+      <button class="btn primary" data-req="${esc(a.id)}" data-kind="maintenance">Termin anfragen</button>
+      <button class="btn ghost" data-req="${esc(a.id)}" data-kind="fault">Störung</button>
+      ${pass ? `<a class="btn ghost" href="/a/?t=${pass}" aria-label="Anlagenpass öffnen">Pass</a>` : ''}
+    </div>
+  </article>`;
+}
+
+function jobItem(j, byId) {
+  const jb = jobOf(j.type);
+  const a = byId[j.item_id];
+  const cl = j.checklist || {};
+  const ids = Object.keys(cl);
+  const bad = ids.filter((id) => cl[id] === 'defect').map(checkLabel);
+  const okN = ids.filter((id) => cl[id] === 'ok').length;
+  const m = j.measurements || {};
+  const mRows = Object.keys(m).filter((id) => String(m[id] || '').trim()).map((id) => { const f = measureOf(id); return `<span>${esc(f.label)}</span><span>${esc(m[id])}${f.unit ? ' ' + esc(f.unit) : ''}</span>`; }).join('');
+  return `<div class="ev"><details>
+    <summary><span class="what">${esc(jb.emoji)} ${esc(jb.label)}<small>${a ? esc(a.name) : ''}${j.inspector_name ? ` · ${esc(j.inspector_name)}` : ''}</small></span><span class="when">${fmt(j.started_at)}</span></summary>
+    <div class="body">
+      ${j.work_done ? `<p>${esc(j.work_done)}</p>` : ''}
+      ${ids.length ? `<p><b>Checkliste:</b> ${bad.length ? `Mangel bei ${esc(bad.join(', '))}` : `${okN} Punkte in Ordnung`}</p>` : ''}
+      ${mRows ? `<div class="kv">${mRows}</div>` : ''}
+      ${j.follow_up ? `<div class="reco">🔁 Folgeeinsatz vorgesehen: ${esc(j.follow_up)}</div>` : ''}
+      ${j.recommendations ? `<div class="reco">💡 Empfehlung: ${esc(j.recommendations)}</div>` : ''}
+      ${j.entry_hash ? `<p class="hash">Prüfcode ${esc(String(j.entry_hash).slice(0, 16))}…</p>` : ''}
+      <button class="btn ghost" data-print="${esc(j.id)}">Protokoll drucken / als PDF</button>
+    </div></details></div>`;
+}
+
+// ---------------------------------------------------------------------------- Aktionen
+function bind() {
+  document.querySelectorAll('[data-req]').forEach((b) => (b.onclick = () => openRequest(b.dataset.req, b.dataset.kind)));
+  document.querySelectorAll('[data-rem]').forEach((c) => (c.onchange = async () => {
+    c.disabled = true;
+    try {
+      const r = await rpc('zuhause_set_reminders', { p_site: c.dataset.rem, p_on: c.checked });
+      if (!r || !r.ok) throw new Error();
+      toast(c.checked ? 'Erinnerungen eingeschaltet' : 'Erinnerungen ausgeschaltet');
+    } catch { c.checked = !c.checked; toast('Konnte nicht gespeichert werden.'); }
+    c.disabled = false;
+  }));
+  document.querySelectorAll('[data-print]').forEach((b) => (b.onclick = () => printJob(b.dataset.print)));
+  document.querySelectorAll('[data-acc]').forEach((b) => (b.onclick = async () => {
+    const accept = b.dataset.v === '1';
+    b.disabled = true;
+    try {
+      const r = await rpc('zuhause_decide', { p_org: b.dataset.acc, p_accept: accept });
+      if (!r || !r.ok) throw new Error();
+      toast(accept ? 'Angenommen ✓' : 'Abgelehnt');
+      load();
+    } catch { b.disabled = false; toast('Konnte nicht gespeichert werden.'); }
+  }));
+}
+
+function findAsset(id) {
+  for (const s of DATA.sites) { const a = s.assets.find((x) => x.id === id); if (a) return { a, s }; }
+  return null;
+}
+
+function openRequest(assetId, kind) {
+  const f = findAsset(assetId); if (!f) return;
+  const bg = document.createElement('div');
+  bg.className = 'sheet-bg';
+  bg.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sh">
+    <h2 id="sh">Anfrage an ${esc(f.s.org && f.s.org.name || 'Ihren Fachbetrieb')}</h2>
+    <p class="muted" style="margin:0">${esc(f.a.name)} · ${esc(kindOf(f.a.kind).label)}</p>
+    <div class="seg" role="group" aria-label="Art der Anfrage">
+      ${[['maintenance', '🔧 Wartung'], ['fault', '🚨 Störung'], ['quote', '💶 Angebot']].map(([k, t]) => `<button type="button" data-k="${k}" aria-pressed="${k === kind}">${t}</button>`).join('')}
+    </div>
+    <label for="msg">Nachricht</label><textarea id="msg" rows="4" maxlength="2000" placeholder="z. B. Gerät zeigt Fehler F28 / Wartung bitte im März"></textarea>
+    <label for="pref">Wunschtermin <span class="muted">(optional)</span></label><input id="pref" type="text" maxlength="200" placeholder="z. B. vormittags, nicht am Freitag" />
+    <label for="ph">Telefon für Rückfragen <span class="muted">(optional)</span></label><input id="ph" type="tel" maxlength="40" autocomplete="tel" />
+    <p class="muted" style="margin:10px 0 0">Antwort kommt an ${esc(DATA.email || '')}.</p>
+    ${kind === 'fault' ? '<p class="muted" style="color:var(--red);font-weight:700">Gasgeruch? Sofort Gashaupthahn schließen, Fenster öffnen, keine Schalter betätigen und von draußen den Gasnotruf 128 wählen.</p>' : ''}
+    <div class="err" id="serr"></div>
+    <div style="display:flex;gap:8px;margin-top:6px"><button class="btn ghost" id="cx" style="flex:1">Abbrechen</button><button class="btn primary" id="sd" style="flex:2">Senden</button></div>
+  </div>`;
+  document.body.appendChild(bg);
+  let k = kind;
+  bg.querySelectorAll('[data-k]').forEach((b) => (b.onclick = () => { k = b.dataset.k; bg.querySelectorAll('[data-k]').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); }));
+  const close = () => bg.remove();
+  bg.onclick = (e) => { if (e.target === bg) close(); };
+  bg.querySelector('#cx').onclick = close;
+  document.addEventListener('keydown', function onEsc(e) { if (e.key === 'Escape') { close(); document.removeEventListener('keydown', onEsc); } });
+  bg.querySelector('#msg').focus();
+  bg.querySelector('#sd').onclick = async () => {
+    const btn = bg.querySelector('#sd'); btn.disabled = true; btn.textContent = 'Wird gesendet …';
+    try {
+      const r = await rpc('zuhause_request', { p_asset: assetId, p_kind: k, p_message: bg.querySelector('#msg').value, p_phone: bg.querySelector('#ph').value, p_preferred: bg.querySelector('#pref').value });
+      if (!r || !r.ok) throw Object.assign(new Error(), { code: r && r.error });
+      close(); toast('Anfrage gesendet ✓ — Ihr Fachbetrieb meldet sich.');
+      load();
+    } catch (x) {
+      btn.disabled = false; btn.textContent = 'Senden';
+      bg.querySelector('#serr').textContent = x.code === 'rate_limited' ? 'Sie haben heute schon mehrere Anfragen gesendet. Bitte rufen Sie Ihren Fachbetrieb an.' : 'Die Anfrage konnte nicht gesendet werden.';
+    }
+  };
+}
+
+function printJob(id) {
+  let job, site;
+  for (const s of DATA.sites) { const j = s.jobs.find((x) => x.id === id); if (j) { job = j; site = s; break; } }
+  if (!job) return;
+  const byId = Object.fromEntries(site.assets.map((a) => [a.id, a]));
+  const a = byId[job.item_id];
+  const holder = document.getElementById('print');
+  holder.innerHTML = `<div class="card"><h2 style="margin:0">${esc(jobOf(job.type).label)} · ${fmt(job.started_at)}</h2>
+    <p class="muted">${esc(site.org && site.org.name || '')} · ${esc(site.name)}${site.address ? ', ' + esc(site.address) : ''}</p>
+    ${a ? `<p><b>${esc(a.name)}</b> · ${esc(kindOf(a.kind).label)} ${esc([a.manufacturer, a.model].filter(Boolean).join(' '))}${a.serial_no ? ` · Seriennr. ${esc(a.serial_no)}` : ''}</p>` : ''}
+    ${jobItem(job, byId).replace('<details>', '<details open>').replace(/<button[\s\S]*?<\/button>/, '')}
+    <p class="muted">Monteur: ${esc(job.inspector_name || '—')}${job.customer_signer_name ? ` · unterschrieben von ${esc(job.customer_signer_name)}` : ''}<br>Auszug aus Mein Zuhause — das vollständige Protokoll mit Unterschriften erhalten Sie von Ihrem Fachbetrieb.</p></div>`;
+  document.body.classList.add('printing');
+  setTimeout(() => { window.print(); document.body.classList.remove('printing'); }, 60);
+}
+
+// ---------------------------------------------------------------------------- Beispielmodus (?demo) — ohne Server
+const iso = (days) => new Date(Date.now() + days * 864e5).toISOString();
+const day = (days) => iso(days).slice(0, 10);
+const DEMO = {
+  email: 'familie.huber@example.com',
+  sites: [{
+    id: 'demo-site', name: 'Einfamilienhaus Huber', address: 'Musterstraße 1, 7000 Eisenstadt', customer: 'Familie Huber', reminders: true,
+    org: { name: 'Installateur Muster GmbH', phone: '+43 2682 000 00', email: 'service@example.com', website: 'https://example.com', brand_color: '#B5651D', reminder_mail: true },
+    assets: [
+      { id: 'a1', name: 'WP-001', kind: 'hp_air', manufacturer: 'Musterwerk', model: 'AirHeat 7', next_due: day(214), leak_check: null, warranty_until: day(1800), contract: true, pass: 'c18ba535d3d7e115f0e9c1f223bfb9fc' },
+      { id: 'a2', name: 'KL-001', kind: 'ac_split', manufacturer: 'Musterwerk', model: 'CoolSplit 3,5', next_due: day(-12), leak_check: null, warranty_until: day(900), contract: false, pass: 'aaaabbbbccccddddeeeeffff00001111' },
+      { id: 'a3', name: 'KL-002', kind: 'ac_multi', manufacturer: 'Musterwerk', model: 'MultiCool 3×2,5', next_due: day(165), leak_check: { months: 12, next: day(20), followup: false }, contract: false, pass: '' },
+      { id: 'a4', name: 'GT-001', kind: 'gas', manufacturer: 'Musterwerk', model: 'Condens 24', next_due: day(26), leak_check: null, contract: true, pass: '' },
+    ],
+    jobs: [
+      { id: 'j1', item_id: 'a4', type: 'repair', started_at: iso(-6), work_done: 'Störung F.28 (keine Zündung): Zündelektrode gereinigt und nachgestellt, Therme zündet wieder sicher.', follow_up: 'Zündelektrode tauschen — Teil ist bestellt', inspector_name: 'Max Muster', checklist: {}, measurements: { pressure: '1,1' }, entry_hash: '9f2c1a7be0d44c1e8a3b5c6d7e8f9a0b' },
+      { id: 'j2', item_id: 'a1', type: 'commissioning', started_at: iso(-151), work_done: 'Wärmepumpe in Betrieb genommen, Anlage gespült, befüllt und entlüftet. Heizkurve 0,4, Warmwasser 50 °C. Kunde eingewiesen.', inspector_name: 'Max Muster', checklist: { plan: 'ok', flushed: 'ok', params: 'ok', instructed: 'ok' }, measurements: { pressure: '1,5', flow: '35', return: '30' }, recommendations: 'Isolierung an der Außenleitung in 2 Jahren prüfen.', customer_signer_name: 'Herr Huber', entry_hash: '1b2c3d4e5f60718293a4b5c6d7e8f901' },
+      { id: 'j3', item_id: 'a2', type: 'service', started_at: iso(-420), work_done: 'Klimagerät gereinigt und desinfiziert, Filter gereinigt.', inspector_name: 'Lisa Beispiel', checklist: { visual: 'ok', indoorFilter: 'ok', condensate: 'defect', 'c:Arbeitsplatz sauber hinterlassen': 'ok' }, measurements: { supplyAir: '9', roomAir: '24', 'm:Leitwert|µS/cm': '180' } },
+    ],
+    defects: [{ id: 'd1', item_id: 'a4', title: 'Ausdehnungsgefäß tauschen', description: 'Hält den Vordruck nicht mehr.', severity: 'amber', item_blocked: false, created_at: iso(-300) }],
+    requests: [{ id: 'r1', asset_id: 'a2', kind: 'maintenance', status: 'scheduled', created_at: iso(-3), scheduled_at: iso(1), scheduled_end: iso(1.08) }],
+  }],
+  pending: [{ org_id: 'demo-org2', org_name: 'Elektro Beispiel GmbH', sites: 1 }],
+};
+async function demoRpc(name, body) {
+  await new Promise((r) => setTimeout(r, 250));
+  if (name === 'zuhause_overview') return structuredClone(DEMO);
+  if (name === 'zuhause_set_reminders') { DEMO.sites[0].reminders = !!body.p_on; return { ok: true, reminders: !!body.p_on }; }
+  if (name === 'zuhause_decide') { DEMO.pending = DEMO.pending.filter((p) => p.org_id !== body.p_org); return { ok: true, accepted: !!body.p_accept }; }
+  if (name === 'zuhause_request') { DEMO.sites[0].requests.unshift({ id: 'r' + Date.now(), asset_id: body.p_asset, kind: body.p_kind, status: 'new', created_at: new Date().toISOString() }); return { ok: true }; }
+  return null;
+}
+
+// ---------------------------------------------------------------------------- Start
+if (!DEMO_MODE && (!SUPABASE_URL || !SUPABASE_ANON)) {
+  app.innerHTML = '<div class="center">Mein Zuhause ist noch nicht freigeschaltet.</div>';
+} else if (DEMO_MODE && new URLSearchParams(location.search).get('demo') === 'login') {
+  loginView('email');
+} else if (DEMO_MODE || store.get()) {
+  if (DEMO_MODE && !store.get()) store.set({ access_token: 'demo', refresh_token: 'demo', expires_at: Date.now() + 864e5, email: DEMO.email });
+  load();
+} else {
+  loginView('email');
+}
+</script>
+</body>
+</html>

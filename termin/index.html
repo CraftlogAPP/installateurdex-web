@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="robots" content="noindex, nofollow" />
+<meta name="referrer" content="no-referrer" />
+<title>Termin wählen · InstallateurDex</title>
+<meta name="description" content="Wartungs- oder Servicetermin bei Ihrem Fachbetrieb wählen." />
+<style>
+  :root { --copper:#B5651D; --bg:#F6F4F1; --card:#fff; --text:#1B1F24; --muted:#646B74; --border:#E6E1DA;
+          --green:#16A34A; --green-s:#DCFCE7; --red:#DC2626; --brand:var(--copper); }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0F1216; --card:#181D23; --text:#F2EFEA; --muted:#A3A9B1; --border:#2A3139; --green-s:#12331E; } }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: -apple-system, 'Segoe UI', Roboto, Inter, sans-serif; background: var(--bg); color: var(--text); }
+  .wrap { max-width: 520px; margin: 0 auto; padding: 20px 16px 40px; }
+  .firm { font-weight: 900; font-size: 18px; } .firm small { display:block; font-weight:600; font-size:12px; color: var(--muted); }
+  .card { background: var(--card); border:1px solid var(--border); border-radius: 18px; padding: 18px; margin-top: 14px; box-shadow: 0 6px 24px rgba(0,0,0,.06); }
+  h1 { font-size: 21px; margin: 0 0 4px; } p { color: var(--muted); line-height: 1.5; margin: 6px 0; }
+  .slot { display:block; width:100%; text-align:left; border: 2px solid var(--border); background: var(--bg); color: var(--text); border-radius: 14px;
+          padding: 14px 16px; margin-top: 10px; font: inherit; cursor: pointer; }
+  .slot b { display:block; font-size: 17px; } .slot span { color: var(--muted); font-weight: 600; }
+  .slot:hover, .slot:focus-visible { border-color: var(--brand); outline: none; }
+  .slot[disabled] { opacity: .5; cursor: default; }
+  .btn { display:block; text-align:center; text-decoration:none; font-weight:800; font-size:16px; padding: 14px; border-radius: 14px; margin-top: 10px; border: 0; width: 100%; font-family: inherit; cursor: pointer; }
+  .primary { background: var(--brand); color:#fff; } .outline { background: none; border: 2px solid var(--brand); color: var(--brand); }
+  .ok { background: var(--green-s); color: var(--green); border-radius: 14px; padding: 14px 16px; font-weight: 800; margin-top: 12px; }
+  .ok small { display:block; font-weight: 600; opacity: .9; margin-top: 2px; }
+  .err { color: var(--red); font-weight: 700; margin-top: 10px; min-height: 1em; }
+  .note { font-size: 12px; color: var(--muted); text-align:center; margin-top: 18px; } .note a { color: var(--muted); }
+  .center { text-align:center; padding: 60px 10px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap" id="app"><div class="center">Wird geladen …</div></div>
+<script>
+// Gleiche öffentliche Werte wie in /a/index.html (nach USER-TODO eintragen).
+const SUPABASE_URL = '';
+const SUPABASE_ANON = '';
+const KINDS = { hp_air:'Wärmepumpe', hp_brine:'Wärmepumpe', ac_split:'Klimagerät', ac_multi:'Klimaanlage', gas:'Gastherme', oil:'Ölheizung', pellet:'Pelletsheizung',
+  district:'Fernwärme-Station', dhw_tank:'Warmwasserspeicher', solar:'Solaranlage', ventilation:'Wohnraumlüftung', softener:'Enthärtung', filter:'Filter',
+  booster:'Druckerhöhung', lifting:'Hebeanlage', other:'Anlage' };
+const KIND_TXT = { maintenance: 'Wartung', fault: 'Störungsbehebung', quote: 'Termin' };
+const app = document.getElementById('app');
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const day = (d) => new Date(d).toLocaleDateString('de-AT', { weekday:'long', day:'2-digit', month:'2-digit' });
+const hm = (d) => new Date(d).toLocaleTimeString('de-AT', { hour:'2-digit', minute:'2-digit' });
+const token = (new URLSearchParams(location.search).get('t') || '').toLowerCase();
+const in2 = (h) => { const d = new Date(); d.setDate(d.getDate() + 2); d.setHours(h, 0, 0, 0); return d.toISOString(); };
+const DEMO = { org:{ name:'Installateur Muster GmbH (Beispiel)', phone:'+43 000 000000', brand_color:'#B5651D' }, asset:{ name:'WP-001', kind:'hp_air' }, kind:'maintenance',
+  slots:[{ start: in2(8), end: in2(10) }, { start: in2(13), end: in2(15) }], demo:true };
+
+async function rpc(name, body) {
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${name}`, {
+    method: 'POST', headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+  });
+  return r.ok ? r.json() : null;
+}
+
+/** Kalendereintrag (.ics) zum Herunterladen. */
+function icsLink(o, a, start, end) {
+  const f = (d) => new Date(d).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+  const clean = (s) => String(s || '').replace(/[\r\n,;\\]/g, ' ');
+  const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//InstallateurDex//Termin//DE', 'BEGIN:VEVENT',
+    `UID:${token}@installateurdex`, `DTSTAMP:${f(new Date())}`, `DTSTART:${f(start)}`, `DTEND:${f(end)}`,
+    `SUMMARY:${clean(KINDS[a.kind] || 'Anlage')} – ${clean(o.name || 'Fachbetrieb')}`,
+    `DESCRIPTION:Termin mit ${clean(o.name || 'Ihrem Fachbetrieb')}${o.phone ? ` – Tel. ${clean(o.phone)}` : ''}`,
+    'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+  return URL.createObjectURL(new Blob([ics], { type: 'text/calendar' }));
+}
+
+function done(p, start, end) {
+  const o = p.org || {};
+  app.innerHTML = `<div class="firm">${esc(o.name || 'Ihr Fachbetrieb')}<small>Termin</small></div>
+    <div class="card"><div class="ok">✅ Termin bestätigt<small>${esc(day(start))}, ${esc(hm(start))}–${esc(hm(end))} Uhr</small></div>
+      <p>${esc(KIND_TXT[p.kind] || 'Termin')} für Ihre Anlage (${esc(KINDS[p.asset?.kind] || 'Anlage')}). Bitte sorgen Sie dafür, dass die Anlage zugänglich ist.</p>
+      <a class="btn primary" download="termin.ics" href="${icsLink(o, p.asset || {}, start, end)}">📅 In meinen Kalender eintragen</a>
+      ${o.phone ? `<a class="btn outline" href="tel:${esc(o.phone.replace(/[^+0-9]/g, ''))}">📞 Termin passt doch nicht? Anrufen</a>` : ''}
+      ${p.demo ? '<p class="note">Beispiel — es wurde nichts gespeichert.</p>' : ''}</div>
+    <div class="note">Erstellt mit <a href="https://installateurdex.dexware.app">InstallateurDex</a></div>`;
+}
+
+function render(p) {
+  const o = p.org || {};
+  if (o.brand_color && /^#[0-9a-f]{6}$/i.test(o.brand_color)) document.documentElement.style.setProperty('--brand', o.brand_color);
+  if (p.scheduled_at) return done(p, p.scheduled_at, p.scheduled_end);
+  const slots = (p.slots || []).filter((s) => new Date(s.start) > new Date());
+  app.innerHTML = `<div class="firm">${esc(o.name || 'Ihr Fachbetrieb')}<small>Termin wählen</small></div>
+    <div class="card"><h1>${esc(KIND_TXT[p.kind] || 'Termin')}: ${esc(KINDS[p.asset?.kind] || 'Anlage')} ${esc(p.asset?.name || '')}</h1>
+      <p>Bitte wählen Sie einen der vorgeschlagenen Termine — mit einem Tipp ist er fix.</p>
+      ${slots.length ? slots.map((s) => `<button class="slot" type="button" data-i="${(p.slots || []).indexOf(s)}"><b>${esc(day(s.start))}</b><span>${esc(hm(s.start))}–${esc(hm(s.end))} Uhr</span></button>`).join('')
+        : '<p>Die vorgeschlagenen Termine sind leider schon vorbei.</p>'}
+      <div class="err" id="err" role="alert"></div>
+      ${o.phone ? `<a class="btn outline" href="tel:${esc(o.phone.replace(/[^+0-9]/g, ''))}">📞 Keiner passt? Anrufen</a>` : ''}</div>
+    <div class="note">Erstellt mit <a href="https://installateurdex.dexware.app">InstallateurDex</a></div>`;
+  app.querySelectorAll('.slot').forEach((b) => b.addEventListener('click', async () => {
+    app.querySelectorAll('.slot').forEach((x) => (x.disabled = true));
+    const i = Number(b.dataset.i), s = p.slots[i];
+    if (p.demo) return done(p, s.start, s.end);
+    let res = null;
+    try { res = await rpc('pick_slot', { p_token: token, p_index: i }); } catch { res = null; }
+    if (res && res.ok) return done(p, res.scheduled_at, res.scheduled_end);
+    if (res && res.error === 'already') return done(p, res.scheduled_at, p.slots.find((x) => x.start === res.scheduled_at)?.end || res.scheduled_at);
+    app.querySelectorAll('.slot').forEach((x) => (x.disabled = false));
+    document.getElementById('err').textContent = res && res.error === 'past' ? 'Dieser Termin ist schon vorbei — bitte einen anderen wählen.' : 'Das hat gerade nicht geklappt. Bitte erneut versuchen oder anrufen.';
+  }));
+}
+
+(async () => {
+  if (token === 'demo') return render(DEMO);
+  if (!/^[0-9a-f]{32}$/.test(token)) { app.innerHTML = '<div class="center">Dieser Link ist unvollständig. Bitte öffnen Sie ihn direkt aus der Nachricht.</div>'; return; }
+  if (!SUPABASE_URL || !SUPABASE_ANON) { app.innerHTML = '<div class="center">Die Terminwahl ist noch nicht freigeschaltet.</div>'; return; }
+  try {
+    const p = await rpc('slot_offer', { p_token: token });
+    if (!p) { app.innerHTML = '<div class="center">Zu diesem Link gibt es (keinen) Terminvorschlag mehr. Bitte wenden Sie sich an Ihren Fachbetrieb.</div>'; return; }
+    render(p);
+  } catch { app.innerHTML = '<div class="center">Keine Verbindung. Bitte später erneut versuchen.</div>'; }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "Mein Zuhause · InstallateurDex",
+  "short_name": "Mein Zuhause",
+  "description": "Ihre Hausakte: Anlagen, Wartungen, Protokolle und Termine Ihres Fachbetriebs.",
+  "start_url": "/zuhause/",
+  "scope": "/zuhause/",
+  "display": "standalone",
+  "background_color": "#14181D",
+  "theme_color": "#14181D",
+  "lang": "de",
+  "icons": [{ "src": "/assets/installateurdex-icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }]
+}

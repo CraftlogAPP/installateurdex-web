@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://installateurdex.dexware.app/sitemap.xml

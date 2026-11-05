@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="robots" content="noindex, nofollow" />
+<meta name="referrer" content="no-referrer" />
+<title>Anlagenpass · InstallateurDex</title>
+<meta name="description" content="Digitaler Anlagenpass: Anlage, Wartungsstand und Kontakt zum Fachbetrieb." />
+<style>
+  :root { --copper:#B5651D; --copper-l:#E39A54; --ice:#1F8BC9; --bg:#F6F4F1; --card:#fff; --text:#1B1F24; --muted:#646B74; --border:#E6E1DA;
+          --green:#16A34A; --green-s:#DCFCE7; --amber:#EA580C; --amber-s:#FFEDD5; --red:#DC2626; --red-s:#FEE2E2; --brand:var(--copper); }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0F1216; --card:#181D23; --text:#F2EFEA; --muted:#A3A9B1; --border:#2A3139; --green-s:#12331E; --amber-s:#3B1E0B; --red-s:#3A1518; } }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: -apple-system, 'Segoe UI', Roboto, Inter, sans-serif; background: var(--bg); color: var(--text); }
+  .wrap { max-width: 560px; margin: 0 auto; padding: 16px 16px 40px; }
+  header { display:flex; align-items:center; justify-content:space-between; padding: 6px 0 14px; }
+  .firm { font-weight: 900; font-size: 18px; }
+  .firm small { display:block; font-weight:600; font-size:12px; color: var(--muted); }
+  .pill { font-size: 11px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; color:#fff;
+          background: linear-gradient(90deg, var(--copper), var(--ice)); padding: 4px 10px; border-radius: 99px; }
+  .card { background: var(--card); border:1px solid var(--border); border-radius: 18px; padding: 18px; margin-bottom: 14px; box-shadow: 0 6px 24px rgba(0,0,0,.06); }
+  .hero { display:flex; gap: 14px; align-items:center; }
+  .emoji { font-size: 44px; width: 64px; height: 64px; border-radius: 16px; background: var(--bg); display:flex; align-items:center; justify-content:center; }
+  h1 { font-size: 22px; margin: 0; }
+  .sub { color: var(--muted); margin-top: 2px; }
+  .status { margin-top: 14px; border-radius: 14px; padding: 12px 14px; font-weight: 800; }
+  .ok { background: var(--green-s); color: var(--green); } .soon { background: var(--amber-s); color: var(--amber); } .due { background: var(--red-s); color: var(--red); } .never { background: var(--bg); color: var(--muted); }
+  .status small { display:block; font-weight:600; opacity:.85; margin-top:2px; }
+  dl { display:grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 14px 0 0; font-size: 14px; }
+  dt { color: var(--muted); white-space: nowrap; } dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+  h2 { font-size: 15px; margin: 0 0 10px; }
+  .job { display:flex; justify-content:space-between; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .job:last-child { border-bottom: 0; } .job span:last-child { color: var(--muted); }
+  .btn { display:block; text-align:center; text-decoration:none; font-weight:800; font-size:16px; padding: 15px; border-radius: 14px; margin-top: 10px; }
+  .primary { background: var(--brand); color:#fff; } .outline { border: 2px solid var(--brand); color: var(--brand); }
+  .note { font-size: 12px; color: var(--muted); text-align:center; margin-top: 18px; line-height: 1.5; }
+  .note a { color: var(--muted); }
+  button.btn { width:100%; border:0; cursor:pointer; font-family:inherit; background:none; }
+  button.btn.primary { background: var(--brand); } button.btn.outline { border: 2px solid var(--brand); }
+  button.btn:disabled { opacity:.6; cursor:default; }
+  .link { color: var(--muted); font-weight:700; }
+  label { display:block; font-size:14px; font-weight:700; margin: 12px 0 0; }
+  label .opt { font-weight:500; color: var(--muted); }
+  input, textarea { display:block; width:100%; margin-top:6px; font: inherit; font-size:16px; color: var(--text); background: var(--bg);
+                    border: 1.5px solid var(--border); border-radius: 12px; padding: 12px; }
+  input:focus, textarea:focus { outline: 2px solid var(--brand); outline-offset: 1px; border-color: transparent; }
+  textarea { resize: vertical; }
+  .err { color: var(--red); font-weight:700; font-size:14px; min-height: 1em; margin-top: 10px; }
+  .done { text-align:center; } .done p { color: var(--muted); }
+  .tips summary { font-weight: 800; font-size: 15px; cursor: pointer; } .tips ul { margin: 10px 0 0 18px; padding: 0; } .tips li { margin: 6px 0; font-size: 14px; line-height: 1.45; }
+  .recs { margin-top: 16px; } .recs h2 { margin-bottom: 6px; }
+  .rec { display:flex; align-items:center; justify-content:space-between; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; font-weight: 600; }
+  .rec:last-child { border-bottom: 0; }
+  .rec-btn { flex: none; border: 1.5px solid var(--brand); color: var(--brand); background: none; border-radius: 10px; padding: 8px 10px; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; }
+  .photo-pick input[type=file] { padding: 10px; font-size: 14px; }
+  .photo-hint { display:block; font-weight:500; font-size:12px; color: var(--muted); margin-top:4px; }
+  #photoPrev { display:block; max-width: 100%; max-height: 220px; border-radius: 12px; margin-top: 8px; border: 1px solid var(--border); }
+  #photoPrev[hidden] { display:none; }
+  .center { text-align:center; padding: 60px 10px; color: var(--muted); }
+  .skel { height: 14px; border-radius: 7px; background: var(--border); margin: 10px 0; animation: p 1.2s ease-in-out infinite; }
+  @keyframes p { 50% { opacity: .45; } }
+  @media (prefers-reduced-motion: reduce) { .skel { animation: none; } }
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+  <div class="card"><div class="skel" style="width:60%"></div><div class="skel"></div><div class="skel" style="width:80%"></div></div>
+</div>
+<script>
+// Nach USER-TODO eintragen (öffentliche Werte, durch RLS/Funktion geschützt):
+const SUPABASE_URL = '';       // https://<ref>.supabase.co
+const SUPABASE_ANON = '';      // anon key
+
+const KINDS = { hp_air:['🌬️','Luft/Wasser-Wärmepumpe'], hp_brine:['🌍','Sole/Wasser-Wärmepumpe'], ac_split:['❄️','Split-Klimagerät'], ac_multi:['🧊','Multisplit / VRF'],
+  gas:['🔥','Gas-Brennwert'], oil:['🛢️','Öl-Heizung'], pellet:['🪵','Pellets / Holz'], district:['🏙️','Fernwärme-Station'], dhw_tank:['🚿','Warmwasserspeicher'],
+  solar:['☀️','Solarthermie'], ventilation:['💨','Wohnraumlüftung'], softener:['🧂','Enthärtung'], filter:['🚰','Rückspülfilter'], booster:['⬆️','Druckerhöhung'],
+  lifting:['🪣','Hebeanlage'], other:['🛠️','Anlage'] };
+// Allgemeine, sichere Hinweise je Anlagentyp (keine Zahlenwerte — Sollwerte nennt der Fachbetrieb).
+const TIPS = {
+  hp_air: ['Außengerät frei von Laub und Schnee halten, den Luftstrom nicht verstellen oder abdecken.', 'Kondensatablauf frei halten — bei Eis am Gerät Ihren Fachbetrieb fragen.', 'Raumtemperatur möglichst gleichmäßig lassen: Wärmepumpen arbeiten so am sparsamsten.'],
+  hp_brine: ['Die Druckanzeige gelegentlich ansehen — fällt der Druck deutlich, Ihren Fachbetrieb informieren.', 'Raumtemperatur möglichst gleichmäßig lassen: Wärmepumpen arbeiten so am sparsamsten.'],
+  ac_split: ['Filter im Innengerät regelmäßig reinigen (siehe Bedienungsanleitung).', 'Tropft Wasser aus dem Innengerät: ausschalten und Störung melden.', 'Außengerät frei halten, nichts davorstellen.'],
+  ac_multi: ['Filter der Innengeräte regelmäßig reinigen (siehe Bedienungsanleitung).', 'Tropft Wasser aus einem Innengerät: ausschalten und Störung melden.'],
+  gas: ['Den Anlagendruck am Manometer gelegentlich ansehen — den richtigen Bereich nennt Ihr Fachbetrieb.', 'Zu- und Abluftöffnungen nicht verstellen, im Heizraum nichts Brennbares lagern.', 'Bei Gasgeruch nie selbst suchen — Haus verlassen und den Notruf wählen.'],
+  oil: ['Im Heizraum nichts Brennbares lagern, Öffnungen nicht verstellen.', 'Füllstand des Tanks im Blick behalten und rechtzeitig nachbestellen.'],
+  pellet: ['Pelletlager trocken halten.', 'Asche nach Bedienungsanleitung entleeren.'],
+  district: ['Bei Ausfall zuerst prüfen, ob der Versorger eine Störung meldet.'],
+  dhw_tank: ['Die eingestellte Warmwassertemperatur nicht ohne Rücksprache senken (Hygiene).'],
+  solar: ['Bei ungewöhnlichen Geräuschen oder fallendem Druck Ihren Fachbetrieb informieren.'],
+  ventilation: ['Filter nach Herstellerangabe tauschen — viele Geräte zeigen es an.', 'Zu- und Abluftöffnungen in den Räumen nicht zustellen.'],
+  softener: ['Regeneriersalz rechtzeitig nachfüllen.'],
+  filter: ['Regelmäßig rückspülen bzw. reinigen (siehe Bedienungsanleitung).'],
+};
+const TIPS_DEFAULT = ['Ungewöhnliche Geräusche, Gerüche oder Wasser am Boden: bitte Störung melden.'];
+const REMOTE = { viguide: 'ViGuide', myvaillant: 'myVAILLANT Pro', homecom: 'HomeCom Pro', other: 'Herstellerportal' };
+const JOBS = { service:'Wartung', commissioning:'Inbetriebnahme', repair:'Störung / Reparatur', workReport:'Arbeitsbericht', pressureTest:'Druckprobe',
+  flush:'Spülen & Befüllen', refrigerant:'Kältemittel-Eintrag', photoDoc:'Fotodoku' };
+
+const DEMO = { asset:{ name:'WP-001', kind:'hp_air', manufacturer:'Musterwerk', model:'AirHeat 7', build_year:'2026', install_date:'2026-10-15', power_kw:'7', refrigerant:'R290', refrigerant_kg:'0,9', interval_months:12,
+    contract:true, warranty_until:'2031-10-15', warranty_note:'nur mit jährlicher Wartung durch Fachbetrieb', remote_service:'other' },
+  org:{ name:'Installateur Muster GmbH (Beispiel)', phone:'+43 000 000000', email:'service@example.com', website:'', brand_color:'#B5651D' },
+  last_service:'2026-10-15T08:30:00Z', next_due:'2027-10-15', jobs:[{date:'2026-10-15T08:30:00Z', type:'commissioning'}], open_recommendations:1, recommendations:[{ title:'Isolierung der Außenleitung erneuern', severity:'amber' }], demo:true };
+
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt = (d) => d ? new Date(d).toLocaleDateString('de-AT', { day:'2-digit', month:'2-digit', year:'numeric' }) : '—';
+const app = document.getElementById('app');
+
+function render(p) {
+  const a = p.asset, o = p.org || {};
+  if (o.brand_color && /^#[0-9a-f]{6}$/i.test(o.brand_color)) document.documentElement.style.setProperty('--brand', o.brand_color);
+  const [emoji, label] = KINDS[a.kind] || KINDS.other;
+  // Kalendertage (lokale Mitternacht) — Fälligkeiten sind Daten ohne Uhrzeit.
+  const daysTo = (iso) => {
+    if (!iso) return null;
+    const [y, m, d] = String(iso).slice(0, 10).split('-').map(Number);
+    const n = new Date();
+    return Math.round((new Date(y, m - 1, d) - new Date(n.getFullYear(), n.getMonth(), n.getDate())) / 864e5);
+  };
+  const days = daysTo(p.next_due);
+  // Pflicht-Dichtheitskontrolle (F-Gas-VO Art. 5) — vom Server berechnet aus Kältemittel und Füllmenge
+  const lk = p.leak_check && p.leak_check.months ? p.leak_check : null;
+  const lkDays = lk ? daysTo(lk.next) : null;
+  const st = days === null ? ['never', 'Noch keine Wartung erfasst', 'Ihr Fachbetrieb trägt die Wartung hier ein.']
+    : days <= 0 ? ['due', 'Wartung fällig', `Fällig seit ${fmt(p.next_due)} — bitte Termin vereinbaren.`]
+    : days <= 30 ? ['soon', `Wartung in ${days} Tagen fällig`, `Bis ${fmt(p.next_due)}`]
+    : ['ok', 'Anlage gewartet ✓', `Nächste Wartung bis ${fmt(p.next_due)}`];
+  const rows = [
+    ['Hersteller', [a.manufacturer, a.model].filter(Boolean).join(' ')], ['Leistung', a.power_kw && `${a.power_kw} kW`], ['Baujahr', a.build_year],
+    ['In Betrieb seit', a.install_date && fmt(a.install_date)], ['Kältemittel', a.refrigerant && `${a.refrigerant}${a.refrigerant_kg ? ` · ${a.refrigerant_kg} kg` : ''}`],
+    ['Wartungsintervall', a.interval_months && `${a.interval_months} Monate`], ['Letzte Wartung', p.last_service && fmt(p.last_service)],
+    ['Dichtheitskontrolle', lk && `alle ${lk.months} Monate (F-Gas-Verordnung)${lk.last ? ` · zuletzt ${fmt(lk.last)}${lk.followup ? ' (undicht)' : ''}` : ''}${lk.next && lkDays > 30 ? ` · nächste bis ${fmt(lk.next)}` : ''}`],
+    ['Garantie bis', a.warranty_until && `${fmt(a.warranty_until)}${a.warranty_note ? ` (${a.warranty_note})` : ''}`],
+    ['Fernbetreuung', a.remote_service && `aktiv durch ${o.name || 'Ihren Fachbetrieb'} (${REMOTE[a.remote_service] || 'Herstellerportal'})`],
+  ].filter((r) => r[1]);
+  const subject = encodeURIComponent(`Wartung ${a.name} (${label})`);
+  const body = encodeURIComponent(`Guten Tag,\n\nich möchte einen Wartungstermin für meine Anlage ${a.name} (${label}) vereinbaren.\n\nAdresse:\nTelefon:\nWunschtermine:\n\nDanke!`);
+  const stoer = encodeURIComponent(`Störung ${a.name} (${label})`);
+  app.innerHTML = `
+    <header><div class="firm">${esc(o.name || 'Ihr Fachbetrieb')}<small>Digitaler Anlagenpass</small></div><span class="pill">Anlagenpass</span></header>
+    <div class="card">
+      <div class="hero"><div class="emoji">${emoji}</div><div><h1>${esc(label)}</h1><div class="sub">${esc(a.name)}</div></div></div>
+      <div class="status ${st[0]}">${esc(st[1])}<small>${esc(st[2])}</small></div>
+      ${days !== null && days <= 0 && a.warranty_until && a.warranty_note && new Date(a.warranty_until) >= new Date() ? `<div class="status due" style="margin-top:10px">Wichtig für Ihre Garantie<small>${esc(a.warranty_note)} — bitte vereinbaren Sie einen Wartungstermin.</small></div>` : ''}
+      ${lk && lkDays !== null && lkDays <= 30 ? `<div class="status ${lkDays <= 0 ? 'due' : 'soon'}" style="margin-top:10px">❄️ ${lk.followup ? (lkDays <= 0 ? 'Nachkontrolle Dichtheit fällig' : `Nachkontrolle Dichtheit in ${lkDays} ${lkDays === 1 ? 'Tag' : 'Tagen'}`) : lkDays <= 0 ? 'Dichtheitskontrolle fällig' : `Dichtheitskontrolle in ${lkDays} ${lkDays === 1 ? 'Tag' : 'Tagen'} fällig`}<small>${lk.followup ? `Bei der letzten Dichtheitskontrolle wurde eine Undichtheit festgestellt. Nach der Reparatur ist eine erneute Kontrolle vorgeschrieben — Ihr Fachbetrieb empfiehlt sie bis ${fmt(lk.next)}.` : `Nach den eingetragenen Anlagendaten schreibt die EU-F-Gas-Verordnung alle ${lk.months} Monate eine Dichtheitskontrolle vor${lkDays <= 0 ? ` — fällig seit ${fmt(lk.next)}` : ` — bis ${fmt(lk.next)}`}. Ihr Fachbetrieb übernimmt das gern, am besten zusammen mit der Wartung.`}</small></div>` : ''}
+      ${a.contract ? `<div class="status ok" style="margin-top:10px">🤝 Wartungsvertrag mit ${esc(o.name || 'Ihrem Fachbetrieb')}<small>Ihr Fachbetrieb meldet sich rechtzeitig zur nächsten Wartung.</small></div>` : ''}
+      <dl>${rows.map((r) => `<dt>${esc(r[0])}</dt><dd>${esc(r[1])}</dd>`).join('')}</dl>
+      ${(p.recommendations || []).length ? `<div class="recs"><h2>Empfehlungen Ihres Fachbetriebs</h2>${p.recommendations.map((r, i) => `<div class="rec"><span>${esc(r.title)}</span><button type="button" class="rec-btn" data-rec="${i}">Angebot anfragen</button></div>`).join('')}</div>`
+        : p.open_recommendations ? `<div class="status soon" style="margin-top:14px">${p.open_recommendations} offene Empfehlung${p.open_recommendations === 1 ? '' : 'en'} Ihres Fachbetriebs<small>Details im Protokoll der letzten Wartung</small></div>` : ''}
+    </div>
+    <div class="card" id="actions">
+      <button class="btn primary" type="button" data-req="maintenance">Wartung anfragen</button>
+      ${o.phone ? `<a class="btn outline" href="tel:${esc(o.phone.replace(/[^+0-9]/g, ''))}">📞 ${esc(o.name || 'Fachbetrieb')} anrufen</a>` : ''}
+      <button class="btn outline" type="button" data-req="fault">🚨 Störung melden</button>
+      ${o.email && /^[^@\s?&#<>"]+@[^@\s?&#<>"]+\.[^@\s?&#<>"]+$/.test(o.email) ? `<div class="note" style="margin-top:12px">Lieber per Mail? <a href="mailto:${esc(o.email)}?subject=${subject}&body=${body}">Wartung</a> · <a href="mailto:${esc(o.email)}?subject=${stoer}">Störung</a></div>` : ''}
+      <div class="note">Bei Gasgeruch: Fenster öffnen, keine Schalter betätigen, Haus verlassen und den Gas-Notruf 128 (AT) bzw. 112 wählen.</div>
+    </div>
+    <details class="card tips"><summary>💡 Tipps für Ihre Anlage</summary><ul>${(TIPS[a.kind] || TIPS_DEFAULT).map((t) => `<li>${esc(t)}</li>`).join('')}</ul><div class="note" style="margin-top:8px">Allgemeine Hinweise — Bedienungsanleitung beachten und im Zweifel Ihren Fachbetrieb fragen.</div></details>
+    ${p.jobs && p.jobs.length ? `<div class="card"><h2>Verlauf</h2>${p.jobs.map((j) => `<div class="job"><span>${esc(JOBS[j.type] || 'Einsatz')}</span><span>${fmt(j.date)}</span></div>`).join('')}</div>` : ''}
+    <a class="btn outline" href="/zuhause/">🏠 Alle meine Anlagen &amp; Protokolle — Mein Zuhause</a>
+    <div class="note">${p.demo ? '<b>Beispiel-Anlagenpass</b> · ' : ''}Dieser Anlagenpass zeigt nur Anlagendaten und den Wartungsstand — keine persönlichen Daten. Protokolle und Termine sehen Sie nach Anmeldung in „Mein Zuhause“, wenn Ihr Fachbetrieb es freigegeben hat.<br/>Erstellt mit <a href="https://installateurdex.dexware.app">InstallateurDex</a></div>`;
+  app.querySelectorAll('[data-req]').forEach((b) => b.addEventListener('click', () => openForm(p, b.dataset.req)));
+  app.querySelectorAll('[data-rec]').forEach((b) => b.addEventListener('click', () => openForm(p, 'quote', (p.recommendations || [])[Number(b.dataset.rec)]?.title)));
+  if (FROM_REMINDER) openForm(p, 'maintenance');
+}
+
+// ---------------------------------------------------------------------------
+// Anfrage-Formular: geht über request_by_token direkt in die Anfragen-Inbox des Betriebs.
+// ---------------------------------------------------------------------------
+const ERR = {
+  contact: 'Bitte Telefonnummer oder E-Mail angeben, damit der Betrieb Sie erreicht.',
+  email: 'Die E-Mail-Adresse sieht nicht richtig aus.',
+  too_long: 'Der Text ist zu lang — bitte kürzer fassen.',
+  rate_limited: 'Für diese Anlage sind heute schon mehrere Anfragen eingegangen. Bitte rufen Sie den Betrieb an.',
+  unknown: 'Dieser Anlagenpass ist nicht mehr aktiv. Bitte wenden Sie sich direkt an Ihren Fachbetrieb.',
+};
+
+function openForm(p, kind, recTitle) {
+  const o = p.org || {}, fault = kind === 'fault', quote = kind === 'quote';
+  const gasLike = ['gas', 'oil', 'pellet'].includes(p.asset.kind);
+  const box = document.getElementById('actions');
+  box.innerHTML = `
+    <h2>${fault ? '🚨 Störung melden' : quote ? '💶 Angebot anfragen' : '🗓️ Wartung anfragen'}</h2>
+    ${quote && recTitle ? `<p class="sub" style="margin:0 0 6px">zu: <b>${esc(recTitle)}</b> — unverbindlich, ${esc(o.name || 'Ihr Fachbetrieb')} meldet sich mit einem Angebot.</p>` : ''}
+    ${fault && gasLike ? `<div class="status due" style="margin:0 0 12px">Gasgeruch?<small>Nicht über dieses Formular! Fenster öffnen, keine Schalter betätigen, Haus verlassen, Gas-Notruf 128 (AT) bzw. 112.</small></div>` : ''}
+    <form id="req" novalidate>
+      ${quote ? `<label>Nachricht <span class="opt">(optional)</span><textarea name="message" rows="3" maxlength="1800" placeholder="z. B. Bitte mit Termin im Frühjahr"></textarea></label>`
+        : fault ? `<label>Was ist los?<textarea name="message" rows="4" maxlength="2000" placeholder="z. B. Anlage zeigt Fehler F28, kein Warmwasser seit heute früh" required></textarea></label>`
+              : `<label>Wunschtermin <span class="opt">(optional)</span><input name="preferred" maxlength="200" placeholder="z. B. nächste Woche vormittags" /></label>
+                 <label>Nachricht <span class="opt">(optional)</span><textarea name="message" rows="3" maxlength="2000"></textarea></label>`}
+      <label class="photo-pick">${fault ? '📷 Foto vom Display / Fehlercode' : quote ? '📷 Foto der Stelle' : '📷 Foto'} <span class="opt">(optional)</span>
+        <input name="photo" type="file" accept="image/*" capture="environment" id="photo" />
+        <span class="photo-hint" id="photoHint">${fault ? 'Hilft Ihrem Fachbetrieb, das richtige Ersatzteil gleich mitzubringen.' : 'z. B. Typenschild oder die Stelle, um die es geht.'}</span>
+        <img id="photoPrev" alt="" hidden />
+      </label>
+      <label>Ihr Name<input name="name" maxlength="120" autocomplete="name" /></label>
+      <label>Telefon<input name="phone" maxlength="40" type="tel" autocomplete="tel" inputmode="tel" /></label>
+      <label>E-Mail<input name="email" maxlength="160" type="email" autocomplete="email" /></label>
+      <div class="err" id="err" role="alert"></div>
+      <button class="btn primary" type="submit" id="send">Anfrage senden</button>
+      <button class="btn link" type="button" id="cancel">Abbrechen</button>
+      <div class="note">Ihre Angaben gehen nur an ${esc(o.name || 'Ihren Fachbetrieb')}, damit er Ihre Anfrage bearbeiten kann.</div>
+    </form>`;
+  box.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+  document.getElementById('cancel').onclick = () => render(p);
+  let photoB64 = '';
+  document.getElementById('photo').onchange = async (ev) => {
+    const file = ev.target.files && ev.target.files[0];
+    photoB64 = '';
+    const prev = document.getElementById('photoPrev');
+    if (!file) { prev.hidden = true; return; }
+    try {
+      photoB64 = await shrink(file);
+      prev.src = 'data:image/jpeg;base64,' + photoB64; prev.hidden = false;
+    } catch { document.getElementById('photoHint').textContent = 'Dieses Foto konnte nicht gelesen werden.'; }
+  };
+  document.getElementById('req').onsubmit = async (e) => {
+    e.preventDefault();
+    const f = new FormData(e.target), err = document.getElementById('err'), send = document.getElementById('send');
+    const v = (k) => String(f.get(k) || '').trim();
+    err.textContent = '';
+    if (fault && !v('message')) return (err.textContent = 'Bitte kurz beschreiben, was los ist.');
+    if (!v('phone') && !v('email')) return (err.textContent = ERR.contact);
+    send.disabled = true; send.textContent = 'Wird gesendet …';
+    let res = { ok: true };
+    if (!p.demo) {
+      try {
+        const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/request_by_token`, {
+          method: 'POST', headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ p_token: TOKEN, p_kind: kind, p_message: quote && recTitle ? `Angebot für: ${recTitle}${v('message') ? `\n${v('message')}` : ''}` : v('message'), p_name: v('name'), p_phone: v('phone'),
+                                 p_email: v('email'), p_preferred: v('preferred'), p_source: FROM_REMINDER ? 'reminder' : 'pass' }),
+        });
+        res = r.ok ? await r.json() : { error: 'server' };
+      } catch { res = { error: 'offline' }; }
+    }
+    // Foto nachreichen (darf die Anfrage nie scheitern lassen — sie ist schon beim Betrieb).
+    if (res.ok && res.id && photoB64 && !p.demo) {
+      send.textContent = 'Foto wird übertragen …';
+      try {
+        await fetch(`${SUPABASE_URL}/functions/v1/pass-photo`, {
+          method: 'POST', headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: TOKEN, requestId: res.id, image: photoB64 }),
+        });
+      } catch { /* egal */ }
+    }
+    if (!res.ok) {
+      send.disabled = false; send.textContent = 'Anfrage senden';
+      err.textContent = ERR[res.error] || 'Das hat gerade nicht geklappt. Bitte später erneut versuchen oder den Betrieb anrufen.';
+      return;
+    }
+    box.innerHTML = `<div class="done"><div style="font-size:40px">✅</div><h2>Anfrage gesendet</h2>
+      <p>${esc(o.name || 'Ihr Fachbetrieb')} meldet sich bei Ihnen${fault ? ' so schnell wie möglich' : quote ? ' mit einem Angebot' : ' mit einem Terminvorschlag'}.</p>
+      ${p.demo ? '<p class="note">Beispiel — es wurde nichts gesendet.</p>' : ''}
+      ${o.phone && fault ? `<a class="btn outline" href="tel:${esc(o.phone.replace(/[^+0-9]/g, ''))}">📞 Dringend? Jetzt anrufen</a>` : ''}</div>`;
+  };
+}
+
+/** Foto auf max. 1600 px verkleinern → JPEG-Base64 (ohne Präfix). */
+function shrink(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const s = Math.min(1, 1600 / Math.max(img.width, img.height));
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      resolve(c.toDataURL('image/jpeg', 0.8).split(',')[1]);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('img')); };
+    img.src = url;
+  });
+}
+
+function fail(msg) { app.innerHTML = `<div class="center"><div style="font-size:40px">🔧</div><p>${esc(msg)}</p></div>`; }
+
+const QS = new URLSearchParams(location.search);
+const TOKEN = (QS.get('t') || '').toLowerCase();
+const FROM_REMINDER = QS.get('r') === '1';
+
+(async () => {
+  const t = TOKEN;
+  if (t === 'demo') return render(DEMO);
+  if (!/^[0-9a-f]{32}$/i.test(t)) return fail('Dieser Code ist kein gültiger Anlagenpass.');
+  if (!SUPABASE_URL || !SUPABASE_ANON) return fail('Der Anlagenpass ist noch nicht freigeschaltet.');
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/pass_by_token`, {
+      method: 'POST', headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ p_token: t.toLowerCase() }),
+    });
+    const p = r.ok ? await r.json() : null;
+    if (!p) return fail('Zu diesem Code gibt es keinen Anlagenpass (mehr). Bitte wenden Sie sich an Ihren Fachbetrieb.');
+    render(p);
+  } catch { fail('Keine Verbindung. Bitte später erneut versuchen.'); }
+})();
+</script>
+</body>
+</html>
