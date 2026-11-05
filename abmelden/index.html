@@ -44,8 +44,25 @@ document.getElementById('go')?.addEventListener('click', async (e) => {
       body: JSON.stringify({ p_token: t }),
     });
     const ok = r.ok && (await r.json()) === true;
-    ok ? show('✅', 'Abbestellt', 'Sie bekommen keine Wartungs-Erinnerungen mehr. Ihr Fachbetrieb kann Sie bei Bedarf wieder eintragen.')
-       : show('🔧', 'Nicht gefunden', 'Zu diesem Link gibt es keine Erinnerung (mehr). Vielleicht wurde sie schon abbestellt.');
+    if (!ok) return show('🔧', 'Nicht gefunden', 'Zu diesem Link gibt es keine Erinnerung (mehr). Vielleicht wurde sie schon abbestellt.');
+    show('✅', 'Abbestellt', 'Sie bekommen keine Wartungs-Erinnerungen mehr. Ihr Fachbetrieb kann Sie nicht von sich aus wieder eintragen.');
+    const undo = document.createElement('button');
+    undo.type = 'button';
+    undo.textContent = 'Versehentlich? Doch weiter erinnern';
+    undo.style.cssText = 'background:transparent;color:var(--copper);border:2px solid var(--copper)';
+    undo.addEventListener('click', async () => {
+      undo.disabled = true;
+      try {
+        const c = await fetch(`${SUPABASE_URL}/rest/v1/rpc/reminder_confirm`, {
+          method: 'POST', headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ p_token: t }),
+        });
+        const j = c.ok ? await c.json() : null;
+        j && j.ok ? show('🔔', 'Wieder angemeldet', 'Sie bekommen wieder Wartungs-Erinnerungen. Abbestellen geht jederzeit über den Link in jeder Mail.')
+                  : (undo.disabled = false);
+      } catch { undo.disabled = false; }
+    });
+    box.appendChild(undo);
   } catch { e.target.disabled = false; show('📶', 'Keine Verbindung', 'Bitte später erneut versuchen.'); }
 });
 </script>
