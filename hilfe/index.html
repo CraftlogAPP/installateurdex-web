@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="referrer" content="no-referrer" />
+<title>Installateur-Helfer · Wer ist zuständig? · InstallateurDex</title>
+<meta name="description" content="Heizung kalt, etwas tropft, Fehlercode? Problem beschreiben und sofort wissen, wer zuständig ist, was du jetzt tun kannst und welcher Installateur in deiner Nähe hilft. Kostenlos, ohne Anmeldung." />
+<meta property="og:title" content="Installateur-Helfer: Wer ist zuständig?" />
+<meta property="og:description" content="Problem beschreiben, sofort Klarheit: selbst lösen, Installateur, Hersteller-Kundendienst oder Notfall. Kostenlos, ohne Anmeldung." />
+<meta property="og:image" content="https://installateurdex.dexware.app/og-image.png" />
+<link rel="icon" href="/assets/installateurdex-icon.png" />
+<style>
+  :root { --brand:#B5651D; --brand-s:#FBEBDC; --bg:#F6F4F1; --card:#fff; --text:#1B1F24; --muted:#646B74; --border:#E6E1DA;
+          --green:#16A34A; --green-s:#DCFCE7; --red:#DC2626; --red-s:#FEE2E2; --amber:#B45309; --amber-s:#FEF3C7; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0F1216; --card:#181D23; --text:#F2EFEA; --muted:#A3A9B1; --border:#2A3139;
+          --brand-s:#3A2614; --green-s:#12331E; --red-s:#3B1414; --amber-s:#3A2A0C; } }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: -apple-system, 'Segoe UI', Roboto, Inter, sans-serif; background: var(--bg); color: var(--text); }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 16px 16px 48px; }
+  .hero { background: var(--brand); color:#fff; border-radius: 22px; padding: 22px; animation: rise .5s ease both; }
+  .hero .top { display:flex; justify-content: space-between; align-items:center; font-weight: 800; font-size: 14px; opacity: .95; }
+  .hero .top a { color:#fff; opacity:.85; text-decoration:none; font-weight:700; }
+  .hero h1 { font-size: 27px; margin: 10px 0 6px; line-height: 1.15; }
+  .hero p { margin: 0; line-height: 1.5; opacity: .93; }
+  .card { background: var(--card); border:1px solid var(--border); border-radius: 18px; padding: 16px; margin-top: 14px; animation: rise .45s ease both; }
+  .ask { display:flex; gap: 10px; align-items: flex-start; }
+  textarea, input { width:100%; font: inherit; font-size: 16px; color: var(--text); background: var(--bg); border:1px solid var(--border); border-radius: 14px; padding: 13px; }
+  textarea { min-height: 104px; resize: vertical; }
+  textarea:focus, input:focus { outline: 2px solid var(--brand); border-color: transparent; }
+  .mic { flex: 0 0 56px; height: 56px; border-radius: 50%; border:0; background: var(--brand); color:#fff; font-size: 24px; cursor:pointer; position: relative; }
+  .mic.on { background: var(--red); animation: pulse 1s ease-out infinite; }
+  .btn { display:block; width:100%; border:0; border-radius: 14px; padding: 15px; font: inherit; font-weight: 800; font-size: 16px; cursor:pointer; margin-top: 10px; text-align:center; text-decoration:none; }
+  .primary { background: var(--brand); color:#fff; } .primary[disabled] { opacity:.5; cursor: default; }
+  .outline { background: none; border: 2px solid var(--brand); color: var(--brand); }
+  .quota { text-align:center; color: var(--muted); font-size: 12px; margin-top: 8px; }
+  .chips { display:flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .chip { border:1px solid var(--border); background: var(--card); color: var(--text); border-radius: 999px; padding: 10px 14px; font: inherit; font-weight: 700; font-size: 14px; cursor:pointer; }
+  .chip:hover { border-color: var(--brand); }
+  .sec { color: var(--muted); font-weight: 900; font-size: 13px; text-transform: uppercase; letter-spacing: .5px; margin: 20px 2px 0; }
+  .em { background: var(--red-s); border: 2px solid var(--red); border-radius: 18px; padding: 18px; margin-top: 14px; animation: pop .35s ease both; }
+  .em h2 { color: var(--red); margin: 0 0 8px; font-size: 19px; } .em ol { margin: 0; padding-left: 20px; line-height: 1.55; }
+  .calls { display:flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .call { background: var(--red); color:#fff; text-decoration:none; border-radius: 14px; padding: 10px 16px; font-weight: 900; font-size: 19px; }
+  .call small { display:block; font-size: 12px; font-weight: 700; opacity: .9; }
+  .ans { border-width: 2px; }
+  .who { display:flex; gap: 12px; align-items:center; }
+  .who .ic { width:56px; height:56px; border-radius: 50%; display:flex; align-items:center; justify-content:center; font-size: 28px; flex: 0 0 56px; }
+  .who .lb { font-weight: 900; font-size: 13px; text-transform: uppercase; letter-spacing: .4px; }
+  .who h2 { margin: 2px 0 0; font-size: 20px; }
+  .urg { margin-left:auto; border-radius: 999px; padding: 4px 10px; font-weight: 900; font-size: 12px; }
+  .sum { line-height: 1.55; margin: 12px 0 4px; }
+  .step { display:flex; gap: 10px; align-items:flex-start; padding: 6px 0; cursor:pointer; user-select: none; }
+  .step .n { flex: 0 0 26px; height:26px; border-radius: 50%; border: 2px solid var(--brand); display:flex; align-items:center; justify-content:center; font-weight: 900; font-size: 12px; }
+  .step.done .n { background: var(--green); border-color: var(--green); color:#fff; } .step.done span { text-decoration: line-through; color: var(--muted); }
+  .warn { background: var(--amber-s); border-radius: 12px; padding: 12px; margin-top: 10px; line-height: 1.45; }
+  .maker { display:block; background: var(--brand-s); border-radius: 12px; padding: 12px; margin-top: 10px; color: var(--text); text-decoration: none; }
+  .maker b { display:block; }
+  .muted { color: var(--muted); font-size: 14px; line-height: 1.45; }
+  .zip { display:flex; gap: 8px; margin-top: 10px; } .zip input { max-width: 150px; text-align:center; font-weight: 800; letter-spacing: 2px; font-size: 18px; }
+  .zip .btn { margin: 0; width: auto; padding: 0 22px; }
+  .firm h3 { margin: 0; font-size: 17px; } .firm .acts { display:flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; align-items:center; }
+  .firm .acts a, .firm .acts button { border: 2px solid var(--brand); color: var(--brand); background:none; border-radius: 12px; padding: 9px 14px; font: inherit; font-weight: 900; font-size: 14px; text-decoration:none; cursor:pointer; }
+  .firm .acts .p { background: var(--brand); color:#fff; }
+  .badge { border-radius: 999px; padding: 3px 9px; font-weight: 900; font-size: 12px; background: var(--red-s); color: var(--red); }
+  .err { color: var(--red); font-weight: 700; margin-top: 8px; }
+  .ok { background: var(--green-s); color: var(--green); border-radius: 14px; padding: 14px; font-weight: 800; margin-top: 12px; animation: pop .35s ease both; }
+  .thinking { display:flex; gap: 8px; justify-content:center; align-items:center; color: var(--muted); font-size: 14px; margin-top: 10px; }
+  .dot { width:10px; height:10px; border-radius: 50%; background: var(--brand); animation: pulse 1s ease-out infinite; }
+  .foot { text-align:center; color: var(--muted); font-size: 12px; margin-top: 24px; line-height: 1.6; } .foot a { color: var(--muted); }
+  .lands { display:flex; gap: 8px; justify-content:center; margin-top: 16px; }
+  .lands button.on { border-color: var(--brand); background: var(--brand-s); }
+  dialog { border:0; border-radius: 20px; padding: 0; width: min(560px, 94vw); background: var(--bg); color: var(--text); }
+  dialog::backdrop { background: rgba(0,0,0,.45); }
+  dialog form { padding: 18px; display:grid; gap: 10px; }
+  dialog label { font-weight: 700; color: var(--muted); font-size: 13px; display:grid; gap: 4px; }
+  @keyframes rise { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform:none; } }
+  @keyframes pop { from { opacity:0; transform: scale(.96); } to { opacity:1; transform:none; } }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(220,38,38,.5); } 100% { box-shadow: 0 0 0 16px rgba(220,38,38,0); } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="top"><span>🔧 Installateur-Helfer</span><a href="/">Für Betriebe ›</a></div>
+    <h1>Was ist los bei dir zu Hause?</h1>
+    <p>Beschreib das Problem. Du erfährst sofort, wer zuständig ist, was du jetzt tun kannst und wer in deiner Nähe hilft. Kostenlos, ohne Anmeldung.</p>
+  </div>
+
+  <div class="card">
+    <div class="ask">
+      <textarea id="q" maxlength="600" placeholder="z. B. „Heizung wird nicht warm, der Druck zeigt 0,5 bar“" aria-label="Problem beschreiben"></textarea>
+      <button class="mic" id="mic" type="button" aria-label="Frage sprechen" hidden>🎙</button>
+    </div>
+    <button class="btn primary" id="go" type="button" disabled>Einschätzen</button>
+    <div id="state" class="quota">3 kostenlose Fragen täglich, ohne Anmeldung.</div>
+  </div>
+
+  <div id="em"></div>
+  <div id="err"></div>
+  <div id="quick">
+    <div class="sec">Häufige Anliegen</div>
+    <div class="chips" id="chips"></div>
+  </div>
+  <div id="ans"></div>
+  <div id="firms"></div>
+
+  <div class="lands" id="lands"></div>
+  <p class="foot">
+    Unverbindliche Ersteinschätzung, keine Ferndiagnose. Im Zweifel und bei Gefahr den Notruf wählen.<br />
+    Die Spracheingabe nutzt die Spracherkennung deines Browsers.<br />
+    <a href="/datenschutz.html">Datenschutz</a> · <a href="/impressum.html">Impressum</a> · <a href="/zuhause/">Mein Zuhause</a> · <a href="/">InstallateurDex für Betriebe</a>
+  </p>
+</div>
+
+<dialog id="dlg">
+  <form method="dialog" id="reqForm">
+    <b id="dlgTitle" style="font-size:18px">Anfrage</b>
+    <div class="chips" id="kinds"></div>
+    <label>Worum geht es?<textarea id="rMsg" maxlength="1800" style="min-height:90px"></textarea></label>
+    <label>Name<input id="rName" maxlength="120" autocomplete="name" /></label>
+    <label>Telefon<input id="rPhone" maxlength="40" type="tel" autocomplete="tel" /></label>
+    <label>E-Mail (optional, wenn Telefon da)<input id="rMail" maxlength="160" type="email" autocomplete="email" /></label>
+    <label>Wunschtermin (optional)<input id="rWhen" maxlength="200" placeholder="z. B. vormittags, ab Montag" /></label>
+    <div id="rErr" class="err"></div>
+    <button class="btn primary" id="rSend" type="button">Anfrage senden</button>
+    <button class="btn outline" type="button" id="rCancel">Abbrechen</button>
+    <div class="muted" id="rNote" style="text-align:center;font-size:12px"></div>
+  </form>
+</dialog>
+
+<script>
+const SUPABASE_URL = 'https://hqudwsxvjhdwfleboklz.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxdWR3c3h2amhkd2ZsZWJva2x6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM4ODgyMjQsImV4cCI6MjEwOTQ2NDIyNH0.p5SvVCHjeNGDITr4bZqUgeN9FUXo_YHZo0UVeSYKl0k';
+const RULES = /*NOTFALL-MUSTER*/[{"id":"gas","pattern":"(riech|geruch|stink|zisch)\\S*.{0,30}\\bgas|\\bgas\\S*.{0,30}(riech|geruch|stink|austritt|ausstr|zisch|leck)|gasleck|gasgeruch"},{"id":"co","pattern":"kohlenmonoxid|\\bco[- ]?(melder|warn|alarm)|co2?[- ]?melder (piept|schlägt|schlaegt)"},{"id":"fire","pattern":"\\bes brennt\\b|\\bbrennt (es|im|in|am|bei|der|die|das)\\b|\\bfeuer\\b|rauchentwicklung|qualm|verschmort|schmor(t|geruch)"},{"id":"water_electric","pattern":"(wasser|nass|tropf)\\S*.{0,40}(steckdose|strom\\b|elektr|sicherungskasten|stromverteiler|kabel)|(steckdose|strom\\b|elektr|sicherungskasten|stromverteiler|kabel)\\S*.{0,40}(wasser|nass|tropf)"},{"id":"flood","pattern":"rohrbruch|wasser (spritzt|schießt|schiesst|strömt|stroemt|läuft aus|laeuft aus)|überschwemm|ueberschwemm|keller (steht|läuft|laeuft) (unter )?wasser|flutet"}]/*ENDE*/;
+const MAKERS = /*HERSTELLER*/[{"name":"Viessmann","match":"viessmann|vitodens|vitocal|vitocrossal","at":"https://www.viessmann.at/","de":"https://www.viessmann.de/"},{"name":"Vaillant","match":"vaillant|ecotec|arotherm|flexotherm|atmotec","at":"https://www.vaillant.at/","de":"https://www.vaillant.de/"},{"name":"Buderus","match":"buderus|logamax|logatherm","at":"https://www.buderus.at/de/","de":"https://www.buderus.de/de/"},{"name":"Bosch / Junkers","match":"\\bbosch\\b|junkers|condens \\d|compress \\d","at":"https://www.bosch-homecomfort.com/at/de/wohngebaeude/start/","de":"https://www.bosch-homecomfort.com/de/de/wohngebaeude/start/"},{"name":"Wolf","match":"\\bwolf\\b|\\bcgb-?2|\\bcha-?\\d","at":"https://www.wolf.eu/de-de","de":"https://www.wolf.eu/de-de"},{"name":"Daikin","match":"daikin|altherma","at":"https://www.daikin.at/de_at/privatkunden.html","de":"https://www.daikin.de/de_de/privatkunden.html"},{"name":"LG","match":"\\blg\\b|therma ?v","at":"https://www.lg.com/at/","de":"https://www.lg.com/de/"},{"name":"Mitsubishi Electric","match":"mitsubishi|ecodan","at":"https://www.mitsubishi-les.com/de-de","de":"https://www.mitsubishi-les.com/de-de"},{"name":"Panasonic","match":"panasonic|aquarea","at":"https://aircon.panasonic.eu/AT_de","de":"https://aircon.panasonic.eu/DE_de"},{"name":"Samsung","match":"samsung|ehs mono","at":"https://www.samsung.com/at/","de":"https://www.samsung.com/de/"},{"name":"Stiebel Eltron","match":"stiebel","at":"https://www.stiebel-eltron.at/de/home.html","de":"https://www.stiebel-eltron.de/de/home.html"},{"name":"Hoval","match":"hoval","at":"https://www.hoval.at/de_AT/","de":"https://www.hoval.de/de_DE/"},{"name":"Windhager","match":"windhager","at":"https://www.windhager.com/de-at","de":"https://www.windhager.com/"},{"name":"ÖkoFEN","match":"ökofen|oekofen|okofen|pellematic","at":"https://www.oekofen.com/de-at/pelletheizung/","de":"https://www.oekofen.com/de-at/pelletheizung/"},{"name":"Fröling","match":"fröling|froeling","at":"https://www.froeling.com/de-at/","de":"https://www.froeling.com/de-at/"},{"name":"Ochsner","match":"ochsner","at":"https://www.ochsner.com/de-at","de":"https://www.ochsner.com/de-at"},{"name":"iDM","match":"\\bidm\\b|idm-energie","at":"https://www.idm-energie.at/","de":"https://www.idm-energie.at/"},{"name":"Weishaupt","match":"weishaupt","at":"https://www.weishaupt.at/","de":"https://www.weishaupt.de/"},{"name":"Brötje","match":"brötje|broetje","at":"https://www.broetje.de/","de":"https://www.broetje.de/"},{"name":"Remeha","match":"remeha","at":"https://www.remeha.de/","de":"https://www.remeha.de/"},{"name":"NIBE","match":"\\bnibe\\b","at":"https://www.nibe.eu/de-de","de":"https://www.nibe.eu/de-de"},{"name":"Vogel & Noot","match":"vogel ?(&|und) ?noot","at":"https://www.vogelundnoot.com/","de":"https://www.vogelundnoot.com/"},{"name":"Toshiba","match":"toshiba","at":"https://www.toshiba-aircondition.com/de/","de":"https://www.toshiba-aircondition.com/de/"},{"name":"Fujitsu / General","match":"fujitsu","at":"https://www.generalww.com/at/","de":"https://www.generalww.com/de/"},{"name":"Grohe","match":"grohe","at":"https://www.grohe.com/de-AT","de":"https://www.grohe.com/de-DE"},{"name":"Geberit","match":"geberit","at":"https://www.geberit.at/home/","de":"https://www.geberit.de/home/"}]/*ENDE*/;
+const STEPS = {
+  gas: { t: 'Gasgeruch: sofort handeln', s: ['Keine Schalter, Klingeln oder Handys im Gebäude betätigen, kein offenes Feuer.', 'Fenster und Türen öffnen.', 'Wenn möglich den Gas-Haupthahn schließen.', 'Gebäude verlassen, Mitbewohner warnen.', 'Von draußen den Notruf wählen.'] },
+  co: { t: 'CO-Warnung: Raum sofort verlassen', s: ['Fenster öffnen, wenn das schnell geht, dann den Raum verlassen.', 'Heizgerät oder Therme nicht weiter betreiben.', 'Bei Kopfschmerzen, Schwindel oder Übelkeit: Rettung rufen.', 'Erst wieder hinein, wenn Feuerwehr oder Fachbetrieb Entwarnung geben.'] },
+  fire: { t: 'Brand oder Rauch: Notruf wählen', s: ['Sich und andere in Sicherheit bringen.', 'Türen hinter sich schließen.', 'Feuerwehr rufen.'] },
+  water_electric: { t: 'Wasser und Strom: Vorsicht, Lebensgefahr', s: ['Nasse Bereiche und Geräte nicht berühren.', 'Wenn du gefahrlos hinkommst: Sicherung bzw. FI-Schalter für den Bereich ausschalten.', 'Wasser abdrehen (Haupthahn), sobald der Strom aus ist.', 'Elektriker und Installateur rufen; bei Gefahr die Feuerwehr.'] },
+  flood: { t: 'Wasserschaden: Haupthahn zu', s: ['Hauptwasserhahn schließen (meist beim Wasserzähler, Keller oder Technikraum).', 'Steht Wasser in der Nähe von Steckdosen oder Geräten: Strom für den Bereich ausschalten, nichts Nasses anfassen.', 'Wertsachen sichern, Fotos für die Versicherung machen.', 'Installateur-Notdienst rufen (Betriebe unten).'] },
+};
+const NUM = { AT: { fire: '122', amb: '144', gas: '128' }, DE: { fire: '112', amb: '112' }, CH: { fire: '118', amb: '144' } };
+const WHO = {
+  diy: ['Kannst du selbst lösen', '🙌', 'green'], installer: ['Fall für den Installateur', '🔧', 'brand'], manufacturer: ['Hersteller-Kundendienst', '🏭', 'amber'],
+  electrician: ['Fall für den Elektriker', '⚡', 'amber'], chimney: ['Fall für den Rauchfangkehrer', '🧹', 'amber'], other: ['Andere Stelle zuständig', '📞', 'muted'], emergency: ['Notfall', '🚨', 'red'],
+};
+const TRADES = { heizung: 'Heizung', sanitaer: 'Sanitär', waermepumpe: 'Wärmepumpe', klima: 'Klima', lueftung: 'Lüftung', solar: 'Solar', notdienst: 'Notdienst' };
+const QUICK = [['🥶', 'Heizung bleibt kalt', 'Meine Heizung wird nicht warm.'], ['🚿', 'Kein Warmwasser', 'Ich habe kein warmes Wasser mehr.'], ['💧', 'Etwas tropft', 'Unter dem Waschbecken tropft es.'],
+  ['🔢', 'Fehlercode am Gerät', 'Meine Therme zeigt einen Fehlercode an: '], ['🌀', 'Wärmepumpe laut', 'Meine Wärmepumpe ist plötzlich sehr laut.'], ['🚽', 'Abfluss verstopft', 'Der Abfluss ist verstopft und das Wasser läuft nicht ab.'],
+  ['📉', 'Druck zu niedrig', 'Der Druck an meiner Heizung ist zu niedrig.'], ['❄️', 'Klima kühlt nicht', 'Meine Klimaanlage kühlt nicht mehr richtig.']];
+const FIND = { AT: ['Firmen A–Z der Wirtschaftskammer', 'https://firmen.wko.at/'], DE: ['Fachbetriebssuche Wasser Wärme Luft', 'https://www.wasserwaermeluft.de/'], CH: ['suissetec (Branchenverband)', 'https://suissetec.ch/de/'] };
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+const tone = (t) => t === 'green' ? ['var(--green)', 'var(--green-s)'] : t === 'amber' ? ['var(--amber)', 'var(--amber-s)'] : t === 'red' ? ['var(--red)', 'var(--red-s)'] : t === 'muted' ? ['var(--muted)', 'var(--border)'] : ['var(--brand)', 'var(--brand-s)'];
+
+let land = store.get('ih.land') || ((navigator.language || '').match(/-DE$/i) ? 'DE' : (navigator.language || '').match(/-CH$/i) ? 'CH' : 'AT');
+let last = null, asked = '', reqFirm = null, reqKind = 'fault';
+
+function device() {
+  let id = store.get('ih.device');
+  if (!id || !/^[a-f0-9]{32}$/.test(id)) {
+    id = Array.from(crypto.getRandomValues(new Uint8Array(16))).map((b) => b.toString(16).padStart(2, '0')).join('');
+    store.set('ih.device', id);
+  }
+  return id;
+}
+
+function emergency(text) {
+  const t = (text || '').toLowerCase();
+  for (const r of RULES) {
+    if (!new RegExp(r.pattern, 'i').test(t)) continue;
+    const n = NUM[land] || NUM.AT;
+    const calls = r.id === 'gas' ? (n.gas ? [['Gas-Notruf', n.gas], ['Euro-Notruf', '112']] : [['Notruf', '112']])
+      : r.id === 'co' ? [['Feuerwehr', n.fire], ['Rettung', n.amb]] : r.id === 'flood' ? [['Feuerwehr (wenn es nicht aufhört)', n.fire]] : [['Feuerwehr', n.fire]];
+    return { id: r.id, t: STEPS[r.id].t, s: STEPS[r.id].s, calls };
+  }
+  return null;
+}
+
+function renderEm() {
+  const e = emergency($('q').value + ' ' + (last && last.transcript || ''));
+  $('em').innerHTML = e ? '<div class="em" role="alert"><h2>🚨 ' + esc(e.t) + '</h2><ol>' + e.s.map((s) => '<li>' + esc(s) + '</li>').join('') + '</ol><div class="calls">' +
+    e.calls.map((c) => '<a class="call" href="tel:' + c[1] + '">📞 ' + c[1] + '<small>' + esc(c[0]) + '</small></a>').join('') + '</div></div>' : '';
+}
+
+function maker(text) {
+  for (const m of MAKERS) if (new RegExp(m.match, 'i').test(text || '')) return { name: m.name, url: land === 'DE' ? m.de : m.at };
+  return null;
+}
+
+async function ask(followUp) {
+  const text = $('q').value.trim();
+  if (text.length < 3) return;
+  $('go').disabled = true;
+  $('err').innerHTML = '';
+  $('state').innerHTML = '<div class="thinking"><span class="dot"></span>Einen Moment, ich ordne das ein.</div>';
+  try {
+    const r = await fetch(SUPABASE_URL + '/functions/v1/helper-ask', {
+      method: 'POST', headers: { authorization: 'Bearer ' + SUPABASE_ANON, apikey: SUPABASE_ANON, 'content-type': 'application/json' },
+      body: JSON.stringify({ text: text, followUp: followUp || undefined, land: land, device: device() }),
+    });
+    const b = await r.json().catch(() => ({}));
+    if (r.status === 429) {
+      $('state').textContent = '';
+      $('err').innerHTML = '<div class="card"><b>' + (b.reason === 'free_quota' ? 'Die freien Fragen für heute sind aufgebraucht.' : 'Gerade sehr gefragt. Bitte später noch einmal.') + '</b>' +
+        (b.reason === 'free_quota' ? '<p class="muted">Mit einem kostenlosen Kundenkonto in der InstallateurDex-App stellst du bis zu 20 Fragen am Tag.</p>' : '') + '</div>';
+      return;
+    }
+    if (!r.ok || !b.answer || !b.answer.title) throw new Error('x');
+    last = b; asked = followUp ? asked : text;
+    $('state').textContent = b.remaining <= 0 ? 'Für heute war das die letzte freie Frage.' : b.remaining === 1 ? 'Noch 1 Frage heute.' : 'Noch ' + b.remaining + ' Fragen heute.';
+    $('quick').hidden = true;
+    renderAnswer(b.answer);
+    $('ans').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (e) {
+    $('state').textContent = '';
+    $('err').innerHTML = '<p class="err">' + (navigator.onLine === false ? 'Kein Netz: Bitte mit Internetverbindung noch einmal.' : 'Der Helfer ist gerade nicht erreichbar. Bitte gleich noch einmal.') + '</p>';
+  } finally {
+    $('go').disabled = $('q').value.trim().length < 3;
+  }
+}
+
+function renderAnswer(a) {
+  const w = WHO[a.who] || WHO.installer;
+  const label = a.who === 'chimney' && land === 'DE' ? 'Fall für den Schornsteinfeger' : a.who === 'chimney' && land === 'CH' ? 'Fall für den Kaminfeger' : w[0];
+  const c = tone(w[2]);
+  const mk = maker((a.brand || '') + ' ' + asked);
+  const steps = Array.isArray(a.steps) ? a.steps.slice(0, 6) : [];
+  let h = '<div class="card ans" style="border-color:' + c[0] + '"><div class="who"><div class="ic" style="background:' + c[1] + '">' + w[1] + '</div><div><div class="lb" style="color:' + c[0] + '">' + esc(label) +
+    '</div><h2>' + esc(a.title) + '</h2></div>' + (a.urgency === 'now' ? '<span class="urg" style="background:var(--red-s);color:var(--red)">heute</span>' : a.urgency === 'soon' ? '<span class="urg" style="background:var(--amber-s);color:var(--amber)">bald</span>' : '') +
+    '</div><p class="sum">' + esc(a.summary) + '</p>';
+  if (steps.length) h += '<div class="sec" style="margin-top:8px">Das kannst du jetzt tun</div>' + steps.map((s, i) => '<div class="step" role="checkbox" aria-checked="false" tabindex="0"><span class="n">' + (i + 1) + '</span><span>' + esc(s) + '</span></div>').join('');
+  if (a.safety) h += '<div class="warn">⚠️ ' + esc(a.safety) + '</div>';
+  if (mk) h += '<a class="maker" href="' + esc(mk.url) + '" target="_blank" rel="noopener"><b>🏭 Kundendienst von ' + esc(mk.name) + '</b><span class="muted">Zur Herstellerseite (Service & Kontakt). Halte die Seriennummer vom Typenschild bereit.</span></a>';
+  else if (a.who === 'manufacturer') h += '<p class="muted">Den Kundendienst des Herstellers findest du auf dessen Webseite oder in der Bedienungsanleitung. Der Installateur, der das Gerät wartet, kann ihn ebenfalls verständigen.</p>';
+  if (a.question) h += '<div style="margin-top:12px"><b>❓ ' + esc(a.question) + '</b><div class="zip"><input id="fu" maxlength="400" placeholder="Deine Antwort" style="max-width:none;text-align:left;letter-spacing:0;font-weight:400;font-size:16px" /><button class="btn primary" id="fuGo" type="button">Weiter</button></div></div>';
+  h += '<button class="btn outline" id="again" type="button">＋ Neue Frage</button></div>';
+  $('ans').innerHTML = h;
+  document.querySelectorAll('.step').forEach((el) => {
+    const t = () => { el.classList.toggle('done'); el.setAttribute('aria-checked', el.classList.contains('done')); el.querySelector('.n').textContent = el.classList.contains('done') ? '✓' : el.querySelector('.n').dataset.n || el.querySelector('.n').textContent; };
+    el.querySelector('.n').dataset.n = el.querySelector('.n').textContent;
+    el.addEventListener('click', t); el.addEventListener('keydown', (e) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); t(); } });
+  });
+  $('again').onclick = () => { $('q').value = ''; $('ans').innerHTML = ''; $('firms').innerHTML = ''; $('quick').hidden = false; last = null; renderEm(); $('go').disabled = true; $('q').focus(); };
+  if ($('fuGo')) $('fuGo').onclick = () => { const v = $('fu').value.trim(); if (v) ask(v); };
+  renderFirmSearch(a);
+}
+
+function mapsTerm(a) {
+  if (a.who === 'electrician') return 'Elektriker';
+  if (a.who === 'chimney') return land === 'DE' ? 'Schornsteinfeger' : land === 'CH' ? 'Kaminfeger' : 'Rauchfangkehrer';
+  if (a.trade === 'waermepumpe') return 'Wärmepumpe Installateur';
+  if (a.trade === 'klima') return 'Klimatechnik';
+  return land === 'DE' ? 'Sanitär Heizung' : 'Installateur';
+}
+function mapsUrl(a, near) { return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(near ? mapsTerm(a) + ' ' + near : mapsTerm(a)); }
+function km(d) { if (d == null) return ''; d = Number(d); return d < 1 ? Math.max(100, Math.round(d * 10) * 100) + ' m' : d < 10 ? d.toFixed(1).replace('.', ',') + ' km' : Math.round(d) + ' km'; }
+
+function renderFirmSearch(a) {
+  if (a.who === 'other') { $('firms').innerHTML = ''; return; }
+  if (a.who === 'electrician' || a.who === 'chimney') {
+    $('firms').innerHTML = '<a class="card" style="display:block;text-decoration:none;color:var(--text)" href="' + mapsUrl(a) + '" target="_blank" rel="noopener"><b>' + (WHO[a.who] || WHO.installer)[1] + ' ' + esc(mapsTerm(a)) + ' in deiner Nähe</b><p class="muted">Öffnet die Suche in Google Maps. Dafür ist kein InstallateurDex-Betrieb zuständig.</p></a>';
+    return;
+  }
+  $('firms').innerHTML = '<div class="sec">' + (a.who === 'diy' ? 'Lieber vom Profi? Betriebe in deiner Nähe' : 'Betriebe in deiner Nähe') + '</div>' +
+    (navigator.geolocation ? '<button class="btn primary" id="nearGo" type="button">📍 Betriebe in meiner Nähe</button><p class="muted" style="text-align:center;margin:8px 0 0">oder Postleitzahl:</p>' : '') +
+    '<div class="zip"><input id="zip" inputmode="numeric" maxlength="' + (land === 'DE' ? 5 : 4) + '" placeholder="PLZ" value="' + esc(store.get('ih.zip') || '') + '" aria-label="Postleitzahl" /><button class="btn primary" id="zipGo" type="button">Suchen</button></div><div id="fl"></div>';
+  $('zipGo').onclick = () => searchFirms(a);
+  $('zip').addEventListener('keydown', (e) => { if (e.key === 'Enter') searchFirms(a); });
+  if ($('nearGo')) $('nearGo').onclick = () => searchNear(a);
+}
+
+async function rpc(name, args) {
+  const r = await fetch(SUPABASE_URL + '/rest/v1/rpc/' + name, { method: 'POST', headers: { apikey: SUPABASE_ANON, authorization: 'Bearer ' + SUPABASE_ANON, 'content-type': 'application/json' }, body: JSON.stringify(args) });
+  if (!r.ok) throw new Error('rpc');
+  return r.json();
+}
+
+function searchNear(a) {
+  $('fl').innerHTML = '<div class="thinking"><span class="dot"></span>Standort wird ermittelt …</div>';
+  navigator.geolocation.getCurrentPosition(async (p) => {
+    // gerundet auf ~1 km: genauer braucht die Suche nicht; nicht gespeichert
+    const lat = Math.round(p.coords.latitude * 100) / 100, lng = Math.round(p.coords.longitude * 100) / 100;
+    try {
+      const list = await rpc('helper_firms_near', { p_lat: lat, p_lng: lng, p_land: land, p_trade: a.trade || null, p_zip: null, p_radius: 60, p_limit: 8 });
+      showFirms(a, list, true);
+    } catch (e) { $('fl').innerHTML = '<p class="err">Betriebe konnten gerade nicht geladen werden.</p>'; }
+  }, () => { $('fl').innerHTML = '<p class="err">Ohne Standort geht es auch: Postleitzahl eingeben.</p>'; $('zip').focus(); }, { enableHighAccuracy: false, timeout: 12000, maximumAge: 1800000 });
+}
+
+async function searchFirms(a) {
+  const zip = $('zip').value.trim();
+  if (!(land === 'DE' ? /^\d{5}$/ : /^\d{4}$/).test(zip)) { $('fl').innerHTML = '<p class="err">Bitte die ' + (land === 'DE' ? '5' : '4') + '-stellige Postleitzahl eingeben.</p>'; return; }
+  store.set('ih.zip', zip);
+  $('fl').innerHTML = '<div class="thinking"><span class="dot"></span>Suche Betriebe …</div>';
+  try {
+    showFirms(a, await rpc('helper_firms', { p_zip: zip, p_land: land, p_trade: a.trade || null, p_limit: 8 }), false, zip);
+  } catch (e) {
+    $('fl').innerHTML = '<p class="err">Betriebe konnten gerade nicht geladen werden.</p>';
+  }
+}
+
+function showFirms(a, list, near, zip) {
+  if (!list.length) {
+    $('fl').innerHTML = '<div class="card"><b>Noch kein Partnerbetrieb in deiner Nähe</b><p class="muted">Wir sind neu und wachsen. Bis dahin findest du Fachbetriebe hier:</p>' +
+      '<a href="' + mapsUrl(a, zip) + '" target="_blank" rel="noopener" style="color:var(--brand);font-weight:800;display:block;margin-top:6px">In Google Maps suchen ›</a>' +
+      '<a href="' + FIND[land][1] + '" target="_blank" rel="noopener" style="color:var(--brand);font-weight:800;display:block;margin-top:6px">' + esc(FIND[land][0]) + ' ›</a></div>';
+    return;
+  }
+  $('fl').innerHTML = list.map((f, i) => '<div class="card firm" style="animation-delay:' + (i * 60) + 'ms"><div style="display:flex;gap:8px;align-items:center"><div style="flex:1"><h3>' + esc(f.name) + '</h3><div class="muted">' + esc([f.zip, f.city].filter(Boolean).join(' ')) +
+    (f.distance_km != null ? ' · ' + km(f.distance_km) + ' entfernt' : f.nearness === 4 ? ' · in deinem Ort' : '') + '</div></div>' +
+    ((f.trades || []).indexOf('notdienst') >= 0 ? '<span class="badge">Notdienst</span>' : '') + '</div>' + (f.blurb ? '<p style="margin:8px 0 0">' + esc(f.blurb) + '</p>' : '') +
+    ((f.trades || []).filter((t) => t !== 'notdienst').length ? '<div class="muted" style="margin-top:4px">' + (f.trades || []).filter((t) => t !== 'notdienst').map((t) => esc(TRADES[t] || t)).join(' · ') + '</div>' : '') +
+    '<div class="acts">' + (f.phone ? '<a href="tel:' + esc(String(f.phone).replace(/[^\d+]/g, '')) + '">📞 Anrufen</a>' : '') + '<button class="p" type="button" data-i="' + i + '">✉️ Anfrage senden</button>' +
+    (f.review_url ? '<a href="' + esc(f.review_url) + '" target="_blank" rel="noopener" style="border:0;padding:9px 4px">⭐ Bewertungen</a>' : '') + '</div></div>').join('');
+  $('fl').insertAdjacentHTML('beforeend', '<a class="card" style="display:block;text-decoration:none;color:var(--text)" href="' + mapsUrl(a, zip) + '" target="_blank" rel="noopener"><b>🗺️ Alle Betriebe in der Umgebung</b><p class="muted">In Google Maps mit Telefonnummer, Öffnungszeiten und Bewertungen, zum direkten Anrufen.</p></a>');
+  $('fl').insertAdjacentHTML('beforeend', '<p class="muted" style="text-align:center;font-size:12px">Reihenfolge: ' + (near ? 'Entfernung' : 'Nähe zu deiner PLZ') + ', passende Leistung. Keine bezahlte Platzierung. Gezeigt werden Betriebe, die InstallateurDex nutzen und sich freigeschaltet haben.</p>');
+  $('fl').querySelectorAll('button[data-i]').forEach((b) => { b.onclick = () => openReq(list[Number(b.dataset.i)], a); });
+}
+
+function openReq(f, a) {
+  reqFirm = f; reqKind = a.who === 'diy' ? 'maintenance' : 'fault';
+  $('dlgTitle').textContent = '✉️ Anfrage an ' + f.name;
+  $('rMsg').value = [asked, a ? 'Einschätzung des Helfers: ' + a.title : ''].filter(Boolean).join('\n');
+  try { const c = JSON.parse(store.get('ih.contact') || '{}'); $('rName').value = c.name || ''; $('rPhone').value = c.phone || ''; $('rMail').value = c.email || ''; } catch (e) {}
+  $('rErr').textContent = ''; $('rNote').textContent = 'Deine Angaben gehen nur an ' + f.name + ', damit der Betrieb dich kontaktieren kann.';
+  renderKinds();
+  $('dlg').showModal();
+}
+function renderKinds() {
+  $('kinds').innerHTML = [['fault', '🚨 Störung'], ['maintenance', '🔧 Wartung'], ['quote', '💶 Angebot']].map((k) => '<button type="button" class="chip" data-k="' + k[0] + '" style="' + (reqKind === k[0] ? 'border-color:var(--brand);background:var(--brand-s)' : '') + '">' + k[1] + '</button>').join('');
+  $('kinds').querySelectorAll('button').forEach((b) => { b.onclick = () => { reqKind = b.dataset.k; renderKinds(); }; });
+}
+$('rCancel').onclick = () => $('dlg').close();
+$('rSend').onclick = async () => {
+  const c = { name: $('rName').value.trim(), phone: $('rPhone').value.trim(), email: $('rMail').value.trim() };
+  if (!c.phone && !c.email) { $('rErr').textContent = 'Bitte Telefonnummer oder E-Mail angeben, damit der Betrieb dich erreicht.'; return; }
+  store.set('ih.contact', JSON.stringify(c));
+  $('rSend').disabled = true;
+  try {
+    const zip = store.get('ih.zip');
+    const r = await rpc('helper_request', { p_org: reqFirm.id, p_kind: reqKind, p_message: $('rMsg').value.slice(0, 1900), p_name: c.name || null, p_phone: c.phone || null, p_email: c.email || null, p_zip: zip || null, p_preferred: $('rWhen').value.trim() || null });
+    if (r && r.ok) {
+      $('dlg').close();
+      $('fl').insertAdjacentHTML('afterbegin', '<div class="ok">✓ Anfrage an ' + esc(reqFirm.name) + ' gesendet<br /><small>Der Betrieb meldet sich bei dir.</small></div>');
+      $('fl').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      const m = { contact: 'Bitte Telefonnummer oder E-Mail angeben.', email: 'Die E-Mail-Adresse sieht nicht richtig aus.', message: 'Bitte kurz beschreiben, worum es geht.', rate_limited: 'Es wurden gerade schon mehrere Anfragen gesendet. Bitte später noch einmal.', unknown: 'Dieser Betrieb nimmt gerade keine Anfragen über den Helfer an.' };
+      $('rErr').textContent = m[r && r.error] || 'Die Anfrage konnte gerade nicht gesendet werden.';
+    }
+  } catch (e) {
+    $('rErr').textContent = 'Die Anfrage konnte gerade nicht gesendet werden.';
+  } finally {
+    $('rSend').disabled = false;
+  }
+};
+
+function renderLands() {
+  $('lands').innerHTML = [['AT', '🇦🇹 Österreich'], ['DE', '🇩🇪 Deutschland'], ['CH', '🇨🇭 Schweiz']].map((l) => '<button type="button" class="chip' + (land === l[0] ? ' on' : '') + '" data-l="' + l[0] + '">' + l[1] + '</button>').join('');
+  $('lands').querySelectorAll('button').forEach((b) => { b.onclick = () => { land = b.dataset.l; store.set('ih.land', land); renderLands(); renderEm(); if (last) renderAnswer(last.answer); }; });
+}
+
+$('chips').innerHTML = QUICK.map((q, i) => '<button type="button" class="chip" data-i="' + i + '" style="animation:rise .4s ' + (i * 40) + 'ms ease both">' + q[0] + ' ' + esc(q[1]) + '</button>').join('');
+$('chips').querySelectorAll('button').forEach((b) => { b.onclick = () => { $('q').value = QUICK[Number(b.dataset.i)][2]; $('q').focus(); $('q').dispatchEvent(new Event('input')); }; });
+$('q').addEventListener('input', () => { $('go').disabled = $('q').value.trim().length < 3; renderEm(); });
+$('q').addEventListener('keydown', (e) => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) ask(); });
+$('go').onclick = () => ask();
+renderLands();
+
+// Spracheingabe über die Spracherkennung des Browsers (Chrome, Edge, Safari) — nur zeigen, wo es sie gibt
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+if (SR) {
+  const rec = new SR();
+  rec.lang = land === 'DE' ? 'de-DE' : land === 'CH' ? 'de-CH' : 'de-AT';
+  rec.interimResults = true;
+  let base = '';
+  $('mic').hidden = false;
+  $('mic').onclick = () => {
+    if ($('mic').classList.contains('on')) { rec.stop(); return; }
+    base = $('q').value ? $('q').value.trim() + ' ' : '';
+    try { rec.start(); $('mic').classList.add('on'); $('mic').textContent = '■'; } catch (e) {}
+  };
+  rec.onresult = (e) => { let t = ''; for (const r of e.results) t += r[0].transcript; $('q').value = base + t; $('q').dispatchEvent(new Event('input')); };
+  rec.onend = () => { $('mic').classList.remove('on'); $('mic').textContent = '🎙'; };
+}
+</script>
+</body>
+</html>
