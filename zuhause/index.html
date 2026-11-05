@@ -155,8 +155,8 @@
 <script src="labels.js"></script>
 <script>
 'use strict';
-const SUPABASE_URL = '';       // https://<ref>.supabase.co   (node scripts/einrichten.js trägt es ein)
-const SUPABASE_ANON = '';      // anon key
+const SUPABASE_URL = 'https://hqudwsxvjhdwfleboklz.supabase.co';       // https://<ref>.supabase.co   (node scripts/einrichten.js trägt es ein)
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxdWR3c3h2amhkd2ZsZWJva2x6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM4ODgyMjQsImV4cCI6MjEwOTQ2NDIyNH0.p5SvVCHjeNGDITr4bZqUgeN9FUXo_YHZo0UVeSYKl0k';      // anon key
 const L = window.IDX_LABELS || { kinds: {}, jobs: {}, checks: {}, measures: {} };
 const DEMO_MODE = new URLSearchParams(location.search).has('demo');
 const KEY = DEMO_MODE ? 'idx.zuhause.demo' : 'idx.zuhause.session'; // Demo-Sitzung nie als echte verwenden
