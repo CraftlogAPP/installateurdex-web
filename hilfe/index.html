@@ -3,7 +3,6 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.supabase.co; connect-src 'self' https://*.supabase.co; object-src 'none'; base-uri 'none'" />
 <meta name="referrer" content="no-referrer" />
 <title>Installateur-Helfer · Wer ist zuständig? · InstallateurDex</title>
 <meta name="description" content="Heizung kalt, etwas tropft, Fehlercode? Problem beschreiben und sofort wissen, wer zuständig ist, was du jetzt tun kannst und welcher Installateur in deiner Nähe hilft. Kostenlos, ohne Anmeldung." />
@@ -38,6 +37,8 @@
   .chips { display:flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
   .chip { border:1px solid var(--border); background: var(--card); color: var(--text); border-radius: 999px; padding: 10px 14px; font: inherit; font-weight: 700; font-size: 14px; cursor:pointer; }
   .chip:hover { border-color: var(--brand); }
+  .landline { background: none; border: 0; padding: 6px 0; font: inherit; font-size: 14px; color: var(--muted); cursor: pointer; }
+  .landline span { color: var(--brand); font-weight: 800; }
   .sec { color: var(--muted); font-weight: 900; font-size: 13px; text-transform: uppercase; letter-spacing: .5px; margin: 20px 2px 0; }
   .em { background: var(--red-s); border: 2px solid var(--red); border-radius: 18px; padding: 18px; margin-top: 14px; animation: pop .35s ease both; }
   .em h2 { color: var(--red); margin: 0 0 8px; font-size: 19px; } .em ol { margin: 0; padding-left: 20px; line-height: 1.55; }
@@ -159,7 +160,10 @@ const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&':
 const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
 const tone = (t) => t === 'green' ? ['var(--green)', 'var(--green-s)'] : t === 'amber' ? ['var(--amber)', 'var(--amber-s)'] : t === 'red' ? ['var(--red)', 'var(--red-s)'] : t === 'muted' ? ['var(--muted)', 'var(--border)'] : ['var(--brand)', 'var(--brand-s)'];
 
-let land = store.get('ih.land') || ((navigator.language || '').match(/-DE$/i) ? 'DE' : (navigator.language || '').match(/-CH$/i) ? 'CH' : 'AT');
+// Land: gemerkte Wahl, sonst Region des Browsers (de-AT/de-DE/de-CH). Bekannt → nur eine Zeile „ändern“ statt drei Knöpfe.
+const navLand = ((navigator.language || '').match(/[-_](AT|DE|CH)$/i) || [])[1];
+let land = store.get('ih.land') || (navLand ? navLand.toUpperCase() : 'AT');
+let landKnown = !!(store.get('ih.land') || navLand), landOpen = false;
 let last = null, asked = '', reqFirm = null, reqKind = 'fault';
 
 function device() {
@@ -362,8 +366,14 @@ $('rSend').onclick = async () => {
 };
 
 function renderLands() {
-  $('lands').innerHTML = [['AT', '🇦🇹 Österreich'], ['DE', '🇩🇪 Deutschland'], ['CH', '🇨🇭 Schweiz']].map((l) => '<button type="button" class="chip' + (land === l[0] ? ' on' : '') + '" data-l="' + l[0] + '">' + l[1] + '</button>').join('');
-  $('lands').querySelectorAll('button').forEach((b) => { b.onclick = () => { land = b.dataset.l; store.set('ih.land', land); renderLands(); renderEm(); if (last) renderAnswer(last.answer); }; });
+  const L = [['AT', '🇦🇹 Österreich'], ['DE', '🇩🇪 Deutschland'], ['CH', '🇨🇭 Schweiz']];
+  if (landKnown && !landOpen) {
+    $('lands').innerHTML = '<button type="button" class="landline" aria-label="Land ändern">' + (L.find((l) => l[0] === land) || L[0])[1] + ' · <span>ändern</span></button>';
+    $('lands').querySelector('button').onclick = () => { landOpen = true; renderLands(); };
+    return;
+  }
+  $('lands').innerHTML = L.map((l) => '<button type="button" class="chip' + (land === l[0] ? ' on' : '') + '" data-l="' + l[0] + '">' + l[1] + '</button>').join('');
+  $('lands').querySelectorAll('button').forEach((b) => { b.onclick = () => { land = b.dataset.l; store.set('ih.land', land); landKnown = true; landOpen = false; renderLands(); renderEm(); if (last) renderAnswer(last.answer); }; });
 }
 
 $('chips').innerHTML = QUICK.map((q, i) => '<button type="button" class="chip" data-i="' + i + '" style="animation:rise .4s ' + (i * 40) + 'ms ease both">' + q[0] + ' ' + esc(q[1]) + '</button>').join('');
