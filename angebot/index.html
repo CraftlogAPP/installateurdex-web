@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.supabase.co; connect-src 'self' https://*.supabase.co; object-src 'none'; base-uri 'none'" />
+<meta name="robots" content="noindex, nofollow" />
+<meta name="referrer" content="no-referrer" />
+<title>Ihr Angebot · InstallateurDex</title>
+<meta name="description" content="Angebot Ihres Fachbetriebs ansehen und online annehmen." />
+<style>
+  :root { --copper:#B5651D; --ice:#3B8EA5; --bg:#F6F4F1; --card:#fff; --text:#1B1F24; --muted:#646B74; --border:#E6E1DA;
+          --green:#16A34A; --green-s:#DCFCE7; --red:#DC2626; --red-s:#FEE2E2; --amber-s:#FEF3C7; --brand:var(--copper); }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0F1216; --card:#181D23; --text:#F2EFEA; --muted:#A3A9B1; --border:#2A3139; --green-s:#12331E; --red-s:#3A1515; --amber-s:#3A2E12; } }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: -apple-system, 'Segoe UI', Roboto, Inter, sans-serif; background: var(--bg); color: var(--text); }
+  .wrap { max-width: 560px; margin: 0 auto; padding: 20px 16px 48px; }
+  .firm { font-weight: 900; font-size: 18px; } .firm small { display:block; font-weight:600; font-size:12px; color: var(--muted); margin-top: 2px; }
+  .card { background: var(--card); border:1px solid var(--border); border-radius: 18px; padding: 18px; margin-top: 14px; box-shadow: 0 6px 24px rgba(0,0,0,.06);
+          animation: rein .35s ease-out both; }
+  .card:nth-of-type(2) { animation-delay: .05s } .card:nth-of-type(3) { animation-delay: .1s } .card:nth-of-type(4) { animation-delay: .15s }
+  @keyframes rein { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
+  @media (prefers-reduced-motion: reduce) { .card, .check svg path { animation: none !important; } }
+  .band { height: 5px; border-radius: 4px; background: linear-gradient(90deg, var(--copper), var(--ice)); margin-bottom: 16px; }
+  h1 { font-size: 22px; margin: 0 0 4px; } h2 { font-size: 16px; margin: 0 0 8px; } p { color: var(--muted); line-height: 1.5; margin: 6px 0; }
+  .meta { display:flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .pill { font-size: 12px; font-weight: 800; padding: 5px 10px; border-radius: 999px; background: var(--bg); border: 1px solid var(--border); color: var(--muted); }
+  .line { display:flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-top: 1px solid var(--border); }
+  .line:first-child { border-top: 0; }
+  .line b { display:block; font-weight: 700; line-height: 1.35; } .line span { color: var(--muted); font-size: 13px; }
+  .line .sum { font-weight: 800; white-space: nowrap; text-align: right; }
+  .tot { display:flex; justify-content: space-between; padding: 4px 0; color: var(--muted); } .tot.big { color: var(--text); font-size: 20px; font-weight: 900; padding-top: 10px; border-top: 2px solid var(--border); margin-top: 6px; }
+  .btn { display:block; text-align:center; text-decoration:none; font-weight:800; font-size:16px; padding: 15px; border-radius: 14px; margin-top: 10px; border: 0; width: 100%; font-family: inherit; cursor: pointer; }
+  .primary { background: var(--brand); color:#fff; } .outline { background: none; border: 2px solid var(--border); color: var(--text); } .link { background:none; color: var(--muted); font-weight: 700; }
+  .btn:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--ice); outline-offset: 2px; }
+  .btn[disabled] { opacity: .55; cursor: default; }
+  label { display:block; font-weight: 800; margin: 14px 0 6px; }
+  input[type=text], textarea { width: 100%; font: inherit; font-size: 16px; padding: 12px 14px; border-radius: 12px; border: 2px solid var(--border); background: var(--bg); color: var(--text); }
+  textarea { min-height: 90px; resize: vertical; }
+  .sig { position: relative; border: 2px dashed var(--border); border-radius: 14px; background: #fff; touch-action: none; }
+  .sig canvas { display:block; width: 100%; height: 180px; border-radius: 12px; }
+  .sig .hint { position:absolute; left: 0; right: 0; bottom: 10px; text-align: center; color: #9AA0A6; font-size: 13px; pointer-events: none; }
+  .sig .clear { position:absolute; top: 8px; right: 8px; background: #F1EEE9; color: #444; border: 0; border-radius: 10px; padding: 6px 10px; font-weight: 700; cursor: pointer; }
+  .choice { display:flex; gap: 10px; align-items: flex-start; border: 2px solid var(--border); border-radius: 14px; padding: 12px 14px; margin-top: 10px; cursor: pointer; }
+  .choice input { margin-top: 4px; transform: scale(1.3); accent-color: var(--brand); }
+  .choice.on { border-color: var(--brand); }
+  details { border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; margin-top: 12px; background: var(--bg); }
+  summary { font-weight: 800; cursor: pointer; } details h3 { font-size: 14px; margin: 14px 0 4px; } details p { font-size: 13px; }
+  .ok, .no, .warn { border-radius: 14px; padding: 14px 16px; font-weight: 800; margin-top: 12px; }
+  .ok { background: var(--green-s); color: var(--green); } .no { background: var(--red-s); color: var(--red); } .warn { background: var(--amber-s); }
+  .ok small, .no small, .warn small { display:block; font-weight: 600; opacity: .9; margin-top: 4px; color: var(--text); }
+  .check { display:flex; justify-content:center; margin: 6px 0 2px; }
+  .check svg { width: 74px; height: 74px; } .check circle { fill: var(--green-s); }
+  .check path { stroke: var(--green); stroke-width: 6; fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 60; stroke-dashoffset: 60; animation: zug .6s .15s ease-out forwards; }
+  @keyframes zug { to { stroke-dashoffset: 0 } }
+  .err { color: var(--red); font-weight: 700; margin-top: 10px; min-height: 1em; }
+  .note { font-size: 12px; color: var(--muted); text-align:center; margin-top: 18px; line-height: 1.5; } .note a { color: var(--muted); }
+  .center { text-align:center; padding: 60px 10px; color: var(--muted); }
+  .sigimg { max-width: 260px; height: auto; background: #fff; border-radius: 8px; border: 1px solid var(--border); margin-top: 6px; }
+  @media print {
+    body { background: #fff; color: #000; } .card { box-shadow: none; border-color: #ccc; break-inside: avoid; animation: none; }
+    .noprint { display: none !important; } details { display: block; } details > * { display: block !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap" id="app"><div class="center">Angebot wird geladen …</div></div>
+<script src="widerruf.js"></script>
+<script>
+// Gleiche öffentliche Werte wie /termin/ und /a/ (anon-Schlüssel, nur für die freigegebenen Funktionen).
+const SUPABASE_URL = 'https://hqudwsxvjhdwfleboklz.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxdWR3c3h2amhkd2ZsZWJva2x6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM4ODgyMjQsImV4cCI6MjEwOTQ2NDIyNH0.p5SvVCHjeNGDITr4bZqUgeN9FUXo_YHZo0UVeSYKl0k';
+const app = document.getElementById('app');
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const eur = (c) => (Number(c || 0) / 100).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+const qtyTxt = (q) => Number(q || 0).toLocaleString('de-DE', { maximumFractionDigits: 3 });
+const dateTxt = (d) => (d ? new Date(String(d).length === 10 ? d + 'T12:00:00' : d).toLocaleDateString('de-AT', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '');
+const dateTimeTxt = (d) => (d ? new Date(d).toLocaleString('de-AT', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '');
+const telHref = (p) => 'tel:' + String(p || '').replace(/[^0-9+]/g, '');
+const token = (new URLSearchParams(location.search).get('t') || '').toLowerCase();
+
+const inDays = (n) => { const d = new Date(); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); };
+const DEMO = { ok: true, state: 'open', consumer: true, demo: true,
+  firm: { name: 'Installateur Muster GmbH (Beispiel)', street: 'Hauptstraße 1', zip: '7000', city: 'Eisenstadt', land: 'AT', phone: '+43 2682 000000', email: 'office@beispiel.at' },
+  quote: { number: 'AN-2026-0042', issuedAt: inDays(0), validUntil: inDays(30), recipient: 'Familie Beispiel', intro: 'Vielen Dank für Ihre Anfrage. Gerne bieten wir Ihnen an:',
+    notes: 'Die Arbeiten dauern voraussichtlich zwei Tage.', vatMode: 'normal',
+    lines: [{ text: 'Luft-Wasser-Wärmepumpe 8 kW inkl. Montage', qty: 1, unit: 'pauschal', unitPriceCents: 1450000, vatRate: 20 },
+            { text: 'Hydraulischer Abgleich', qty: 1, unit: 'pauschal', unitPriceCents: 45000, vatRate: 20 },
+            { text: 'Arbeitszeit Elektroanschluss', qty: 3, unit: 'h', unitPriceCents: 7800, vatRate: 20 }],
+    netCents: 1518400, vatCents: 303680, grossCents: 1822080 } };
+
+async function rpc(name, body) {
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${name}`, {
+      method: 'POST', headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+    });
+    return r.ok ? r.json() : null;
+  } catch { return null; }
+}
+
+let offer = null;
+let view = 'quote'; // quote | accept | decline
+
+function firmHead(f) {
+  const addr = [f.street, [f.zip, f.city].filter(Boolean).join(' ')].filter(Boolean).join(', ');
+  return `<div class="band"></div><div class="firm">${esc(f.name || 'Ihr Fachbetrieb')}<small>${esc(addr)}</small></div>`;
+}
+
+function vatGroups(lines) {
+  const by = {};
+  for (const l of lines) { const net = Math.round(Number(l.qty || 0) * Number(l.unitPriceCents || 0)); const r = Number(l.vatRate || 0); by[r] = (by[r] || 0) + net; }
+  return Object.keys(by).map(Number).sort((a, b) => b - a).map((r) => ({ rate: r, net: by[r], vat: Math.round((by[r] * r) / 100) }));
+}
+
+function quoteCard(o) {
+  const q = o.quote, f = o.firm;
+  const lines = (q.lines || []).map((l) => `<div class="line"><div><b>${esc(l.text)}</b><span>${qtyTxt(l.qty)} ${esc(l.unit)} × ${eur(l.unitPriceCents)}</span></div>
+    <div class="sum">${eur(Math.round(Number(l.qty || 0) * Number(l.unitPriceCents || 0)))}</div></div>`).join('');
+  const klein = q.vatMode === 'kleinunternehmer' || f.kleinunternehmer;
+  const rc = q.vatMode === 'reverseCharge';
+  const taxes = klein || rc ? `<div class="tot"><span>${klein ? 'Keine Umsatzsteuer (Kleinunternehmer)' : 'Umsatzsteuer schuldet der Leistungsempfänger'}</span><span></span></div>`
+    : vatGroups(q.lines || []).map((g) => `<div class="tot"><span>zzgl. ${g.rate} % USt</span><span>${eur(g.vat)}</span></div>`).join('');
+  return `<div class="card">
+    <h1>Angebot ${esc(q.number)}</h1>
+    <p>für ${esc(q.recipient || 'Sie')}</p>
+    <div class="meta"><span class="pill">vom ${dateTxt(q.issuedAt)}</span>${q.validUntil ? `<span class="pill">gültig bis ${dateTxt(q.validUntil)}</span>` : ''}</div>
+    ${q.intro ? `<p style="margin-top:14px;color:var(--text)">${esc(q.intro)}</p>` : ''}
+    <div style="margin-top:10px">${lines || '<p>Keine Positionen.</p>'}</div>
+    <div style="margin-top:8px">
+      <div class="tot"><span>Summe netto</span><span>${eur(q.netCents)}</span></div>
+      ${taxes}
+      <div class="tot big"><span>Gesamt</span><span>${eur(q.grossCents)}</span></div>
+    </div>
+    ${q.notes ? `<p style="margin-top:12px">${esc(q.notes)}</p>` : ''}
+  </div>`;
+}
+
+function widerrufHtml(o, open) {
+  const w = window.IdxWiderruf && window.IdxWiderruf.widerrufsbelehrung(o.firm.land, o.firm);
+  if (!w) return '';
+  return `<details${open ? ' open' : ''}><summary>${esc(w.titel)} lesen</summary>
+    ${w.abschnitte.map((a) => `${a.h ? `<h3>${esc(a.h)}</h3>` : ''}<p>${esc(a.text)}</p>`).join('')}
+    <h3>${esc(w.formularTitel)}</h3>${w.formular.map((x) => `<p>${esc(x)}</p>`).join('')}</details>`;
+}
+
+function contactCard(f) {
+  if (!f.phone && !f.email) return '';
+  return `<div class="card noprint"><h2>Fragen zum Angebot?</h2>
+    ${f.phone ? `<a class="btn outline" href="${esc(telHref(f.phone))}">📞 ${esc(f.phone)} anrufen</a>` : ''}
+    ${f.email ? `<a class="btn link" href="mailto:${esc(f.email)}?subject=${encodeURIComponent('Angebot ' + (offer.quote.number || ''))}">✉️ ${esc(f.email)}</a>` : ''}
+  </div>`;
+}
+
+function render() {
+  const o = offer;
+  if (!o || o.error) {
+    app.innerHTML = `<div class="card"><h1>Angebot nicht gefunden</h1><p>Der Link ist ungültig oder wurde durch einen neueren ersetzt. Bitte wenden Sie sich an Ihren Fachbetrieb.</p></div>`;
+    return;
+  }
+  const f = o.firm, q = o.quote;
+  let top = firmHead(f);
+  if (o.demo) top += `<div class="warn noprint">Beispiel-Ansicht<small>So sieht Ihr Kunde ein Angebot. Annehmen ist hier nur zum Ausprobieren.</small></div>`;
+
+  if (o.state === 'accepted') {
+    const d = o.decision || {};
+    const vb = o.consumer && d.earlyStart != null ? window.IdxWiderruf.vorzeitigerBeginnText(!!d.earlyStart) : null;
+    app.innerHTML = top + `<div class="card"><div class="check"><svg viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="38"/><path d="M24 41 l11 11 l22 -24"/></svg></div>
+      <h1 style="text-align:center">Angebot angenommen</h1>
+      <p style="text-align:center">${esc(d.name || '')}${d.at ? ' · ' + dateTimeTxt(d.at) : ''}</p>
+      <p style="text-align:center">${esc(f.name || 'Ihr Fachbetrieb')} wurde benachrichtigt und meldet sich zur Terminabstimmung.</p>
+      ${vb ? `<div class="warn"><small>${esc(vb.gewaehlt === 'ja' ? vb.ja : vb.nein)}</small></div>` : ''}
+      <button class="btn outline noprint" onclick="window.print()">🖨️ Bestätigung drucken oder als PDF speichern</button></div>`
+      + quoteCard(o) + (o.consumer ? `<div class="card">${widerrufHtml(o, false)}</div>` : '') + contactCard(f) + foot();
+    return;
+  }
+  if (o.state === 'declined') {
+    app.innerHTML = top + `<div class="card"><div class="no">Angebot abgelehnt<small>Danke für Ihre Rückmeldung${o.decision?.at ? ' vom ' + dateTxt(o.decision.at) : ''}. Sie können sich jederzeit wieder an ${esc(f.name || 'Ihren Fachbetrieb')} wenden.</small></div></div>` + quoteCard(o) + contactCard(f) + foot();
+    return;
+  }
+  if (o.state === 'expired' || o.state === 'canceled') {
+    const why = o.state === 'expired' ? `Dieses Angebot war bis ${dateTxt(q.validUntil)} gültig.` : 'Dieses Angebot wurde vom Betrieb zurückgezogen.';
+    app.innerHTML = top + `<div class="card"><div class="warn">Annehmen nicht mehr möglich<small>${esc(why)} Gerne erstellt ${esc(f.name || 'Ihr Fachbetrieb')} Ihnen ein aktuelles Angebot.</small></div></div>` + quoteCard(o) + contactCard(f) + foot();
+    return;
+  }
+
+  if (view === 'accept') return renderAccept(top);
+  if (view === 'decline') return renderDecline(top);
+  app.innerHTML = top + quoteCard(o) + `<div class="card noprint">
+      <button class="btn primary" id="go">✍️ Angebot annehmen</button>
+      <button class="btn outline" id="no">Ablehnen</button>
+      <p class="note" style="margin-top:10px">Annehmen geht direkt hier mit Ihrer Unterschrift am Handy, ohne Konto und ohne Ausdrucken.</p>
+    </div>` + contactCard(f) + foot();
+  document.getElementById('go').onclick = () => { view = 'accept'; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  document.getElementById('no').onclick = () => { view = 'decline'; render(); };
+}
+
+function renderAccept(top) {
+  const o = offer, f = o.firm, q = o.quote;
+  const vb = window.IdxWiderruf.vorzeitigerBeginnText(true);
+  app.innerHTML = top + `<div class="card">
+    <h1>Angebot ${esc(q.number)} annehmen</h1>
+    <p>Gesamt <b style="color:var(--text)">${eur(q.grossCents)}</b>. Mit Ihrer Unterschrift beauftragen Sie ${esc(f.name || 'den Betrieb')} verbindlich mit den Leistungen aus diesem Angebot.</p>
+    ${o.consumer ? `<div class="warn"><small>Als Privatkunde haben Sie ein gesetzliches Widerrufsrecht von 14 Tagen.</small></div>${widerrufHtml(o, false)}
+      <label>${esc(vb.frage)}</label>
+      <div class="choice" data-v="1"><input type="radio" name="vb" id="vb1" value="1"><label for="vb1" style="margin:0;font-weight:600">${esc(vb.ja)}</label></div>
+      <div class="choice" data-v="0"><input type="radio" name="vb" id="vb0" value="0"><label for="vb0" style="margin:0;font-weight:600">${esc(window.IdxWiderruf.vorzeitigerBeginnText(false).nein)}</label></div>` : ''}
+    <label for="nm">Ihr Name</label>
+    <input type="text" id="nm" autocomplete="name" maxlength="120" value="${esc(q.recipient || '')}">
+    <label>Ihre Unterschrift</label>
+    <div class="sig"><canvas id="cv"></canvas><span class="hint" id="hint">Hier mit dem Finger unterschreiben</span><button class="clear" id="clr" type="button">Löschen</button></div>
+    <div class="err" id="err"></div>
+    <button class="btn primary" id="ok">Verbindlich annehmen</button>
+    <button class="btn link" id="back">Zurück zum Angebot</button>
+  </div>` + foot();
+  document.getElementById('back').onclick = () => { view = 'quote'; render(); };
+  document.querySelectorAll('.choice').forEach((c) => c.addEventListener('click', () => {
+    c.querySelector('input').checked = true;
+    document.querySelectorAll('.choice').forEach((x) => x.classList.toggle('on', x === c));
+  }));
+  const pad = signaturePad(document.getElementById('cv'), () => { document.getElementById('hint').style.display = 'none'; });
+  document.getElementById('clr').onclick = () => { pad.clear(); document.getElementById('hint').style.display = ''; };
+  document.getElementById('ok').onclick = async (ev) => {
+    const err = document.getElementById('err');
+    const name = document.getElementById('nm').value.trim();
+    let early = null;
+    if (o.consumer) {
+      const sel = document.querySelector('input[name=vb]:checked');
+      if (!sel) { err.textContent = 'Bitte wählen Sie, wann mit den Arbeiten begonnen werden soll.'; return; }
+      early = sel.value === '1';
+    }
+    if (name.length < 2) { err.textContent = 'Bitte Ihren Namen eintragen.'; return; }
+    if (pad.empty()) { err.textContent = 'Bitte unterschreiben Sie im Feld oben.'; return; }
+    err.textContent = '';
+    ev.target.disabled = true; ev.target.textContent = 'Wird gesendet …';
+    const sig = pad.png();
+    if (o.demo) {
+      offer = { ...o, state: 'accepted', decision: { at: new Date().toISOString(), name, earlyStart: early } };
+      return render();
+    }
+    const r = await rpc('quote_decide', { p_token: token, p_accept: true, p_name: name, p_signature: sig, p_early_start: early });
+    if (r && r.ok) { await load(); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+    ev.target.disabled = false; ev.target.textContent = 'Verbindlich annehmen';
+    const msg = { name: 'Bitte Ihren vollständigen Namen eintragen.', signature: 'Die Unterschrift kam nicht an. Bitte erneut unterschreiben.', early_start: 'Bitte wählen Sie, wann mit den Arbeiten begonnen werden soll.',
+      accepted: 'Dieses Angebot wurde bereits angenommen.', declined: 'Dieses Angebot wurde bereits abgelehnt.', expired: 'Das Angebot ist abgelaufen.', canceled: 'Das Angebot wurde zurückgezogen.' };
+    err.textContent = (r && msg[r.error]) || 'Das hat nicht geklappt. Bitte prüfen Sie die Internetverbindung und versuchen Sie es erneut.';
+    if (r && ['accepted', 'declined', 'expired', 'canceled'].includes(r.error)) setTimeout(load, 1500);
+  };
+}
+
+function renderDecline(top) {
+  const o = offer;
+  app.innerHTML = top + `<div class="card">
+    <h1>Angebot ablehnen</h1>
+    <p>Schade! Wenn Sie mögen, sagen Sie ${esc(o.firm.name || 'dem Betrieb')} kurz, warum. Das hilft beim nächsten Mal.</p>
+    <label for="rs">Grund (freiwillig)</label>
+    <textarea id="rs" maxlength="500" placeholder="z. B. Preis, Termin, anderes Angebot gewählt …"></textarea>
+    <div class="err" id="err"></div>
+    <button class="btn primary" id="ok" style="background:var(--red)">Ablehnen</button>
+    <button class="btn link" id="back">Zurück zum Angebot</button>
+  </div>` + foot();
+  document.getElementById('back').onclick = () => { view = 'quote'; render(); };
+  document.getElementById('ok').onclick = async (ev) => {
+    const reason = document.getElementById('rs').value.trim();
+    ev.target.disabled = true;
+    if (o.demo) { offer = { ...o, state: 'declined', decision: { at: new Date().toISOString(), reason } }; return render(); }
+    const r = await rpc('quote_decide', { p_token: token, p_accept: false, p_reason: reason || null });
+    if (r && r.ok) return load();
+    ev.target.disabled = false;
+    document.getElementById('err').textContent = 'Das hat nicht geklappt. Bitte versuchen Sie es erneut.';
+  };
+}
+
+/** Unterschriftsfeld: Finger/Maus/Stift (Pointer Events), hochauflösend, Export als PNG. */
+function signaturePad(canvas, onFirst) {
+  const ctx = canvas.getContext('2d');
+  let drawn = false, down = false, last = null;
+  const fit = () => {
+    const r = canvas.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(r.width * dpr); canvas.height = Math.round(r.height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.lineWidth = 2.6; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#111';
+    drawn = false;
+  };
+  fit();
+  const pos = (e) => { const r = canvas.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
+  canvas.addEventListener('pointerdown', (e) => { down = true; last = pos(e); canvas.setPointerCapture(e.pointerId); e.preventDefault(); });
+  canvas.addEventListener('pointermove', (e) => {
+    if (!down) return;
+    const p = pos(e);
+    ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(p.x, p.y); ctx.stroke();
+    last = p;
+    if (!drawn) { drawn = true; onFirst && onFirst(); }
+  });
+  const up = () => { down = false; };
+  canvas.addEventListener('pointerup', up); canvas.addEventListener('pointercancel', up);
+  return {
+    clear: () => { ctx.clearRect(0, 0, canvas.width, canvas.height); drawn = false; },
+    empty: () => !drawn,
+    png: () => {
+      // auf ca. 600 px Breite verkleinern (kleine Datei, reicht für den Beleg)
+      const w = 600, h = Math.round((canvas.height / canvas.width) * w);
+      const c = document.createElement('canvas'); c.width = w; c.height = h;
+      const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, w, h); x.drawImage(canvas, 0, 0, w, h);
+      return c.toDataURL('image/png');
+    },
+  };
+}
+
+function foot() {
+  return `<div class="note">Sicher übertragen · Ihre Unterschrift sieht nur ${esc(offer?.firm?.name || 'Ihr Fachbetrieb')}.<br>
+    Bereitgestellt mit <a href="https://installateurdex.dexware.app/" rel="noopener">InstallateurDex</a> · <a href="https://installateurdex.dexware.app/datenschutz.html" rel="noopener">Datenschutz</a></div>`;
+}
+
+async function load() {
+  if (token === 'demo') { offer = offer && offer.demo ? offer : DEMO; view = 'quote'; return render(); }
+  if (!/^[0-9a-f]{32}$/.test(token)) { offer = { error: 'unknown' }; return render(); }
+  const r = await rpc('quote_offer', { p_token: token });
+  if (!r) { app.innerHTML = `<div class="card"><h1>Keine Verbindung</h1><p>Das Angebot konnte gerade nicht geladen werden. Bitte prüfen Sie die Internetverbindung.</p><button class="btn primary" onclick="location.reload()">Erneut versuchen</button></div>`; return; }
+  offer = r; view = 'quote'; render();
+}
+load();
+</script>
+</body>
+</html>

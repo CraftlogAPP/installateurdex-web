@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="robots" content="noindex, nofollow" />
 <meta name="referrer" content="no-referrer" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://*.supabase.co; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.supabase.co; connect-src 'self' https://*.supabase.co; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" />
 <meta name="theme-color" content="#14181D" />
 <title>Mein Zuhause · InstallateurDex</title>
 <meta name="description" content="Ihre Hausakte: alle Anlagen, Wartungen, Protokolle und Termine Ihres Fachbetriebs an einem Ort." />
@@ -98,6 +98,38 @@
   .kv span:nth-child(even) { font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
   .reco { border-left: 4px solid var(--amber); background: var(--amber-s); padding: 8px 10px; border-radius: 8px; margin: 8px 0; white-space: pre-wrap; }
   .hash { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12px; color: var(--muted); }
+  /* Fotos + Unterschriften (erst beim Aufklappen geladen) */
+  .media:empty { display: none; }
+  .media { margin: 4px 0 12px; }
+  .mh { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); margin: 12px 0 8px; }
+  .ph-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 8px; }
+  .ph { display: flex; flex-direction: column; gap: 4px; margin: 0; padding: 0; border: 0; background: none; color: var(--muted); font-size: 12px; text-align: left; cursor: zoom-in; min-width: 0; }
+  .ph .im { display: block; aspect-ratio: 4 / 3; border-radius: 12px; overflow: hidden; background: var(--border); border: 1px solid var(--border); }
+  .ph img { display: block; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .35s ease; }
+  .ph img.ok { opacity: 1; }
+  .ph .im.bad { display: flex; align-items: center; justify-content: center; font-size: 11px; padding: 6px; text-align: center; }
+  .ph .cap { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ph:focus-visible { outline: none; } .ph:focus-visible .im { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .signed { margin: 0 0 10px; font-size: 14px; }
+  .sigs { display: flex; flex-wrap: wrap; gap: 10px; }
+  .sig { margin: 0; flex: 1 1 130px; max-width: 210px; min-width: 0; }
+  /* Unterschrift immer auf „Papier“ — dunkle Tinte bleibt auch im Dunkelmodus lesbar */
+  .sig .paper { height: 58px; display: flex; align-items: center; justify-content: center; padding: 4px 8px; border-radius: 10px; background: #fff; border: 1px solid var(--border); }
+  .sig .paper img { max-width: 100%; max-height: 50px; }
+  .sig figcaption { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.35; overflow-wrap: anywhere; }
+  .sig figcaption b { color: var(--text); }
+  .linkbtn { background: none; border: 0; padding: 0; color: var(--brand); text-decoration: underline; cursor: pointer; font: inherit; }
+  /* Großansicht */
+  .lb { position: fixed; inset: 0; z-index: 30; display: flex; flex-direction: column; background: rgba(8,10,13,.95); color: #fff; animation: fade .2s ease; }
+  .lb-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: max(10px, env(safe-area-inset-top)) 12px 6px 16px; font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .lb-btn { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; flex: none; border: 0; border-radius: 50%; background: rgba(255,255,255,.14); color: #fff; font-size: 22px; line-height: 1; cursor: pointer; }
+  .lb-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .lb-stage { position: relative; flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 0 8px; touch-action: pan-y pinch-zoom; }
+  .lb-img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px; user-select: none; -webkit-user-drag: none; transition: opacity .2s ease; }
+  .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); }
+  .lb-nav.prev { left: 10px; } .lb-nav.next { right: 10px; }
+  .lb-cap { margin: 0; padding: 10px 16px max(16px, env(safe-area-inset-bottom)); text-align: center; font-size: 15px; font-weight: 700; }
+  .lb-cap small { display: block; font-weight: 500; font-size: 13px; opacity: .7; }
   /* Anfragen */
   .req { display:flex; justify-content:space-between; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
   .req:last-child { border-bottom: 0; }
@@ -143,6 +175,9 @@
     body.printing .wrap > *:not(#print) { display: none !important; }
     #print { display: block !important; }
     #print .card { box-shadow: none; border: 1px solid #ccc; }
+    #print .ph-grid { grid-template-columns: repeat(4, 1fr); }
+    #print .ph img { opacity: 1; }
+    #print .ph, #print .sig { break-inside: avoid; }
   }
   #print { display: none; }
 </style>
@@ -440,7 +475,7 @@ function assetCard(a) {
   </article>`;
 }
 
-function jobItem(j, byId) {
+function jobItem(j, byId, print) {
   const jb = jobOf(j.type);
   const a = byId[j.item_id];
   const cl = j.checklist || {};
@@ -449,7 +484,7 @@ function jobItem(j, byId) {
   const okN = ids.filter((id) => cl[id] === 'ok').length;
   const m = j.measurements || {};
   const mRows = Object.keys(m).filter((id) => String(m[id] || '').trim()).map((id) => { const f = measureOf(id); return `<span>${esc(f.label)}</span><span>${esc(m[id])}${f.unit ? ' ' + esc(f.unit) : ''}</span>`; }).join('');
-  return `<div class="ev"><details>
+  return `<div class="ev"><details${print ? ' open' : ` data-job="${esc(j.id)}"`}>
     <summary><span class="what">${esc(jb.emoji)} ${esc(jb.label)}<small>${a ? esc(a.name) : ''}${j.inspector_name ? ` · ${esc(j.inspector_name)}` : ''}</small></span><span class="when">${fmt(j.started_at)}</span></summary>
     <div class="body">
       ${j.work_done ? `<p>${esc(j.work_done)}</p>` : ''}
@@ -457,9 +492,173 @@ function jobItem(j, byId) {
       ${mRows ? `<div class="kv">${mRows}</div>` : ''}
       ${j.follow_up ? `<div class="reco">🔁 Folgeeinsatz vorgesehen: ${esc(j.follow_up)}</div>` : ''}
       ${j.recommendations ? `<div class="reco">💡 Empfehlung: ${esc(j.recommendations)}</div>` : ''}
+      ${print ? '' : '<div class="media"></div>'}
       ${j.entry_hash ? `<p class="hash">Prüfcode ${esc(String(j.entry_hash).slice(0, 16))}…</p>` : ''}
-      <button class="btn ghost" data-print="${esc(j.id)}">Protokoll drucken / als PDF</button>
+      ${print ? '' : `<button class="btn ghost" data-print="${esc(j.id)}">Protokoll drucken / als PDF</button>`}
     </div></details></div>`;
+}
+
+// ---------------------------------------------------------------------------- Fotos + Unterschriften (erst beim Aufklappen)
+// Fotos liegen im privaten Speicher. Die Seite holt sich je Einsatz kurzlebige signierte Links; der Server prüft
+// dabei dieselbe Freigabe wie für die Übersicht (zuhause-fotos.sql). Zugang zurückgenommen → keine neuen Links.
+const SIGN_SECONDS = 600;          // signierte Links gelten 10 Minuten
+const MEDIA = new Map();           // Einsatz-ID → { raw, photos: [{ src, tag }], sigs: [...], signedAt }
+const LOADING = new Map();         // Einsatz-ID → laufendes Laden (Doppelklick, Drucken während des Ladens)
+const imgOk = (s) => typeof s === 'string' && (/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(s) || (DEMO_MODE && s.startsWith('data:image/svg+xml')));
+
+function findJob(id) {
+  for (const s of (DATA && DATA.sites) || []) { const j = s.jobs.find((x) => x.id === id); if (j) return { j, s }; }
+  return null;
+}
+
+async function signPaths(paths) {
+  const out = new Map();
+  if (!paths.length || DEMO_MODE) return out;
+  const t = await token();
+  if (!t) throw Object.assign(new Error('Bitte erneut anmelden.'), { status: 401 });
+  const r = await fetch(`${SUPABASE_URL}/storage/v1/object/sign/photos`, {
+    method: 'POST',
+    headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${t}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ expiresIn: SIGN_SECONDS, paths }),
+  });
+  const j = await r.json().catch(() => null);
+  if (!r.ok || !Array.isArray(j)) throw Object.assign(new Error('Fotos nicht freigegeben'), { status: r.status });
+  const base = `${SUPABASE_URL}/storage/v1`;
+  for (const x of j) {
+    const rel = x && !x.error && (x.signedURL || x.signedUrl);
+    if (!rel || typeof x.path !== 'string') continue;
+    const url = /^https:\/\//i.test(rel) ? rel : base + (rel.startsWith('/') ? '' : '/') + rel;
+    if (url.startsWith(`${base}/object/sign/photos/`)) out.set(x.path, url); // nur Links auf den eigenen Speicher
+  }
+  return out;
+}
+
+async function loadMedia(id) {
+  if (LOADING.has(id)) return LOADING.get(id);
+  const p = (async () => {
+    let md = MEDIA.get(id);
+    if (!md) {
+      const r = await rpc('zuhause_job_media', { p_job: id });
+      if (!r || !r.ok) throw Object.assign(new Error('media'), { code: r && r.error });
+      // Monteur-Unterschrift kommt bewusst nur als „unterschrieben ja/nein“ (nie als Bild), die eigene als Bild
+      const sigs = imgOk(r.customer_signature) ? [{ src: r.customer_signature, name: r.customer_signer }] : [];
+      md = { raw: r, photos: [], sigs, signedBy: r.signed === true ? String(r.inspector_name || '').trim() || 'Ihrem Monteur' : '', signedAt: 0 };
+      MEDIA.set(id, md);
+    }
+    // Links kurz vor dem Ablauf neu ausstellen lassen (Seite lange offen)
+    if (Date.now() - md.signedAt > (SIGN_SECONDS - 120) * 1000) {
+      const raw = Array.isArray(md.raw.photos) ? md.raw.photos : [];
+      const urls = await signPaths(raw.map((x) => x && x.path).filter((x) => typeof x === 'string' && x));
+      md.photos = raw.map((x) => ({ tag: String((x && x.tag) || '').slice(0, 60), src: x && x.path ? urls.get(x.path) || '' : imgOk(x && x.data) ? x.data : '' }))
+        .filter((x) => x.src);
+      md.signedAt = Date.now();
+    }
+    return md;
+  })();
+  LOADING.set(id, p);
+  try { return await p; } finally { LOADING.delete(id); }
+}
+
+function mediaHtml(id, md, print) {
+  const n = md.photos.length;
+  const date = fmt(md.raw.date);
+  const ph = n ? `<div class="mh">Fotos (${n})</div><div class="ph-grid">${md.photos.map((p, k) => {
+    const cap = p.tag || `Foto ${k + 1}`;
+    const img = `<span class="im"><img src="${esc(p.src)}" alt="${esc(cap)}"${print ? ' class="ok"' : ' loading="lazy" decoding="async"'} /></span><span class="cap">${esc(cap)}</span>`;
+    return print ? `<figure class="ph">${img}</figure>`
+      : `<button type="button" class="ph" data-lb="${esc(id)}" data-n="${k}" aria-label="Foto ${k + 1} von ${n} groß anzeigen: ${esc(cap)}">${img}</button>`;
+  }).join('')}</div>` : '';
+  const mon = md.signedBy ? `<p class="signed">✍️ Unterschrieben von ${esc(md.signedBy)}, ${esc(date)}</p>` : '';
+  const sg = md.sigs.length ? `<div class="sigs">${md.sigs.map((s) => `<figure class="sig">
+      <div class="paper"><img src="${esc(s.src)}" alt="Ihre Unterschrift" /></div>
+      <figcaption><b>${esc(s.name || 'Ihre Unterschrift')}</b><br>Kunde · ${esc(date)}</figcaption></figure>`).join('')}</div>` : '';
+  return ph + (mon || sg ? `<div class="mh">Unterschriften</div>${mon}${sg}` : '');
+}
+
+async function showMedia(id, box) {
+  if (!box || box.dataset.state === 'done' || box.dataset.state === 'busy') return;
+  box.dataset.state = 'busy';
+  box.innerHTML = '<div class="skel" style="width:40%"></div><div class="skel" style="height:64px;width:70%"></div>';
+  try {
+    const md = await loadMedia(id);
+    box.innerHTML = mediaHtml(id, md, false);
+    box.querySelectorAll('.ph img').forEach((img) => {
+      const done = () => img.classList.add('ok');
+      if (img.complete && img.naturalWidth) done(); else img.addEventListener('load', done, { once: true });
+      img.addEventListener('error', () => { const im = img.parentElement; im.classList.add('bad'); im.textContent = 'Foto nicht verfügbar'; }, { once: true });
+    });
+    box.onclick = (e) => { const b = e.target.closest('[data-lb]'); if (b) openLightbox(b.dataset.lb, Number(b.dataset.n) || 0, b); };
+    box.dataset.state = 'done';
+  } catch (x) {
+    box.dataset.state = '';
+    if (x && x.code === 'unknown') { box.innerHTML = ''; return; } // nicht (mehr) freigegeben
+    box.innerHTML = '<p class="muted" style="margin:8px 0">Fotos konnten nicht geladen werden. <button type="button" class="linkbtn">Erneut versuchen</button></p>';
+    box.querySelector('.linkbtn').onclick = () => showMedia(id, box);
+  }
+}
+
+async function openLightbox(id, start, opener) {
+  let md;
+  try { md = await loadMedia(id); } catch { toast('Fotos konnten nicht geladen werden.'); return; }
+  const list = md.photos;
+  if (!list.length) return;
+  const f = findJob(id);
+  const sub = f ? `${jobOf(f.j.type).label} · ${fmt(f.j.started_at)}` : '';
+  let k = Math.min(Math.max(0, start), list.length - 1);
+  const bg = document.createElement('div');
+  bg.className = 'lb';
+  bg.setAttribute('role', 'dialog'); bg.setAttribute('aria-modal', 'true'); bg.setAttribute('aria-label', 'Fotos');
+  const multi = list.length > 1;
+  bg.innerHTML = `<div class="lb-top"><span class="lb-n" aria-live="polite"></span><button type="button" class="lb-btn lb-x" aria-label="Schließen (Esc)">✕</button></div>
+    <div class="lb-stage">${multi ? '<button type="button" class="lb-btn lb-nav prev" aria-label="Vorheriges Foto">‹</button>' : ''}
+      <img class="lb-img" alt="" draggable="false" />
+      ${multi ? '<button type="button" class="lb-btn lb-nav next" aria-label="Nächstes Foto">›</button>' : ''}</div>
+    <p class="lb-cap"></p>`;
+  const img = bg.querySelector('.lb-img'), cap = bg.querySelector('.lb-cap'), num = bg.querySelector('.lb-n'), stage = bg.querySelector('.lb-stage');
+  const show = () => {
+    const p = list[k];
+    img.src = p.src; img.alt = p.tag || `Foto ${k + 1}`;
+    num.textContent = multi ? `${k + 1} / ${list.length}` : '';
+    cap.innerHTML = `${esc(p.tag || `Foto ${k + 1}`)}${sub ? `<small>${esc(sub)}</small>` : ''}`;
+    if (multi) [list[(k + 1) % list.length], list[(k - 1 + list.length) % list.length]].forEach((x) => { new Image().src = x.src; }); // Nachbarn vorladen
+  };
+  const go = (d) => { if (!multi) return; k = (k + d + list.length) % list.length; show(); };
+  const prevOverflow = document.body.style.overflow;
+  const close = () => {
+    document.removeEventListener('keydown', onKey);
+    document.body.style.overflow = prevOverflow;
+    bg.remove();
+    if (opener && opener.isConnected) opener.focus();
+  };
+  function onKey(e) {
+    if (e.key === 'Escape') { e.preventDefault(); close(); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+    else if (e.key === 'Tab') { // Fokus bleibt in der Großansicht
+      const f2 = [...bg.querySelectorAll('button')];
+      const i = f2.indexOf(document.activeElement);
+      e.preventDefault();
+      f2[(i + (e.shiftKey ? -1 : 1) + f2.length) % f2.length].focus();
+    }
+  }
+  bg.querySelector('.lb-x').onclick = close;
+  if (multi) { bg.querySelector('.prev').onclick = () => go(-1); bg.querySelector('.next').onclick = () => go(1); }
+  // Wischen
+  let x0 = null, y0 = 0, swiped = false;
+  stage.addEventListener('pointerdown', (e) => { x0 = e.clientX; y0 = e.clientY; swiped = false; });
+  stage.addEventListener('pointerup', (e) => {
+    if (x0 === null) return;
+    const dx = e.clientX - x0, dy = e.clientY - y0; x0 = null;
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.2) { swiped = true; go(dx < 0 ? 1 : -1); }
+  });
+  stage.addEventListener('pointercancel', () => { x0 = null; });
+  stage.addEventListener('click', (e) => { if (swiped) { swiped = false; return; } if (e.target === stage) close(); }); // Tippen neben das Foto schließt
+  img.addEventListener('error', () => { cap.textContent = 'Dieses Foto ist nicht mehr verfügbar.'; });
+  document.addEventListener('keydown', onKey);
+  document.body.style.overflow = 'hidden';
+  document.body.appendChild(bg);
+  show();
+  bg.querySelector('.lb-x').focus();
 }
 
 // ---------------------------------------------------------------------------- Aktionen
@@ -474,7 +673,8 @@ function bind() {
     } catch { c.checked = !c.checked; toast('Konnte nicht gespeichert werden.'); }
     c.disabled = false;
   }));
-  document.querySelectorAll('[data-print]').forEach((b) => (b.onclick = () => printJob(b.dataset.print)));
+  document.querySelectorAll('[data-print]').forEach((b) => (b.onclick = () => printJob(b.dataset.print, b)));
+  document.querySelectorAll('details[data-job]').forEach((d) => d.addEventListener('toggle', () => { if (d.open) showMedia(d.dataset.job, d.querySelector('.media')); }));
   document.querySelectorAll('[data-acc]').forEach((b) => (b.onclick = async () => {
     const accept = b.dataset.v === '1';
     b.disabled = true;
@@ -532,18 +732,29 @@ function openRequest(assetId, kind) {
   };
 }
 
-function printJob(id) {
-  let job, site;
-  for (const s of DATA.sites) { const j = s.jobs.find((x) => x.id === id); if (j) { job = j; site = s; break; } }
-  if (!job) return;
+async function printJob(id, btn) {
+  const f = findJob(id);
+  if (!f) return;
+  const { j: job, s: site } = f;
   const byId = Object.fromEntries(site.assets.map((a) => [a.id, a]));
   const a = byId[job.item_id];
+  if (btn) btn.disabled = true;
+  // Fotos + Unterschriften mitdrucken (höchstens kurz warten — Drucken nie blockieren)
+  let md = null;
+  try { md = await Promise.race([loadMedia(id), new Promise((_, rej) => setTimeout(() => rej(new Error('Zeit')), 6000))]); } catch { md = null; }
   const holder = document.getElementById('print');
   holder.innerHTML = `<div class="card"><h2 style="margin:0">${esc(jobOf(job.type).label)} · ${fmt(job.started_at)}</h2>
     <p class="muted">${esc(site.org && site.org.name || '')} · ${esc(site.name)}${site.address ? ', ' + esc(site.address) : ''}</p>
     ${a ? `<p><b>${esc(a.name)}</b> · ${esc(kindOf(a.kind).label)} ${esc([a.manufacturer, a.model].filter(Boolean).join(' '))}${a.serial_no ? ` · Seriennr. ${esc(a.serial_no)}` : ''}</p>` : ''}
-    ${jobItem(job, byId).replace('<details>', '<details open>').replace(/<button[\s\S]*?<\/button>/, '')}
-    <p class="muted">Monteur: ${esc(job.inspector_name || '—')}${job.customer_signer_name ? ` · unterschrieben von ${esc(job.customer_signer_name)}` : ''}<br>Auszug aus Mein Zuhause — das vollständige Protokoll mit Unterschriften erhalten Sie von Ihrem Fachbetrieb.</p></div>`;
+    ${jobItem(job, byId, true)}
+    ${md ? mediaHtml(id, md, true) : ''}
+    <p class="muted">Monteur: ${esc(job.inspector_name || '—')}${job.customer_signer_name ? ` · unterschrieben von ${esc(job.customer_signer_name)}` : ''}<br>Auszug aus Mein Zuhause — das vollständige Protokoll erhalten Sie von Ihrem Fachbetrieb.</p></div>`;
+  // Bilder fertig laden lassen, sonst fehlen sie im PDF
+  await Promise.race([
+    Promise.all([...holder.querySelectorAll('img')].map((im) => im.complete ? null : new Promise((r) => { im.onload = im.onerror = r; }))),
+    new Promise((r) => setTimeout(r, 4000)),
+  ]);
+  if (btn) btn.disabled = false;
   document.body.classList.add('printing');
   setTimeout(() => { window.print(); document.body.classList.remove('printing'); }, 60);
 }
@@ -572,9 +783,52 @@ const DEMO = {
   }],
   pending: [{ org_id: 'demo-org2', org_name: 'Elektro Beispiel GmbH', sites: 1 }],
 };
+// Beispielfotos als ruhige Inline-SVG-Skizzen (keine echten/externen Bilder)
+function demoPic(motif, tag, c1, c2) {
+  const W = 'rgba(255,255,255,.88)', S = 'rgba(255,255,255,.55)';
+  const shapes = {
+    plate: `<rect x="190" y="130" width="420" height="300" rx="18" fill="#E9ECEF"/><rect x="190" y="130" width="420" height="62" rx="18" fill="#B5651D"/><rect x="190" y="172" width="420" height="20" fill="#B5651D"/>
+      <text x="400" y="172" text-anchor="middle" font-size="30" font-weight="700" fill="#fff" font-family="Segoe UI, Roboto, sans-serif">MUSTERWERK</text>
+      ${[230, 270, 310, 350, 390].map((y, i) => `<rect x="220" y="${y}" width="${[150, 120, 170, 110, 140][i]}" height="14" rx="7" fill="#9AA3AD"/><rect x="${400 + (i % 2) * 20}" y="${y}" width="${[150, 170, 120, 160, 100][i]}" height="14" rx="7" fill="#5C6670"/>`).join('')}`,
+    display: `<rect x="170" y="110" width="460" height="340" rx="28" fill="#F1F3F5"/><rect x="250" y="170" width="300" height="130" rx="12" fill="#14213D"/>
+      <text x="400" y="258" text-anchor="middle" font-size="64" font-weight="700" fill="#FB923C" font-family="Consolas, Menlo, monospace">F.28</text>
+      ${[0, 1, 2].map((i) => `<circle cx="${330 + i * 70}" cy="370" r="22" fill="#CED4DA"/>`).join('')}`,
+    pipes: `${[200, 300, 400].map((x, i) => `<path d="M${x} 80 V300 Q${x} 360 ${x + 60} 360 H720" fill="none" stroke="${i === 0 ? '#E8590C' : i === 1 ? '#1C7ED6' : '#ADB5BD'}" stroke-width="26" stroke-linecap="round"/>`).join('')}
+      <rect x="470" y="320" width="90" height="80" rx="12" fill="#495057"/><circle cx="515" cy="360" r="22" fill="#ADB5BD"/>`,
+    gauge: `<circle cx="400" cy="270" r="170" fill="#F8F9FA"/><circle cx="400" cy="270" r="150" fill="none" stroke="#DEE2E6" stroke-width="14"/>
+      <path d="M294 376 A150 150 0 0 1 400 120" fill="none" stroke="#2F9E44" stroke-width="14"/>
+      <line x1="400" y1="270" x2="${400 - 95}" y2="${270 - 70}" stroke="#C92A2A" stroke-width="9" stroke-linecap="round"/><circle cx="400" cy="270" r="16" fill="#343A40"/>
+      <text x="400" y="360" text-anchor="middle" font-size="34" font-weight="700" fill="#343A40" font-family="Segoe UI, Roboto, sans-serif">1,5 bar</text>`,
+    unit: `<rect x="150" y="150" width="500" height="290" rx="22" fill="#F1F3F5"/><circle cx="300" cy="295" r="105" fill="#DEE2E6"/>
+      ${[0, 60, 120, 180, 240, 300].map((a) => `<ellipse cx="300" cy="245" rx="20" ry="52" fill="#ADB5BD" transform="rotate(${a} 300 295)"/>`).join('')}
+      <circle cx="300" cy="295" r="18" fill="#495057"/>${[0, 1, 2, 3, 4].map((i) => `<rect x="460" y="${200 + i * 40}" width="150" height="14" rx="7" fill="#CED4DA"/>`).join('')}`,
+  };
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient></defs>
+    <rect width="800" height="600" fill="url(#g)"/>${shapes[motif] || ''}
+    <text x="32" y="568" font-size="24" fill="${W}" font-family="Segoe UI, Roboto, sans-serif">Beispielfoto · ${tag}</text><circle cx="760" cy="40" r="10" fill="${S}"/></svg>`;
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+function demoSig(d) {
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 90"><path d="${d}" fill="none" stroke="#1E3A8A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`);
+}
+const DEMO_SIG_K = demoSig('M14 50 C26 18 40 76 58 44 S84 20 96 52 C104 72 120 30 136 46 S160 64 178 40 C190 26 206 62 230 50 S270 40 286 56');
+const DEMO_MEDIA = {
+  j1: { photos: [['display', 'Display / Fehler', '#3B4A5A', '#1D2733'], ['unit', 'Nachher', '#4C5B4A', '#26302A']], sig: true },
+  j2: { photos: [['plate', 'Typenschild', '#5A4636', '#2A2019'], ['pipes', 'Hydraulik', '#3E4C5E', '#1F2833'], ['gauge', 'Manometer', '#4A4F57', '#24272C'], ['unit', 'Nachher', '#3F5566', '#1E2A33']], sig: true, cust: true },
+  j3: { photos: [['unit', 'Vorher', '#555B61', '#2B2F33']], sig: true },
+};
 async function demoRpc(name, body) {
   await new Promise((r) => setTimeout(r, 250));
   if (name === 'zuhause_overview') return structuredClone(DEMO);
+  if (name === 'zuhause_job_media') {
+    const job = DEMO.sites[0].jobs.find((j) => j.id === body.p_job);
+    const m = DEMO_MEDIA[body.p_job];
+    if (!job || !m) return { error: 'unknown' };
+    return { ok: true, id: job.id, date: job.started_at,
+      photos: m.photos.map(([motif, tag, c1, c2]) => ({ path: null, data: demoPic(motif, tag, c1, c2), tag })),
+      signed: !!m.sig, inspector_name: job.inspector_name || null,
+      customer_signature: m.cust ? DEMO_SIG_K : null, customer_signer: job.customer_signer_name || null };
+  }
   if (name === 'zuhause_set_reminders') { DEMO.sites[0].reminders = !!body.p_on; return { ok: true, reminders: !!body.p_on }; }
   if (name === 'zuhause_decide') { DEMO.pending = DEMO.pending.filter((p) => p.org_id !== body.p_org); return { ok: true, accepted: !!body.p_accept }; }
   if (name === 'zuhause_request') { DEMO.sites[0].requests.unshift({ id: 'r' + Date.now(), asset_id: body.p_asset, kind: body.p_kind, status: 'new', created_at: new Date().toISOString() }); return { ok: true }; }
