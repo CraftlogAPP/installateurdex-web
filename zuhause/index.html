@@ -401,9 +401,27 @@ function render() {
     <div class="card empty in" style="--i:${i++}"><div class="big">🏠</div>
       <h2>Noch keine Anlagen sichtbar</h2>
       <p class="muted">Ihr Fachbetrieb schaltet das Portal in seiner App für Ihre E-Mail-Adresse frei. Fragen Sie dort nach — oder prüfen Sie, ob Sie mit der richtigen Adresse angemeldet sind.</p></div>`}
+  ${sites.length ? hausdexCard(i++) : ''}
   <p class="foot">Mein Zuhause · <a href="/datenschutz.html#kunden">Datenschutz</a> · <a href="/impressum.html">Impressum</a><br>Tipp: Über das Browser-Menü „Zum Startbildschirm hinzufügen“ — dann ist Ihre Hausakte immer griffbereit.</p>`;
   document.getElementById('lo').onclick = logout;
   bind();
+}
+
+// Brücke zu HausDex (gleicher Anbieter, Alex 09.11.): dezent ganz unten, kein Pop-up, nur wenn Anlagen sichtbar sind.
+// Android → Play Store, iPhone/iPad → Dexware (Sammel-App, dort kommt HausDex als Bereich hinein), sonst → Website.
+// Bis HausDex öffentlich ist (HAUSDEX_LIVE = false) immer die Website — die zeigt „bald verfügbar“, nie ein toter Store-Link.
+const HAUSDEX_LIVE = false;
+function hausdexLink() {
+  const ua = navigator.userAgent || '';
+  if (HAUSDEX_LIVE && /Android/i.test(ua)) return 'https://play.google.com/store/apps/details?id=com.hausdex.app';
+  if (HAUSDEX_LIVE && /iPhone|iPad|iPod/i.test(ua)) return 'https://apps.apple.com/app/id6831791537';
+  return 'https://hausdex.dexware.app/';
+}
+function hausdexCard(i) {
+  return `<section class="card in" style="--i:${i}">
+    <h2 style="margin:0 0 6px">Ihr ganzes Haus im Blick</h2>
+    <p class="muted" style="margin:0 0 12px">Hier sehen Sie die Anlagen, die Ihr Fachbetrieb pflegt. Mit <b>HausDex</b> führen Sie die Akte für Ihr ganzes Haus – Dach, Fenster, Elektro, alle Rechnungen und Garantien, unabhängig von einem Betrieb. Ihre Anlagen von hier übernehmen Sie dabei direkt.</p>
+    <a class="btn ghost" href="${hausdexLink()}" target="_blank" rel="noopener">HausDex ansehen</a></section>`;
 }
 
 // Neuer Betrieb möchte Objekte zeigen → erst annehmen (sonst könnte ein Fremder Inhalte einblenden)
