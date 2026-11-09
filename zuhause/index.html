@@ -49,6 +49,9 @@
   .site-h { display:flex; justify-content:space-between; align-items:flex-start; gap: 12px; }
   .site-h h2 { margin: 0; font-size: 19px; letter-spacing: -.2px; }
   .site-h .addr { color: var(--muted); font-size: 14px; margin-top: 2px; }
+  .myname { display:flex; align-items:center; gap: 10px; margin-top: 10px; }
+  .myname > div { flex: 1; min-width: 0; }
+  .myname b { display:block; overflow-wrap:anywhere; }
   .firm { display:flex; flex-wrap: wrap; align-items:center; gap: 10px; margin-top: 14px; padding: 12px; border-radius: 14px; background: var(--card2); border: 1px solid var(--border); }
   .firm .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--brand); flex: none; box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 20%, transparent); }
   .firm .nm { font-weight: 800; flex: 1 1 150px; min-width: 0; } /* schmal: Knöpfe rutschen gemeinsam in die 2. Zeile statt den Namen zu quetschen */
@@ -347,10 +350,13 @@ async function logout() {
 
 // ---------------------------------------------------------------------------- Übersicht
 let DATA = null;
+let DECLINED = [];
 async function load() {
   app.innerHTML = '<div class="card"><div class="skel" style="width:55%"></div><div class="skel"></div><div class="skel" style="width:75%"></div></div>';
   try {
     DATA = await rpc('zuhause_overview', {});
+    // abgelehnte Betriebe (09.11.) — fehlt die Funktion noch (SQL-Nachtrag), einfach leer
+    DECLINED = await rpc('zuhause_declined', {}).then((d) => (Array.isArray(d) ? d : [])).catch(() => []);
     render();
   } catch (x) {
     if (x.status === 401 || x.status === 403 || /verified|JWT/i.test(x.message)) { store.set(null); loginView('email', null, 'Bitte melden Sie sich erneut an.'); return; }
@@ -401,6 +407,7 @@ function render() {
     <div class="card empty in" style="--i:${i++}"><div class="big">🏠</div>
       <h2>Noch keine Anlagen sichtbar</h2>
       <p class="muted">Ihr Fachbetrieb schaltet das Portal in seiner App für Ihre E-Mail-Adresse frei. Fragen Sie dort nach — oder prüfen Sie, ob Sie mit der richtigen Adresse angemeldet sind.</p></div>`}
+  ${declinedCards(i++)}
   ${sites.length ? hausdexCard(i++) : ''}
   <p class="foot">Mein Zuhause · <a href="/datenschutz.html#kunden">Datenschutz</a> · <a href="/impressum.html">Impressum</a><br>Tipp: Über das Browser-Menü „Zum Startbildschirm hinzufügen“ — dann ist Ihre Hausakte immer griffbereit.</p>`;
   document.getElementById('lo').onclick = logout;
@@ -434,6 +441,17 @@ function pendingCards(i) {
   </section>`).join('');
 }
 
+// Abgelehnte Betriebe wieder zulassen (09.11.: Ablehnen war bisher endgültig)
+function declinedCards(i) {
+  if (!DECLINED.length) return '';
+  return `<section class="card in" style="--i:${i}">
+    <h2 style="margin:0 0 6px;font-size:17px">Abgelehnte Fachbetriebe</h2>
+    <p class="muted" style="margin:0 0 10px">Diese Betriebe haben etwas für Ihre Adresse freigegeben, Sie haben sie aber abgelehnt. Versehentlich? Dann hier wieder zulassen.</p>
+    ${DECLINED.map((x) => `<div class="req"><span>${esc(x.org_name || 'Ein Betrieb')}${Number(x.sites) > 1 ? ` · ${Number(x.sites)} Objekte` : ''}</span>
+      <button class="btn ghost" data-acc="${esc(x.org_id)}" data-v="1">Wieder zulassen</button></div>`).join('')}
+  </section>`;
+}
+
 function greeting(sites) {
   const names = [...new Set(sites.map((s) => (s.customer || '').trim()).filter(Boolean))];
   const h = new Date().getHours();
@@ -453,6 +471,8 @@ function siteCard(s, i) {
       ${o.email ? `<a class="iconbtn" href="mailto:${esc(o.email)}" aria-label="E-Mail">✉️</a>` : ''}
       ${web ? `<a class="iconbtn" href="${esc(web)}" target="_blank" rel="noopener noreferrer" aria-label="Webseite">🌐</a>` : ''}</div>
     </div>
+    <div class="myname"><div><span class="muted">Ihr Name beim Fachbetrieb</span><b>${esc((s.customer || '').trim() || '—')}</b></div>
+      <button class="btn ghost" data-name="${esc(s.id)}">Ändern</button></div>
     ${o.reminder_mail ? `<label class="switch"><span><b>Erinnerung per E-Mail</b><br><span class="muted">vor der nächsten Wartung bzw. Dichtheitskontrolle</span></span>
       <input type="checkbox" data-rem="${esc(s.id)}" ${s.reminders ? 'checked' : ''} aria-label="Erinnerung per E-Mail" /></label>` : ''}
     <h3>Anlagen</h3>
@@ -691,6 +711,7 @@ function bind() {
     } catch { c.checked = !c.checked; toast('Konnte nicht gespeichert werden.'); }
     c.disabled = false;
   }));
+  document.querySelectorAll('[data-name]').forEach((b) => (b.onclick = () => openName(b.dataset.name)));
   document.querySelectorAll('[data-print]').forEach((b) => (b.onclick = () => printJob(b.dataset.print, b)));
   document.querySelectorAll('details[data-job]').forEach((d) => d.addEventListener('toggle', () => { if (d.open) showMedia(d.dataset.job, d.querySelector('.media')); }));
   document.querySelectorAll('[data-acc]').forEach((b) => (b.onclick = async () => {
@@ -699,7 +720,7 @@ function bind() {
     try {
       const r = await rpc('zuhause_decide', { p_org: b.dataset.acc, p_accept: accept });
       if (!r || !r.ok) throw new Error();
-      toast(accept ? 'Angenommen ✓' : 'Abgelehnt');
+      toast(accept ? (b.textContent.includes('zulassen') ? 'Zugelassen ✓' : 'Angenommen ✓') : 'Abgelehnt');
       load();
     } catch { b.disabled = false; toast('Konnte nicht gespeichert werden.'); }
   }));
@@ -708,6 +729,44 @@ function bind() {
 function findAsset(id) {
   for (const s of DATA.sites) { const a = s.assets.find((x) => x.id === id); if (a) return { a, s }; }
   return null;
+}
+
+// Eigenen Namen berichtigen (DSGVO Art. 16) — gilt für alle Objekte dieses Betriebs mit Ihrer Anmelde-Adresse
+function openName(siteId) {
+  const s = (DATA.sites || []).find((x) => x.id === siteId); if (!s) return;
+  const bg = document.createElement('div');
+  bg.className = 'sheet-bg';
+  bg.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="nh">
+    <h2 id="nh">Ihr Name</h2>
+    <p class="muted" style="margin:0">So führt Sie ${esc(s.org && s.org.name || 'Ihr Fachbetrieb')}. Gilt für alle Ihre Objekte bei diesem Betrieb — Adresse und Anlagen pflegt Ihr Fachbetrieb.</p>
+    <label for="nm">Name</label><input id="nm" type="text" maxlength="120" autocomplete="name" placeholder="z. B. Familie Huber" />
+    <div class="err" id="nerr"></div>
+    <div style="display:flex;gap:8px;margin-top:6px"><button class="btn ghost" id="ncx" style="flex:1">Abbrechen</button><button class="btn primary" id="nsv" style="flex:2">Speichern</button></div>
+  </div>`;
+  document.body.appendChild(bg);
+  const inp = bg.querySelector('#nm');
+  inp.value = (s.customer || '').trim();
+  const close = () => bg.remove();
+  bg.onclick = (e) => { if (e.target === bg) close(); };
+  bg.querySelector('#ncx').onclick = close;
+  document.addEventListener('keydown', function onEsc(e) { if (e.key === 'Escape') { close(); document.removeEventListener('keydown', onEsc); } });
+  inp.focus(); inp.select();
+  const save = async () => {
+    const v = inp.value.trim();
+    if (v.length < 2) { bg.querySelector('#nerr').textContent = 'Bitte einen Namen mit mindestens 2 Zeichen eingeben.'; return; }
+    const btn = bg.querySelector('#nsv'); btn.disabled = true; btn.textContent = 'Wird gespeichert …';
+    try {
+      const r = await rpc('zuhause_set_name', { p_site: siteId, p_name: v });
+      if (!r || !r.ok) throw Object.assign(new Error(), { code: r && r.error });
+      close(); toast('Name gespeichert ✓');
+      load();
+    } catch (x) {
+      btn.disabled = false; btn.textContent = 'Speichern';
+      bg.querySelector('#nerr').textContent = x.code === 'name' ? 'Bitte einen Namen mit 2 bis 120 Zeichen eingeben.' : 'Konnte nicht gespeichert werden.';
+    }
+  };
+  bg.querySelector('#nsv').onclick = save;
+  inp.onkeydown = (e) => { if (e.key === 'Enter') save(); };
 }
 
 function openRequest(assetId, kind) {
@@ -849,6 +908,8 @@ async function demoRpc(name, body) {
   }
   if (name === 'zuhause_set_reminders') { DEMO.sites[0].reminders = !!body.p_on; return { ok: true, reminders: !!body.p_on }; }
   if (name === 'zuhause_decide') { DEMO.pending = DEMO.pending.filter((p) => p.org_id !== body.p_org); return { ok: true, accepted: !!body.p_accept }; }
+  if (name === 'zuhause_set_name') { const n = String(body.p_name || '').trim(); if (n.length < 2 || n.length > 120) return { error: 'name' }; DEMO.sites.forEach((x) => { x.customer = n; }); return { ok: true, name: n, sites: DEMO.sites.length }; }
+  if (name === 'zuhause_declined') return [];
   if (name === 'zuhause_request') { DEMO.sites[0].requests.unshift({ id: 'r' + Date.now(), asset_id: body.p_asset, kind: body.p_kind, status: 'new', created_at: new Date().toISOString() }); return { ok: true }; }
   return null;
 }

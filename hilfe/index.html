@@ -166,6 +166,8 @@ const navLand = ((navigator.language || '').match(/[-_](AT|DE|CH)$/i) || [])[1];
 let land = store.get('ih.land') || (navLand ? navLand.toUpperCase() : 'AT');
 let landKnown = !!(store.get('ih.land') || navLand), landOpen = false;
 let last = null, asked = '', reqFirm = null, reqKind = 'fault';
+// Bisherige Rückfragen + Antworten mitschicken (sonst ging z. B. „LG Wärmepumpe“ verloren, sobald „CH14“ kam)
+let thread = [];
 
 function device() {
   let id = store.get('ih.device');
@@ -202,13 +204,15 @@ function maker(text) {
 async function ask(followUp) {
   const text = $('q').value.trim();
   if (text.length < 3) return;
+  const entry = followUp ? ((last && last.answer && last.answer.question) ? last.answer.question + ' → ' + followUp : followUp) : null;
+  const fu = entry ? thread.concat([entry]).join(' | ').slice(-950) : undefined;
   $('go').disabled = true;
   $('err').innerHTML = '';
   $('state').innerHTML = '<div class="thinking"><span class="dot"></span>Einen Moment, ich ordne das ein.</div>';
   try {
     const r = await fetch(SUPABASE_URL + '/functions/v1/helper-ask', {
       method: 'POST', headers: { authorization: 'Bearer ' + SUPABASE_ANON, apikey: SUPABASE_ANON, 'content-type': 'application/json' },
-      body: JSON.stringify({ text: text, followUp: followUp || undefined, land: land, device: device() }),
+      body: JSON.stringify({ text: text, followUp: fu, land: land, device: device() }),
     });
     const b = await r.json().catch(() => ({}));
     if (r.status === 429) {
@@ -219,6 +223,7 @@ async function ask(followUp) {
     }
     if (!r.ok || !b.answer || !b.answer.title) throw new Error('x');
     last = b; asked = followUp ? asked : text;
+    thread = entry ? thread.concat([entry]) : [];
     $('state').textContent = b.remaining <= 0 ? 'Für heute war das die letzte freie Frage.' : b.remaining === 1 ? 'Noch 1 Frage heute.' : 'Noch ' + b.remaining + ' Fragen heute.';
     $('quick').hidden = true;
     renderAnswer(b.answer);
