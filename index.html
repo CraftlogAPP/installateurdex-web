@@ -338,56 +338,55 @@
     .plans.two { grid-template-columns: repeat(2, 1fr); max-width: 760px; margin-inline: auto; }
     @media (max-width: 960px) { .plans.two { grid-template-columns: 1fr; max-width: 480px; } }
 
-    /* Handy-Wand + Lichter in der App-Farbe (Kopfbereich) */
-    .hero.walled { isolation: isolate; min-height: min(780px, 100svh); display: flex; align-items: center;
-      background:
-        radial-gradient(55% 70% at 80% 30%, color-mix(in oklab, var(--accent) 34%, transparent), transparent 70%),
-        radial-gradient(40% 55% at 100% 90%, color-mix(in oklab, var(--accent) 18%, transparent), transparent 70%),
-        radial-gradient(45% 60% at 0% 0%, color-mix(in oklab, var(--accent) 14%, transparent), transparent 70%),
-        var(--bg); }
-    .hero.walled::before { display: none; }
-    .hero.walled::after { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-      background: linear-gradient(90deg, var(--bg) 0%, color-mix(in oklab, var(--bg) 92%, transparent) 30%, color-mix(in oklab, var(--bg) 40%, transparent) 56%, transparent 78%),
-        linear-gradient(0deg, var(--bg) 0%, color-mix(in oklab, var(--bg) 60%, transparent) 12%, transparent 34%); }
-    .hero.walled > .wrap { position: relative; z-index: 1; width: 100%; }
-    .wall { position: absolute; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; }
-    .wall-in { position: absolute; top: -38%; left: 26%; width: 115%; height: 190%; display: flex; gap: 26px;
-      transform: perspective(2200px) rotateX(14deg) rotateZ(-15deg); transform-origin: 50% 0; opacity: .5; }
-    .col { flex: none; width: 160px; }
-    .col:nth-child(even) { margin-top: -140px; }
-    .track { animation: wall-up var(--d) linear infinite; will-change: transform; }
-    .col:nth-child(even) .track { animation-name: wall-down; }
-    @keyframes wall-up { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(0, -50%, 0); } }
-    @keyframes wall-down { from { transform: translate3d(0, -50%, 0); } to { transform: translate3d(0, 0, 0); } }
-    .wall.paused .track { animation-play-state: paused; }
-    @media (prefers-reduced-motion: reduce) { .track { animation: none; } }
-    .mp { position: relative; margin-bottom: 26px; padding: 5px; border-radius: 26px; background: linear-gradient(160deg, #343947, #0d1018 45%);
-      box-shadow: 0 0 0 1px rgba(255,255,255,.07) inset, 0 24px 40px -22px rgba(0,0,0,.9); }
-    .mp::before { content: ''; display: block; height: 14px; border-radius: 21px 21px 0 0; background: var(--bar); }
-    .mp::after { content: ''; position: absolute; top: 9px; left: 50%; width: 32%; height: 8px; transform: translateX(-50%); border-radius: 99px; background: #000; }
-    .mp img { display: block; width: 100%; height: auto; aspect-ratio: 150 / 290; object-fit: cover; object-position: top; border-radius: 0 0 21px 21px; }
-    /* Lichtschein hinter den beiden Handys */
-    .hero.walled .shots::before { content: ''; position: absolute; inset: 8% 4% 10%; border-radius: 50%; z-index: -1; filter: blur(48px);
-      background: radial-gradient(closest-side, color-mix(in oklab, var(--accent) 55%, transparent), color-mix(in oklab, var(--accent) 18%, transparent) 60%, transparent); }
-    @media (max-width: 900px) {
-      .hero.walled { min-height: 0; }
-      .hero.walled::after { background: linear-gradient(180deg, color-mix(in oklab, var(--bg) 92%, transparent) 0%, color-mix(in oklab, var(--bg) 74%, transparent) 50%, color-mix(in oklab, var(--bg) 55%, transparent) 75%, var(--bg) 100%); }
-      .wall-in { left: -30%; top: -20%; width: 170%; opacity: .42; }
-    }
-    @media (max-width: 480px) { .col { width: 128px; } .wall-in { gap: 18px; } }
+    /* Kopf-Bühne (stages.js) */
+    .hero.staged { isolation: isolate; min-height: min(780px, 100svh); display: flex; align-items: center; background: var(--bg); }
+    .hero.staged::before { display: none; }
+    .hero.staged > .wrap { position: relative; z-index: 1; width: 100%; }
+    .stage { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+    @media (max-width: 900px) { .hero.staged { min-height: 0; } }
 
-    /* Kopf „installateurdex“: phones=float, wall=right, speed=1, frame=light (looks.js) */
-    .shots .phone.a { animation: hero-bob 7s ease-in-out infinite; }
-    .shots .phone.b { animation: hero-bob 8s ease-in-out -4s infinite; }
-    @keyframes hero-bob { 50% { translate: 0 -14px; } }
-    @media (prefers-reduced-motion: reduce) { .shots .phone.a, .shots .phone.b { animation: none; } }
-    .wall-in { top: -32%; left: 30%; transform: perspective(2200px) rotateX(14deg) rotateZ(13deg); }
-    @media (max-width: 900px) { .wall-in { left: -20%; top: -24%; width: 170%; opacity: .42; } }
+    .hero.st-plan-h { background:
+      linear-gradient(color-mix(in oklab, var(--accent) 9%, transparent) 1px, transparent 1px) 0 0 / 120px 120px,
+      linear-gradient(90deg, color-mix(in oklab, var(--accent) 9%, transparent) 1px, transparent 1px) 0 0 / 120px 120px,
+      linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px) 0 0 / 24px 24px,
+      linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px) 0 0 / 24px 24px, var(--bg); }
+    .hero.st-plan-h::after { content: ''; position: absolute; inset: 0; z-index: -2; pointer-events: none;
+      background: linear-gradient(90deg, var(--bg) 0%, color-mix(in oklab, var(--bg) 82%, transparent) 34%, transparent 62%), linear-gradient(0deg, var(--bg), transparent 22%); }
+    .st-plan svg { position: absolute; left: calc(50% + 340px); top: 50%; height: min(86%, 560px); width: auto; aspect-ratio: 700 / 620; translate: -50% -50%; overflow: visible;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 13%); mask-image: linear-gradient(90deg, transparent, #000 13%); }
+    .st-plan path, .st-plan rect, .st-plan circle, .st-plan ellipse { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .st-plan .l { stroke: color-mix(in oklab, var(--ink) 62%, transparent); stroke-width: 1.6; }
+    .st-plan .t { stroke: color-mix(in oklab, var(--ink) 30%, transparent); stroke-width: 1; }
+    .st-plan .a { stroke: var(--accent); stroke-width: 2; fill: color-mix(in oklab, var(--accent) 14%, transparent); }
+    .st-plan .d { stroke: color-mix(in oklab, var(--accent) 60%, #fff); stroke-width: 1; }
+    .st-plan .ch { stroke: color-mix(in oklab, var(--ink) 66%, transparent); stroke-width: 5; stroke-dasharray: 10 7; stroke-linecap: round; }
+    .st-plan .rl { stroke: color-mix(in oklab, var(--ink) 48%, transparent); stroke-width: 1.6; stroke-dasharray: 9 7; }
+    .st-plan .tx { font: 500 12px/1 ui-monospace, 'SF Mono', Menlo, Consolas, monospace; letter-spacing: .04em; fill: color-mix(in oklab, var(--accent) 55%, #fff); opacity: 0; animation: plan-tx .6s ease 2.1s forwards; }
+    .st-plan [pathLength] { stroke-dasharray: 1; stroke-dashoffset: 1; animation: plan-draw 2.2s cubic-bezier(.4,0,.2,1) .15s forwards; }
+    .st-plan .a[pathLength] { animation-delay: .7s; fill-opacity: 0; animation-name: plan-draw-a; }
+    .st-plan .d[pathLength] { animation-delay: 1.3s; animation-duration: 1.2s; }
+    @keyframes plan-draw { to { stroke-dashoffset: 0; } }
+    @keyframes plan-draw-a { 70% { fill-opacity: 0; } to { stroke-dashoffset: 0; fill-opacity: 1; } }
+    @keyframes plan-tx { to { opacity: .9; } }
+    @media (prefers-reduced-motion: reduce) { .st-plan [pathLength] { animation: none; stroke-dashoffset: 0; fill-opacity: 1; } .st-plan .tx { animation: none; opacity: .9; } }
+    /* Ein Handy vor der Zeichnung */
+    .hero.st-plan-h .shots .phone.b { display: none; }
+    .hero.st-plan-h .shots .phone.a { left: calc(50% + 0px); top: 14px; translate: -50% 0; transform: rotate(-4deg); }
+    .hero.st-plan-h .shots::before { content: ''; position: absolute; left: 50%; bottom: 0; width: 78%; height: 26px; translate: -50% 40%; border-radius: 50%; z-index: -1;
+      background: rgba(0,0,0,.6); filter: blur(18px); }
+    @media (max-width: 900px) {
+      .st-plan svg { left: 50%; translate: -50% 0; top: auto; bottom: 0; height: 430px; opacity: .55; -webkit-mask-image: none; mask-image: none; }
+      .hero.st-plan-h .shots .phone.a { left: 50%; }
+      .hero.st-plan-h::after { background: linear-gradient(180deg, var(--bg) 0%, color-mix(in oklab, var(--bg) 88%, transparent) 50%, transparent 74%, var(--bg) 100%); }
+      .hero.st-plan-h .shots .phone.a { top: 6px; }
+    }
+
+    /* Kopf „installateurdex“: Bühne plan, phones=float, frame=light (looks.js, stages.js) */
     .shots .phone { background: linear-gradient(160deg, #e4e6eb, #8a8d96 38%, #34363c 70%);
       box-shadow: 0 0 0 1px rgba(255,255,255,.18) inset, 0 0 0 1px rgba(0,0,0,.5), 0 40px 70px -30px rgba(10,10,20,.55), 0 18px 30px -18px rgba(10,10,20,.35); }
-    .track { animation-duration: calc(var(--d) * 1); }
-    .mp { border-radius: 20px; } .mp::before { border-radius: 15px 15px 0 0; } .mp img { border-radius: 0 0 15px 15px; }
 
+    .kicker { background: none; padding: 0; border-radius: 0; gap: 12px; font-size: 12px; text-transform: uppercase; letter-spacing: .16em; }
+    .kicker::before { content: ''; width: 30px; height: 2px; border-radius: 2px; background: var(--accent); }
     /* App-Familie: Suite-Block + Block „Weitere Apps“ (eigener Tarif) */
     .fam-self { display: inline-flex; align-items: center; gap: 7px; margin-top: 16px; padding: 6px 13px; border-radius: 99px; font-size: 14px; font-weight: 600;
       background: color-mix(in oklab, var(--accent) 16%, transparent); color: var(--accent-text); }
@@ -423,8 +422,8 @@
   </header>
 
   <main>
-    <div class="hero walled">
-      <div class="wall" aria-hidden="true"><div class="wall-in"><div class="col" style="--d:70s"><div class="track"><div class="mp" style="--bar:#0f1216"><img src="assets/shots/wand-1.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-3.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-5.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0f1216"><img src="assets/shots/wand-7.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0f1216"><img src="assets/shots/wand-1.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-3.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-5.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0f1216"><img src="assets/shots/wand-7.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div></div></div><div class="col" style="--d:88s"><div class="track"><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-4.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-6.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0d1014"><img src="assets/shots/wand-8.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-2.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-4.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-6.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0d1014"><img src="assets/shots/wand-8.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-2.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div></div></div><div class="col" style="--d:106s"><div class="track"><div class="mp" style="--bar:#0f1216"><img src="assets/shots/wand-7.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0f1216"><img src="assets/shots/wand-1.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-3.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-5.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0f1216"><img src="assets/shots/wand-7.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0f1216"><img src="assets/shots/wand-1.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-3.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-5.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div></div></div><div class="col" style="--d:79s"><div class="track"><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-2.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-4.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-6.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0d1014"><img src="assets/shots/wand-8.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-2.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-4.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-6.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0d1014"><img src="assets/shots/wand-8.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div></div></div><div class="col" style="--d:97s"><div class="track"><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-5.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0f1216"><img src="assets/shots/wand-7.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0f1216"><img src="assets/shots/wand-1.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-3.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-5.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0f1216"><img src="assets/shots/wand-7.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0f1216"><img src="assets/shots/wand-1.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-3.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div></div></div><div class="col" style="--d:70s"><div class="track"><div class="mp" style="--bar:#0d1014"><img src="assets/shots/wand-8.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-2.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-4.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-6.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0d1014"><img src="assets/shots/wand-8.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-2.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-4.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div><div class="mp" style="--bar:#0a0c0f"><img src="assets/shots/wand-6.webp" width="300" height="562" alt="" decoding="async" fetchpriority="low"></div></div></div></div></div>
+    <div class="hero staged st-plan-h">
+      <div class="stage st-plan" aria-hidden="true"><svg viewBox="0 0 700 620" preserveAspectRatio="xMidYMid meet"><rect class="l" x="70" y="380" width="120" height="190" rx="6" pathLength="1"/><circle class="t" cx="130" cy="520" r="20" pathLength="1"/><path class="t" d="M130 506c8 8 8 16 0 22c-8-6-8-14 0-22z" pathLength="1"/><path class="t" d="M92 420L168 420" pathLength="1"/><path class="t" d="M92 440L168 440" pathLength="1"/><text class="tx" x="130" y="600" text-anchor="middle">Wärmeerzeuger</text><path class="a" d="M150 380V110H620" pathLength="1"/><circle class="l" cx="150" cy="250" r="20" pathLength="1"/><path class="l" d="M138 262L150 236L162 262z" pathLength="1"/><text class="tx" x="182" y="255" text-anchor="start">Pumpe</text><path class="t" d="M110 380L110 330" pathLength="1"/><path class="t" d="M110 330L56 330" pathLength="1"/><circle class="l" cx="56" cy="296" r="30" pathLength="1"/><path class="t" d="M26 296L86 296" pathLength="1"/><text class="tx" x="56" y="250" text-anchor="middle">MAG</text><path class="a" d="M300 110L300 250" pathLength="1"/><path class="l" d="M288 168l24 16v-16l-24 16z" pathLength="1"/><rect class="l" x="248" y="250" width="104" height="120" rx="5" pathLength="1"/><path class="t" d="M265.3 258L265.3 362" pathLength="1"/><path class="t" d="M282.6 258L282.6 362" pathLength="1"/><path class="t" d="M299.9 258L299.9 362" pathLength="1"/><path class="t" d="M317.2 258L317.2 362" pathLength="1"/><path class="t" d="M334.5 258L334.5 362" pathLength="1"/><path class="rl" d="M336 370V470"/><path class="a" d="M450 110L450 250" pathLength="1"/><path class="l" d="M438 168l24 16v-16l-24 16z" pathLength="1"/><rect class="l" x="398" y="250" width="104" height="120" rx="5" pathLength="1"/><path class="t" d="M415.3 258L415.3 362" pathLength="1"/><path class="t" d="M432.6 258L432.6 362" pathLength="1"/><path class="t" d="M449.9 258L449.9 362" pathLength="1"/><path class="t" d="M467.2 258L467.2 362" pathLength="1"/><path class="t" d="M484.5 258L484.5 362" pathLength="1"/><path class="rl" d="M486 370V470"/><path class="a" d="M600 110L600 250" pathLength="1"/><path class="l" d="M588 168l24 16v-16l-24 16z" pathLength="1"/><rect class="l" x="548" y="250" width="104" height="120" rx="5" pathLength="1"/><path class="t" d="M565.3 258L565.3 362" pathLength="1"/><path class="t" d="M582.6 258L582.6 362" pathLength="1"/><path class="t" d="M599.9 258L599.9 362" pathLength="1"/><path class="t" d="M617.2 258L617.2 362" pathLength="1"/><path class="t" d="M634.5 258L634.5 362" pathLength="1"/><path class="rl" d="M636 370V470"/><path class="rl" d="M636 470H110V570"/><path class="t" d="M110 570L110 570" pathLength="1"/><text class="tx" x="380" y="96" text-anchor="middle">Vorlauf</text><text class="tx" x="380" y="492" text-anchor="middle">Rücklauf</text><text class="tx" x="318" y="180" text-anchor="start">Ventil</text><path class="d" d="M300 222L450 222" pathLength="1"/><path class="d" d="M300 215L300 229" pathLength="1"/><path class="d" d="M450 215L450 229" pathLength="1"/><text class="tx" x="375" y="214" text-anchor="middle">Strang</text></svg></div>
       <div class="wrap">
         <div>
           <span class="kicker">Für Installateure, Heizungs- und Klimabetriebe</span>
@@ -481,6 +480,9 @@
         </div>
       </div>
     </section>
+
+    
+    
 
     <section class="soft" id="ablauf">
       <div class="wrap flow">
