@@ -346,37 +346,54 @@
     @media (max-width: 900px) { .hero.staged { min-height: 0; } }
 
     .hero.st-plan-h { background:
-      linear-gradient(color-mix(in oklab, var(--accent) 9%, transparent) 1px, transparent 1px) 0 0 / 120px 120px,
-      linear-gradient(90deg, color-mix(in oklab, var(--accent) 9%, transparent) 1px, transparent 1px) 0 0 / 120px 120px,
-      linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px) 0 0 / 24px 24px,
-      linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px) 0 0 / 24px 24px, var(--bg); }
+      linear-gradient(color-mix(in oklab, var(--accent) 8%, transparent) 1px, transparent 1px) 0 0 / 120px 120px,
+      linear-gradient(90deg, color-mix(in oklab, var(--accent) 8%, transparent) 1px, transparent 1px) 0 0 / 120px 120px, var(--bg); }
     .hero.st-plan-h::after { content: ''; position: absolute; inset: 0; z-index: -2; pointer-events: none;
-      background: linear-gradient(90deg, var(--bg) 0%, color-mix(in oklab, var(--bg) 82%, transparent) 34%, transparent 62%), linear-gradient(0deg, var(--bg), transparent 22%); }
-    .st-plan svg { position: absolute; left: calc(50% + 340px); top: 50%; height: min(86%, 560px); width: auto; aspect-ratio: 700 / 620; translate: -50% -50%; overflow: visible;
-      -webkit-mask-image: linear-gradient(90deg, transparent, #000 13%); mask-image: linear-gradient(90deg, transparent, #000 13%); }
-    .st-plan path, .st-plan rect, .st-plan circle, .st-plan ellipse { fill: none; stroke-linecap: round; stroke-linejoin: round; }
-    .st-plan .l { stroke: color-mix(in oklab, var(--ink) 62%, transparent); stroke-width: 1.6; }
-    .st-plan .t { stroke: color-mix(in oklab, var(--ink) 30%, transparent); stroke-width: 1; }
-    .st-plan .a { stroke: var(--accent); stroke-width: 2; fill: color-mix(in oklab, var(--accent) 14%, transparent); }
-    .st-plan .d { stroke: color-mix(in oklab, var(--accent) 60%, #fff); stroke-width: 1; }
-    .st-plan .ch { stroke: color-mix(in oklab, var(--ink) 66%, transparent); stroke-width: 5; stroke-dasharray: 10 7; stroke-linecap: round; }
-    .st-plan .rl { stroke: color-mix(in oklab, var(--ink) 48%, transparent); stroke-width: 1.6; stroke-dasharray: 9 7; }
-    .st-plan .tx { font: 500 12px/1 ui-monospace, 'SF Mono', Menlo, Consolas, monospace; letter-spacing: .04em; fill: color-mix(in oklab, var(--accent) 55%, #fff); opacity: 0; animation: plan-tx .6s ease 2.1s forwards; }
-    .st-plan [pathLength] { stroke-dasharray: 1; stroke-dashoffset: 1; animation: plan-draw 2.2s cubic-bezier(.4,0,.2,1) .15s forwards; }
-    .st-plan .a[pathLength] { animation-delay: .7s; fill-opacity: 0; animation-name: plan-draw-a; }
-    .st-plan .d[pathLength] { animation-delay: 1.3s; animation-duration: 1.2s; }
-    @keyframes plan-draw { to { stroke-dashoffset: 0; } }
-    @keyframes plan-draw-a { 70% { fill-opacity: 0; } to { stroke-dashoffset: 0; fill-opacity: 1; } }
-    @keyframes plan-tx { to { opacity: .9; } }
-    @media (prefers-reduced-motion: reduce) { .st-plan [pathLength] { animation: none; stroke-dashoffset: 0; fill-opacity: 1; } .st-plan .tx { animation: none; opacity: .9; } }
-    /* Ein Handy vor der Zeichnung */
+      background: linear-gradient(90deg, var(--bg) 0%, color-mix(in oklab, var(--bg) 80%, transparent) 36%, transparent 60%), linear-gradient(0deg, var(--bg), transparent 24%); }
+    .st-plan::before { content: ''; position: absolute; left: calc(50% + 196px); top: 50%; width: 520px; height: 520px; translate: -50% -50%; border-radius: 50%;
+      background: radial-gradient(closest-side, color-mix(in oklab, var(--accent) 22%, transparent), transparent); }
+    .st-plan svg { position: absolute; left: calc(50% + 196px); top: 50%; height: min(82%, 545px); width: auto; aspect-ratio: 380 / 620; translate: -50% -50%; overflow: visible; }
+    .st-plan svg * { fill: none; stroke-linecap: round; stroke-linejoin: round; transform-box: view-box; }
+    .st-plan .b { stroke: color-mix(in oklab, var(--ink) 74%, transparent); stroke-width: 7; }
+    .st-plan .b.up { fill: var(--bg); stroke-width: 4; }
+    .st-plan .f { stroke: color-mix(in oklab, var(--ink) 34%, transparent); stroke-width: 3; fill: color-mix(in oklab, var(--ink) 7%, var(--bg)); }
+    .st-plan .g { stroke: color-mix(in oklab, var(--ink) 22%, transparent); stroke-width: 3; }
+    .st-plan .a { stroke: var(--accent); stroke-width: 4; fill: color-mix(in oklab, var(--accent) 24%, var(--bg)); }
+    .st-plan .p { stroke: var(--accent); stroke-width: 8; }
+    .st-plan .p.thin { stroke-width: 4; fill: var(--accent); }
+    .st-plan .r { stroke: color-mix(in oklab, var(--ink) 34%, transparent); stroke-width: 8; }
+    .st-plan .ch { stroke: color-mix(in oklab, var(--ink) 76%, transparent); stroke-width: 9; stroke-dasharray: 15 12; }
+    .st-plan .sh { fill: rgba(0,0,0,.55); filter: blur(7px); transform-origin: 190px 598px; }
+    .st-plan .fl { stroke: #fff; stroke-width: 3.5; stroke-dasharray: 2 30; opacity: .85; }
+    .st-plan .fl.back { opacity: .4; }
+    .st-plan .scan rect { fill: color-mix(in oklab, var(--accent) 16%, transparent); }
+    .st-plan .scan path { stroke: var(--accent); stroke-width: 3; }
+    .st-plan .a.seq { fill: var(--accent); fill-opacity: .16; }
+    @media (prefers-reduced-motion: no-preference) {
+      .st-plan svg { animation: plan-in 1.1s cubic-bezier(.2,.7,.2,1) both; }
+      .st-plan .hoist { animation: plan-hoist 8s ease-in-out infinite; }
+      .st-plan .swing { transform-origin: 190px 112px; animation: plan-swing 5.5s ease-in-out infinite; }
+      .st-plan .sh { animation: plan-shadow 8s ease-in-out infinite; }
+      .st-plan .a.seq { animation: plan-seq 6s ease-in-out calc(var(--i) * 1.1s) infinite; }
+      .st-plan .scan { animation: plan-scan 6.5s cubic-bezier(.45,0,.55,1) infinite alternate; }
+      .st-plan .fl { animation: plan-flow 1.5s linear infinite; }
+    }
+    @keyframes plan-in { from { opacity: 0; transform: translateY(26px) scale(.97); } to { opacity: 1; transform: none; } }
+    @keyframes plan-hoist { 0%, 100% { transform: translateY(8px); } 50% { transform: translateY(-22px); } }
+    @keyframes plan-swing { 0%, 100% { transform: rotate(-1.8deg); } 50% { transform: rotate(1.8deg); } }
+    @keyframes plan-shadow { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(.84); opacity: .6; } }
+    @keyframes plan-seq { 0%, 30%, 100% { fill-opacity: .16; } 12% { fill-opacity: .95; } }
+    @keyframes plan-scan { from { transform: translateY(40px); } to { transform: translateY(500px); } }
+    @keyframes plan-flow { to { stroke-dashoffset: -32; } }
+    /* Ein Handy rechts neben der Zeichnung */
     .hero.st-plan-h .shots .phone.b { display: none; }
-    .hero.st-plan-h .shots .phone.a { left: calc(50% + 0px); top: 14px; translate: -50% 0; transform: rotate(-4deg); }
-    .hero.st-plan-h .shots::before { content: ''; position: absolute; left: 50%; bottom: 0; width: 78%; height: 26px; translate: -50% 40%; border-radius: 50%; z-index: -1;
+    .hero.st-plan-h .shots .phone.a { left: calc(50% + 135px); top: 14px; translate: -50% 0; transform: rotate(-4deg); }
+    .hero.st-plan-h .shots::before { content: ''; position: absolute; left: calc(50% + 135px); bottom: 0; width: 60%; height: 26px; translate: -50% 40%; border-radius: 50%; z-index: -1;
       background: rgba(0,0,0,.6); filter: blur(18px); }
     @media (max-width: 900px) {
-      .st-plan svg { left: 50%; translate: -50% 0; top: auto; bottom: 0; height: 430px; opacity: .55; -webkit-mask-image: none; mask-image: none; }
-      .hero.st-plan-h .shots .phone.a { left: 50%; }
+      .st-plan::before { left: 50%; top: auto; bottom: -60px; translate: -50% 0; }
+      .st-plan svg { left: 50%; translate: -50% 0; top: auto; bottom: 10px; height: 440px; opacity: .5; }
+      .hero.st-plan-h .shots .phone.a, .hero.st-plan-h .shots::before { left: 50%; }
       .hero.st-plan-h::after { background: linear-gradient(180deg, var(--bg) 0%, color-mix(in oklab, var(--bg) 88%, transparent) 50%, transparent 74%, var(--bg) 100%); }
       .hero.st-plan-h .shots .phone.a { top: 6px; }
     }
@@ -423,7 +440,11 @@
 
   <main>
     <div class="hero staged st-plan-h">
-      <div class="stage st-plan" aria-hidden="true"><svg viewBox="0 0 700 620" preserveAspectRatio="xMidYMid meet"><rect class="l" x="70" y="380" width="120" height="190" rx="6" pathLength="1"/><circle class="t" cx="130" cy="520" r="20" pathLength="1"/><path class="t" d="M130 506c8 8 8 16 0 22c-8-6-8-14 0-22z" pathLength="1"/><path class="t" d="M92 420L168 420" pathLength="1"/><path class="t" d="M92 440L168 440" pathLength="1"/><text class="tx" x="130" y="600" text-anchor="middle">Wärmeerzeuger</text><path class="a" d="M150 380V110H620" pathLength="1"/><circle class="l" cx="150" cy="250" r="20" pathLength="1"/><path class="l" d="M138 262L150 236L162 262z" pathLength="1"/><text class="tx" x="182" y="255" text-anchor="start">Pumpe</text><path class="t" d="M110 380L110 330" pathLength="1"/><path class="t" d="M110 330L56 330" pathLength="1"/><circle class="l" cx="56" cy="296" r="30" pathLength="1"/><path class="t" d="M26 296L86 296" pathLength="1"/><text class="tx" x="56" y="250" text-anchor="middle">MAG</text><path class="a" d="M300 110L300 250" pathLength="1"/><path class="l" d="M288 168l24 16v-16l-24 16z" pathLength="1"/><rect class="l" x="248" y="250" width="104" height="120" rx="5" pathLength="1"/><path class="t" d="M265.3 258L265.3 362" pathLength="1"/><path class="t" d="M282.6 258L282.6 362" pathLength="1"/><path class="t" d="M299.9 258L299.9 362" pathLength="1"/><path class="t" d="M317.2 258L317.2 362" pathLength="1"/><path class="t" d="M334.5 258L334.5 362" pathLength="1"/><path class="rl" d="M336 370V470"/><path class="a" d="M450 110L450 250" pathLength="1"/><path class="l" d="M438 168l24 16v-16l-24 16z" pathLength="1"/><rect class="l" x="398" y="250" width="104" height="120" rx="5" pathLength="1"/><path class="t" d="M415.3 258L415.3 362" pathLength="1"/><path class="t" d="M432.6 258L432.6 362" pathLength="1"/><path class="t" d="M449.9 258L449.9 362" pathLength="1"/><path class="t" d="M467.2 258L467.2 362" pathLength="1"/><path class="t" d="M484.5 258L484.5 362" pathLength="1"/><path class="rl" d="M486 370V470"/><path class="a" d="M600 110L600 250" pathLength="1"/><path class="l" d="M588 168l24 16v-16l-24 16z" pathLength="1"/><rect class="l" x="548" y="250" width="104" height="120" rx="5" pathLength="1"/><path class="t" d="M565.3 258L565.3 362" pathLength="1"/><path class="t" d="M582.6 258L582.6 362" pathLength="1"/><path class="t" d="M599.9 258L599.9 362" pathLength="1"/><path class="t" d="M617.2 258L617.2 362" pathLength="1"/><path class="t" d="M634.5 258L634.5 362" pathLength="1"/><path class="rl" d="M636 370V470"/><path class="rl" d="M636 470H110V570"/><path class="t" d="M110 570L110 570" pathLength="1"/><text class="tx" x="380" y="96" text-anchor="middle">Vorlauf</text><text class="tx" x="380" y="492" text-anchor="middle">Rücklauf</text><text class="tx" x="318" y="180" text-anchor="start">Ventil</text><path class="d" d="M300 222L450 222" pathLength="1"/><path class="d" d="M300 215L300 229" pathLength="1"/><path class="d" d="M450 215L450 229" pathLength="1"/><text class="tx" x="375" y="214" text-anchor="middle">Strang</text></svg></div>
+      <div class="stage st-plan" aria-hidden="true"><svg viewBox="0 0 380 620" preserveAspectRatio="xMidYMid meet"><path class="r" d="M340 220H362V602H60V580"/><path class="r" d="M340 420H362"/><path class="p" d="M110 440V70H250V130"/><path class="p" d="M110 280H250V330"/>
+      <path class="fl" d="M110 440V70H250V130"/><path class="fl" d="M110 280H250V330"/><path class="fl back" d="M340 220H362V602H60V580"/>
+      <rect class="f" x="210" y="130" width="130" height="110" rx="12"/><rect class="a seq" style="--i:1" x="210" y="130" width="130" height="110" rx="12"/><path class="g" d="M236 144V226M262 144V226M288 144V226M314 144V226"/><rect class="f" x="210" y="330" width="130" height="110" rx="12"/><rect class="a seq" style="--i:0" x="210" y="330" width="130" height="110" rx="12"/><path class="g" d="M236 344V426M262 344V426M288 344V426M314 344V426"/>
+      <rect class="f solid" x="30" y="440" width="120" height="140" rx="14"/><circle class="a" cx="90" cy="520" r="22"/><path class="g" d="M54 470H126"/>
+      <circle class="a solid" cx="110" cy="360" r="22"/><path class="p thin" d="M100 371L110 347L120 371Z"/></svg></div>
       <div class="wrap">
         <div>
           <span class="kicker">Für Installateure, Heizungs- und Klimabetriebe</span>
