@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.supabase.co; connect-src 'self' https://*.supabase.co; object-src 'none'; base-uri 'none'" />
 <meta name="robots" content="noindex, nofollow" />
 <meta name="referrer" content="no-referrer" />
-<title>Termin wählen · InstallateurDex</title>
+<title>Termin wählen · AngebotDex</title>
 <meta name="description" content="Wartungs- oder Servicetermin bei Ihrem Fachbetrieb wählen." />
 <style>
   :root { --copper:#B5651D; --bg:#F6F4F1; --card:#fff; --text:#1B1F24; --muted:#646B74; --border:#E6E1DA;
@@ -78,7 +78,7 @@ function done(p, start, end) {
       <a class="btn primary" download="termin.ics" href="${icsLink(o, p.asset || {}, start, end)}">📅 In meinen Kalender eintragen</a>
       ${o.phone ? `<a class="btn outline" href="tel:${esc(o.phone.replace(/[^+0-9]/g, ''))}">📞 Termin passt doch nicht? Anrufen</a>` : ''}
       ${p.demo ? '<p class="note">Beispiel — es wurde nichts gespeichert.</p>' : ''}</div>
-    <div class="note">Erstellt mit <a href="https://installateurdex.dexware.app">InstallateurDex</a></div>`;
+    <div class="note">Erstellt mit <a href="https://installateurdex.dexware.app">AngebotDex</a></div>`;
 }
 
 function render(p) {
@@ -93,7 +93,7 @@ function render(p) {
         : '<p>Die vorgeschlagenen Termine sind leider schon vorbei.</p>'}
       <div class="err" id="err" role="alert"></div>
       ${o.phone ? `<a class="btn outline" href="tel:${esc(o.phone.replace(/[^+0-9]/g, ''))}">📞 Keiner passt? Anrufen</a>` : ''}</div>
-    <div class="note">Erstellt mit <a href="https://installateurdex.dexware.app">InstallateurDex</a></div>`;
+    <div class="note">Erstellt mit <a href="https://installateurdex.dexware.app">AngebotDex</a></div>`;
   app.querySelectorAll('.slot').forEach((b) => b.addEventListener('click', async () => {
     app.querySelectorAll('.slot').forEach((x) => (x.disabled = true));
     const i = Number(b.dataset.i), s = p.slots[i];

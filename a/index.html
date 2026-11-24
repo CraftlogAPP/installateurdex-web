@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.supabase.co; connect-src 'self' https://*.supabase.co; object-src 'none'; base-uri 'none'" />
 <meta name="robots" content="noindex, nofollow" />
 <meta name="referrer" content="no-referrer" />
-<title>Anlagenpass · InstallateurDex</title>
+<title>Anlagenpass · AngebotDex</title>
 <meta name="description" content="Digitaler Anlagenpass: Anlage, Wartungsstand und Kontakt zum Fachbetrieb." />
 <style>
   :root { --copper:#B5651D; --copper-l:#E39A54; --ice:#1F8BC9; --bg:#F6F4F1; --card:#fff; --text:#1B1F24; --muted:#646B74; --border:#E6E1DA;
@@ -159,7 +159,7 @@ function render(p) {
     <details class="card tips"><summary>💡 Tipps für Ihre Anlage</summary><ul>${(TIPS[a.kind] || TIPS_DEFAULT).map((t) => `<li>${esc(t)}</li>`).join('')}</ul><div class="note" style="margin-top:8px">Allgemeine Hinweise — Bedienungsanleitung beachten und im Zweifel Ihren Fachbetrieb fragen.</div></details>
     ${p.jobs && p.jobs.length ? `<div class="card"><h2>Verlauf</h2>${p.jobs.map((j) => `<div class="job"><span>${esc(JOBS[j.type] || 'Einsatz')}</span><span>${fmt(j.date)}</span></div>`).join('')}</div>` : ''}
     <a class="btn outline" href="/zuhause/">🏠 Alle meine Anlagen &amp; Protokolle — Mein Zuhause</a>
-    <div class="note">${p.demo ? '<b>Beispiel-Anlagenpass</b> · ' : ''}Dieser Anlagenpass zeigt nur Anlagendaten und den Wartungsstand — keine persönlichen Daten. Protokolle und Termine sehen Sie nach Anmeldung in „Mein Zuhause“, wenn Ihr Fachbetrieb es freigegeben hat.<br/>Erstellt mit <a href="https://installateurdex.dexware.app">InstallateurDex</a></div>`;
+    <div class="note">${p.demo ? '<b>Beispiel-Anlagenpass</b> · ' : ''}Dieser Anlagenpass zeigt nur Anlagendaten und den Wartungsstand — keine persönlichen Daten. Protokolle und Termine sehen Sie nach Anmeldung in „Mein Zuhause“, wenn Ihr Fachbetrieb es freigegeben hat.<br/>Erstellt mit <a href="https://installateurdex.dexware.app">AngebotDex</a></div>`;
   app.querySelectorAll('[data-req]').forEach((b) => b.addEventListener('click', () => openForm(p, b.dataset.req)));
   app.querySelectorAll('[data-rec]').forEach((b) => b.addEventListener('click', () => openForm(p, 'quote', (p.recommendations || [])[Number(b.dataset.rec)]?.title)));
   if (FROM_REMINDER) openForm(p, 'maintenance');

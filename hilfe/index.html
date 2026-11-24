@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.supabase.co; connect-src 'self' https://*.supabase.co; object-src 'none'; base-uri 'none'" />
 <meta name="referrer" content="no-referrer" />
-<title>Installateur-Helfer · Wer ist zuständig? · InstallateurDex</title>
+<title>Installateur-Helfer · Wer ist zuständig? · AngebotDex</title>
 <meta name="description" content="Heizung kalt, etwas tropft, Fehlercode? Problem beschreiben und sofort wissen, wer zuständig ist, was du jetzt tun kannst und welcher Installateur in deiner Nähe hilft. Kostenlos, ohne Anmeldung." />
 <meta property="og:title" content="Installateur-Helfer: Wer ist zuständig?" />
 <meta property="og:description" content="Problem beschreiben, sofort Klarheit: selbst lösen, Installateur, Hersteller-Kundendienst oder Notfall. Kostenlos, ohne Anmeldung." />
@@ -113,7 +113,7 @@
   <p class="foot">
     Unverbindliche Ersteinschätzung, keine Ferndiagnose. Im Zweifel und bei Gefahr den Notruf wählen.<br />
     Die Spracheingabe nutzt die Spracherkennung deines Browsers.<br />
-    <a href="/datenschutz.html">Datenschutz</a> · <a href="/impressum.html">Impressum</a> · <a href="/zuhause/">Mein Zuhause</a> · <a href="/">InstallateurDex für Betriebe</a>
+    <a href="/datenschutz.html">Datenschutz</a> · <a href="/impressum.html">Impressum</a> · <a href="/zuhause/">Mein Zuhause</a> · <a href="/">AngebotDex für Betriebe</a>
   </p>
 </div>
 
@@ -218,7 +218,7 @@ async function ask(followUp) {
     if (r.status === 429) {
       $('state').textContent = '';
       $('err').innerHTML = '<div class="card"><b>' + (b.reason === 'free_quota' ? 'Die freien Fragen für heute sind aufgebraucht.' : 'Gerade sehr gefragt. Bitte später noch einmal.') + '</b>' +
-        (b.reason === 'free_quota' ? '<p class="muted">Mit einem kostenlosen Kundenkonto in der InstallateurDex-App stellst du bis zu 20 Fragen am Tag.</p>' : '') + '</div>';
+        (b.reason === 'free_quota' ? '<p class="muted">Mit einem kostenlosen Kundenkonto in der AngebotDex-App stellst du bis zu 20 Fragen am Tag.</p>' : '') + '</div>';
       return;
     }
     if (!r.ok || !b.answer || !b.answer.title) throw new Error('x');
@@ -275,7 +275,7 @@ function km(d) { if (d == null) return ''; d = Number(d); return d < 1 ? Math.ma
 function renderFirmSearch(a) {
   if (a.who === 'other') { $('firms').innerHTML = ''; return; }
   if (a.who === 'electrician' || a.who === 'chimney') {
-    $('firms').innerHTML = '<a class="card" style="display:block;text-decoration:none;color:var(--text)" href="' + mapsUrl(a) + '" target="_blank" rel="noopener"><b>' + (WHO[a.who] || WHO.installer)[1] + ' ' + esc(mapsTerm(a)) + ' in deiner Nähe</b><p class="muted">Öffnet die Suche in Google Maps. Dafür ist kein InstallateurDex-Betrieb zuständig.</p></a>';
+    $('firms').innerHTML = '<a class="card" style="display:block;text-decoration:none;color:var(--text)" href="' + mapsUrl(a) + '" target="_blank" rel="noopener"><b>' + (WHO[a.who] || WHO.installer)[1] + ' ' + esc(mapsTerm(a)) + ' in deiner Nähe</b><p class="muted">Öffnet die Suche in Google Maps. Dafür ist kein AngebotDex-Betrieb zuständig.</p></a>';
     return;
   }
   $('firms').innerHTML = '<div class="sec">' + (a.who === 'diy' ? 'Lieber vom Profi? Betriebe in deiner Nähe' : 'Betriebe in deiner Nähe') + '</div>' +
@@ -330,7 +330,7 @@ function showFirms(a, list, near, zip) {
     '<div class="acts">' + (f.phone ? '<a href="tel:' + esc(String(f.phone).replace(/[^\d+]/g, '')) + '">📞 Anrufen</a>' : '') + '<button class="p" type="button" data-i="' + i + '">✉️ Anfrage senden</button>' +
     (f.review_url ? '<a href="' + esc(f.review_url) + '" target="_blank" rel="noopener" style="border:0;padding:9px 4px">⭐ Bewertungen</a>' : '') + '</div></div>').join('');
   $('fl').insertAdjacentHTML('beforeend', '<a class="card" style="display:block;text-decoration:none;color:var(--text)" href="' + mapsUrl(a, zip) + '" target="_blank" rel="noopener"><b>🗺️ Alle Betriebe in der Umgebung</b><p class="muted">In Google Maps mit Telefonnummer, Öffnungszeiten und Bewertungen, zum direkten Anrufen.</p></a>');
-  $('fl').insertAdjacentHTML('beforeend', '<p class="muted" style="text-align:center;font-size:12px">Reihenfolge: ' + (near ? 'Entfernung' : 'Nähe zu deiner PLZ') + ', passende Leistung. Keine bezahlte Platzierung. Gezeigt werden Betriebe, die InstallateurDex nutzen und sich freigeschaltet haben.</p>');
+  $('fl').insertAdjacentHTML('beforeend', '<p class="muted" style="text-align:center;font-size:12px">Reihenfolge: ' + (near ? 'Entfernung' : 'Nähe zu deiner PLZ') + ', passende Leistung. Keine bezahlte Platzierung. Gezeigt werden Betriebe, die AngebotDex nutzen und sich freigeschaltet haben.</p>');
   $('fl').querySelectorAll('button[data-i]').forEach((b) => { b.onclick = () => openReq(list[Number(b.dataset.i)], a); });
 }
 
