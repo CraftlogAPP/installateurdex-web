@@ -1,0 +1,50 @@
+# AngebotDex
+
+> AngebotDex ist eine App von Dexware. Angebot einsprechen – mit deinen Preisen und deinem Logo. Dazu Wartungsprotokoll per Diktat und QR-Anlagenpass. Gratis bis 3 Anlagen. AngebotDex kommt bald zu Google Play. Pro 29,99 € im Monat oder 299 € im Jahr.
+
+Sachliche Kurzinfo für Sprachmodelle und Suchdienste. Maßgeblich sind die Angaben auf https://installateurdex.dexware.app/. Anbieter: Dexware (https://dexware.app/), Kontakt: support@dexware.app.
+
+## Was AngebotDex macht
+
+- Sprich einfach: Arbeiten, Messwerte, Material und Zeit diktieren, die App füllt das Protokoll und markiert unsichere Angaben zum Prüfen. Ein Foto vom Typenschild übernimmt die Anlagendaten, vom Lieferschein kommt die Materialliste.
+- Protokoll im Firmen-Look: Fotos, Unterschrift von Monteur und Kunde und GPS-Stempel, per WhatsApp oder Mail zum Kunden; mit Pro mit Logo, Firmenfarbe und einem von drei Layouts. Für F-Gas: Dichtheitskontrollen mit Fälligkeit und Kältemittel-Logbuch als PDF.
+- Wartungsradar, Touren und Team: Alle fälligen Anlagen über alle Kunden mit dem Umsatz, der darin steckt. Nahe Anlagen bündelt die App zu einer Tour samt Route. Mit Pro kommt montags dein Wochenbriefing, und Monteure treten mit einem Code bei.
+
+## Für wen
+
+Für Installateure, Heizungs- und Klimabetriebe.
+
+## Preise
+
+- Gratis (für immer): Bis 3 aktive Anlagen; Einsätze dokumentieren — nie gesperrt; Protokoll-PDF mit Wasserzeichen; 5 KI-Proben (Diktat, Typenschild, Lieferschein); Beispiel-Kunden zum Ausprobieren
+- Pro: 29,99 € im Monat oder 299 € im Jahr. Enthält: 300 Diktat-Minuten im Monat; Unbegrenzt Anlagen und Einsätze; Protokolle mit Logo, Farbe und 3 Layouts; Wartungs-Erinnerung an deine Kunden per Mail; Team: je weiterem Monteur höchstens 4,99 € im Monat und +150 Diktat-Minuten
+- Stufen nach Teamgröße (ein Abo pro Betrieb, Monteure treten per Team-Code bei, brauchen kein eigenes Abo und bringen je 150 Diktat-Minuten mit):
+  - Pro (1 Monteur · 300 Diktat-Minuten): 29,99 € im Monat · 299 € im Jahr
+  - Team 3 (bis 3 Monteure · 600 Minuten): 39,95 € im Monat · 399 € im Jahr
+  - Team 5 (bis 5 Monteure · 900 Minuten): 49,95 € im Monat · 499 € im Jahr
+  - Team 10 (bis 10 Monteure · 1.650 Minuten): 74,90 € im Monat · 749 € im Jahr
+  - Größer (mehr als 10 Monteure): Angebot · auf Rechnung
+- Preise inkl. MwSt., Abo jederzeit kündbar.
+
+## Kurz beantwortet
+
+- Brauche ich ein Konto? Ja, mit E-Mail oder „Mit Google anmelden“. Deine Monteure treten mit einem Einladungscode deinem Betrieb bei und brauchen kein eigenes Abo.
+- Funktioniert AngebotDex im Keller ohne Netz? Ja. Einsätze, Fotos und Unterschriften werden auf dem Handy gespeichert und übertragen, sobald wieder Netz da ist. Eine Sprachaufnahme bleibt bis dahin auf dem Gerät.
+- Wohin gehen meine Diktate? In der Regel wandelt die Spracherkennung deines Geräts das Gesprochene in Text um (Android: Google, iOS: Apple). Nur wenn sie nicht verfügbar ist, wird die Aufnahme verschlüsselt bei Mistral AI (Frankreich) in Text umgewandelt.
+- Kann ich eigene Prüfpunkte anlegen? Ja, mit Pro. Unter „Eigene Prüfpunkte & Messwerte“ blendest du Standardpunkte aus, ergänzt eigene und legst Messfelder mit Einheit an — je Anlagentyp und Einsatzart.
+- Kann ich AngebotDex erst mal ausprobieren? Ja. Nach der kurzen Tour legt ein Tipp zwei Beispiel-Kunden mit 6 Anlagen und Einsätzen an. Die zählen nicht gegen die 3 kostenlosen Anlagen und lassen sich mit einem Tipp löschen.
+- Alle Antworten: https://installateurdex.dexware.app/#faq
+
+## Seiten
+
+- [Startseite](https://installateurdex.dexware.app/): Funktionen, Preise, häufige Fragen
+- [Preise](https://installateurdex.dexware.app/#preise): Gratis, Pro und Stufen nach Teamgröße
+- [Häufige Fragen](https://installateurdex.dexware.app/#faq)
+- [Dexware](https://dexware.app/): alle Apps von Dexware
+
+## Rechtliches
+
+- [Impressum](https://installateurdex.dexware.app/impressum.html)
+- [Datenschutz](https://installateurdex.dexware.app/datenschutz.html)
+- [AGB](https://installateurdex.dexware.app/agb.html)
+- [AVV](https://installateurdex.dexware.app/avv.html)
